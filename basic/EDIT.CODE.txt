@@ -1,0 +1,1435 @@
+9100-   4C 4C 91    JMP   $914C
+9103-   4C B1 91    JMP   $91B1
+9106-   4C 03 92    JMP   $9203
+9109-   4C 27 92    JMP   $9227
+910C-   4C 89 91    JMP   $9189
+910F-   A5 02       LDA   $02
+9111-   A2 07       LDX   #$07
+9113-   86 04       STX   $04
+9115-   0A          ASL
+9116-   0A          ASL
+9117-   26 04       ROL   $04
+9119-   0A          ASL
+911A-   26 04       ROL   $04
+911C-   0A          ASL
+911D-   26 04       ROL   $04
+911F-   0A          ASL
+9120-   26 04       ROL   $04
+9122-   85 03       STA   $03
+9124-   A9 10       LDA   #$10
+9126-   85 05       STA   $05
+9128-   A6 01       LDX   $01
+912A-   BD 00 94    LDA   $9400,X
+912D-   85 27       STA   $27
+912F-   BD 00 95    LDA   $9500,X
+9132-   85 26       STA   $26
+9134-   A4 00       LDY   $00
+9136-   A2 00       LDX   #$00
+9138-   B1 26       LDA   ($26),Y
+913A-   81 03       STA   ($03,X)
+913C-   E6 03       INC   $03
+913E-   C8          INY
+913F-   B1 26       LDA   ($26),Y
+9141-   81 03       STA   ($03,X)
+9143-   E6 03       INC   $03
+9145-   E6 01       INC   $01
+9147-   C6 05       DEC   $05
+9149-   D0 DD       BNE   $9128
+914B-   60          RTS
+914C-   A5 02       LDA   $02
+914E-   A2 07       LDX   #$07
+9150-   86 04       STX   $04
+9152-   0A          ASL
+9153-   0A          ASL
+9154-   26 04       ROL   $04
+9156-   0A          ASL
+9157-   26 04       ROL   $04
+9159-   0A          ASL
+915A-   26 04       ROL   $04
+915C-   0A          ASL
+915D-   26 04       ROL   $04
+915F-   85 03       STA   $03
+9161-   A9 10       LDA   #$10
+9163-   85 05       STA   $05
+9165-   A6 01       LDX   $01
+9167-   BD 00 94    LDA   $9400,X
+916A-   85 27       STA   $27
+916C-   BD 00 95    LDA   $9500,X
+916F-   85 26       STA   $26
+9171-   A4 00       LDY   $00
+9173-   A2 00       LDX   #$00
+9175-   A1 03       LDA   ($03,X)
+9177-   91 26       STA   ($26),Y
+9179-   E6 03       INC   $03
+917B-   C8          INY
+917C-   A1 03       LDA   ($03,X)
+917E-   91 26       STA   ($26),Y
+9180-   E6 03       INC   $03
+9182-   E6 01       INC   $01
+9184-   C6 05       DEC   $05
+9186-   D0 DD       BNE   $9165
+9188-   60          RTS
+9189-   A9 10       LDA   #$10
+918B-   85 05       STA   $05
+918D-   A6 01       LDX   $01
+918F-   BD 00 94    LDA   $9400,X
+9192-   85 27       STA   $27
+9194-   BD 00 95    LDA   $9500,X
+9197-   85 26       STA   $26
+9199-   A4 00       LDY   $00
+919B-   A2 00       LDX   #$00
+919D-   B1 26       LDA   ($26),Y
+919F-   49 FF       EOR   #$FF
+91A1-   91 26       STA   ($26),Y
+91A3-   C8          INY
+91A4-   B1 26       LDA   ($26),Y
+91A6-   49 FF       EOR   #$FF
+91A8-   91 26       STA   ($26),Y
+91AA-   E6 01       INC   $01
+91AC-   C6 05       DEC   $05
+91AE-   D0 DD       BNE   $918D
+91B0-   60          RTS
+91B1-   A9 00       LDA   #$00
+91B3-   85 06       STA   $06
+91B5-   85 07       STA   $07
+91B7-   A5 00       LDA   $00
+91B9-   38          SEC
+91BA-   E9 03       SBC   #$03
+91BC-   85 08       STA   $08
+91BE-   A5 01       LDA   $01
+91C0-   38          SEC
+91C1-   E9 03       SBC   #$03
+91C3-   85 09       STA   $09
+91C5-   A9 07       LDA   #$07
+91C7-   85 40       STA   $40
+91C9-   A5 08       LDA   $08
+91CB-   85 41       STA   $41
+91CD-   A5 41       LDA   $41
+91CF-   85 00       STA   $00
+91D1-   A5 09       LDA   $09
+91D3-   85 01       STA   $01
+91D5-   20 03 92    JSR   $9203
+91D8-   85 02       STA   $02
+91DA-   A5 07       LDA   $07
+91DC-   85 01       STA   $01
+91DE-   A5 06       LDA   $06
+91E0-   85 00       STA   $00
+91E2-   20 4C 91    JSR   $914C
+91E5-   E6 41       INC   $41
+91E7-   E6 06       INC   $06
+91E9-   E6 06       INC   $06
+91EB-   C6 40       DEC   $40
+91ED-   D0 DE       BNE   $91CD
+91EF-   A9 00       LDA   #$00
+91F1-   85 06       STA   $06
+91F3-   A5 07       LDA   $07
+91F5-   18          CLC
+91F6-   69 10       ADC   #$10
+91F8-   85 07       STA   $07
+91FA-   E6 09       INC   $09
+91FC-   A5 07       LDA   $07
+91FE-   C9 70       CMP   #$70
+9200-   D0 C3       BNE   $91C5
+9202-   60          RTS
+9203-   A5 00       LDA   $00
+9205-   C9 40       CMP   #$40
+9207-   90 03       BCC   $920C
+9209-   A9 04       LDA   #$04
+920B-   60          RTS
+920C-   A5 01       LDA   $01
+920E-   C9 40       CMP   #$40
+9210-   B0 F7       BCS   $9209
+9212-   A5 01       LDA   $01
+9214-   A4 00       LDY   $00
+9216-   A2 00       LDX   #$00
+9218-   86 00       STX   $00
+921A-   4A          LSR
+921B-   66 00       ROR   $00
+921D-   4A          LSR
+921E-   66 00       ROR   $00
+9220-   09 80       ORA   #$80
+9222-   85 01       STA   $01
+9224-   B1 00       LDA   ($00),Y
+9226-   60          RTS
+9227-   A5 01       LDA   $01
+9229-   A4 00       LDY   $00
+922B-   A2 00       LDX   #$00
+922D-   86 00       STX   $00
+922F-   4A          LSR
+9230-   66 00       ROR   $00
+9232-   4A          LSR
+9233-   66 00       ROR   $00
+9235-   09 80       ORA   #$80
+9237-   85 01       STA   $01
+9239-   A5 02       LDA   $02
+923B-   91 00       STA   ($00),Y
+923D-   60          RTS
+923E-   00          BRK
+923F-   00          BRK
+9240-   92 02       STA   ($02)
+9242-   00          BRK
+9243-   00          BRK
+9244-   00          BRK
+9245-   00          BRK
+9246-   00          BRK
+9247-   00          BRK
+9248-   00          BRK
+9249-   00          BRK
+924A-   00          BRK
+924B-   00          BRK
+924C-   00          BRK
+924D-   00          BRK
+924E-   00          BRK
+924F-   00          BRK
+9250-   00          BRK
+9251-   00          BRK
+9252-   00          BRK
+9253-   00          BRK
+9254-   00          BRK
+9255-   00          BRK
+9256-   00          BRK
+9257-   00          BRK
+9258-   00          BRK
+9259-   00          BRK
+925A-   00          BRK
+925B-   00          BRK
+925C-   00          BRK
+925D-   00          BRK
+925E-   00          BRK
+925F-   00          BRK
+9260-   A2 00       LDX   #$00
+9262-   BD 00 94    LDA   $9400,X
+9265-   85 27       STA   $27
+9267-   BD 00 95    LDA   $9500,X
+926A-   85 26       STA   $26
+926C-   A0 0D       LDY   #$0D
+926E-   A9 00       LDA   #$00
+9270-   91 26       STA   ($26),Y
+9272-   88          DEY
+9273-   10 FB       BPL   $9270
+9275-   E8          INX
+9276-   E0 A0       CPX   #$A0
+9278-   D0 E8       BNE   $9262
+927A-   A2 03       LDX   #$03
+927C-   20 F0 F6    JSR   $F6F0
+927F-   EA          NOP
+9280-   A9 80       LDA   #$80
+9282-   85 01       STA   $01
+9284-   A9 00       LDA   #$00
+9286-   85 00       STA   $00
+9288-   A9 18       LDA   #$18
+928A-   85 03       STA   $03
+928C-   A9 10       LDA   #$10
+928E-   85 02       STA   $02
+9290-   A0 00       LDY   #$00
+9292-   B1 00       LDA   ($00),Y
+9294-   C9 06       CMP   #$06
+9296-   F0 08       BEQ   $92A0
+9298-   C9 40       CMP   #$40
+929A-   90 0D       BCC   $92A9
+929C-   C9 6A       CMP   #$6A
+929E-   B0 09       BCS   $92A9
+92A0-   A6 02       LDX   $02
+92A2-   A0 00       LDY   #$00
+92A4-   A5 03       LDA   $03
+92A6-   20 57 F4    JSR   $F457
+92A9-   E6 02       INC   $02
+92AB-   E6 00       INC   $00
+92AD-   D0 02       BNE   $92B1
+92AF-   E6 01       INC   $01
+92B1-   A5 02       LDA   $02
+92B3-   C9 50       CMP   #$50
+92B5-   D0 D9       BNE   $9290
+92B7-   E6 03       INC   $03
+92B9-   A5 03       LDA   $03
+92BB-   C9 58       CMP   #$58
+92BD-   D0 CD       BNE   $928C
+92BF-   60          RTS
+92C0-   00          BRK
+92C1-   00          BRK
+92C2-   00          BRK
+92C3-   00          BRK
+92C4-   00          BRK
+92C5-   00          BRK
+92C6-   00          BRK
+92C7-   00          BRK
+92C8-   00          BRK
+92C9-   00          BRK
+92CA-   00          BRK
+92CB-   00          BRK
+92CC-   00          BRK
+92CD-   00          BRK
+92CE-   00          BRK
+92CF-   00          BRK
+92D0-   00          BRK
+92D1-   00          BRK
+92D2-   00          BRK
+92D3-   00          BRK
+92D4-   00          BRK
+92D5-   00          BRK
+92D6-   00          BRK
+92D7-   00          BRK
+92D8-   00          BRK
+92D9-   00          BRK
+92DA-   00          BRK
+92DB-   00          BRK
+92DC-   00          BRK
+92DD-   00          BRK
+92DE-   00          BRK
+92DF-   00          BRK
+92E0-   00          BRK
+92E1-   00          BRK
+92E2-   00          BRK
+92E3-   00          BRK
+92E4-   00          BRK
+92E5-   00          BRK
+92E6-   00          BRK
+92E7-   00          BRK
+92E8-   00          BRK
+92E9-   00          BRK
+92EA-   00          BRK
+92EB-   00          BRK
+92EC-   00          BRK
+92ED-   00          BRK
+92EE-   00          BRK
+92EF-   00          BRK
+92F0-   00          BRK
+92F1-   00          BRK
+92F2-   00          BRK
+92F3-   00          BRK
+92F4-   00          BRK
+92F5-   00          BRK
+92F6-   00          BRK
+92F7-   00          BRK
+92F8-   00          BRK
+92F9-   00          BRK
+92FA-   00          BRK
+92FB-   00          BRK
+92FC-   00          BRK
+92FD-   00          BRK
+92FE-   00          BRK
+92FF-   00          BRK
+9300-   00          BRK
+9301-   00          BRK
+9302-   00          BRK
+9303-   00          BRK
+9304-   00          BRK
+9305-   AA          TAX
+9306-   D5 00       CMP   $00,X
+9308-   00          BRK
+9309-   00          BRK
+930A-   00          BRK
+930B-   00          BRK
+930C-   00          BRK
+930D-   4A          LSR
+930E-   4A          LSR
+930F-   4A          LSR
+9310-   4A          LSR
+9311-   4A          LSR
+9312-   4A          LSR
+9313-   4A          LSR
+9314-   4A          LSR
+9315-   49 49       EOR   #$49
+9317-   46 46       LSR   $46
+9319-   20 4B 4B    JSR   $4B4B
+931C-   4B          ???
+931D-   20 46 20    JSR   $2046
+9320-   4A          LSR
+9321-   4D 4D 49    EOR   $494D
+9324-   49 00       EOR   #$00
+9326-   00          BRK
+9327-   FF          ???
+9328-   FF          ???
+9329-   FF          ???
+932A-   FF          ???
+932B-   FF          ???
+932C-   FF          ???
+932D-   FF          ???
+932E-   FF          ???
+932F-   FF          ???
+9330-   FF          ???
+9331-   FF          ???
+9332-   FF          ???
+9333-   FF          ???
+9334-   FF          ???
+9335-   FF          ???
+9336-   FF          ???
+9337-   FF          ???
+9338-   FF          ???
+9339-   FF          ???
+933A-   FF          ???
+933B-   FF          ???
+933C-   FF          ???
+933D-   FF          ???
+933E-   FF          ???
+933F-   FF          ???
+9340-   FF          ???
+9341-   FF          ???
+9342-   FF          ???
+9343-   FF          ???
+9344-   FF          ???
+9345-   FF          ???
+9346-   FF          ???
+9347-   FF          ???
+9348-   FF          ???
+9349-   FF          ???
+934A-   FF          ???
+934B-   FF          ???
+934C-   FF          ???
+934D-   FF          ???
+934E-   FF          ???
+934F-   FF          ???
+9350-   FF          ???
+9351-   FF          ???
+9352-   FF          ???
+9353-   FF          ???
+9354-   FF          ???
+9355-   FF          ???
+9356-   FF          ???
+9357-   FF          ???
+9358-   FF          ???
+9359-   FF          ???
+935A-   FF          ???
+935B-   FF          ???
+935C-   FF          ???
+935D-   FF          ???
+935E-   FF          ???
+935F-   FF          ???
+9360-   FF          ???
+9361-   FF          ???
+9362-   FF          ???
+9363-   FF          ???
+9364-   FF          ???
+9365-   FF          ???
+9366-   FF          ???
+9367-   FF          ???
+9368-   FF          ???
+9369-   FF          ???
+936A-   FF          ???
+936B-   FF          ???
+936C-   FF          ???
+936D-   FF          ???
+936E-   FF          ???
+936F-   FF          ???
+9370-   FF          ???
+9371-   FF          ???
+9372-   FF          ???
+9373-   FF          ???
+9374-   FF          ???
+9375-   FF          ???
+9376-   FF          ???
+9377-   FF          ???
+9378-   FF          ???
+9379-   FF          ???
+937A-   FF          ???
+937B-   FF          ???
+937C-   FF          ???
+937D-   FF          ???
+937E-   FF          ???
+937F-   FF          ???
+9380-   FF          ???
+9381-   FF          ???
+9382-   FF          ???
+9383-   FF          ???
+9384-   FF          ???
+9385-   FF          ???
+9386-   FF          ???
+9387-   FF          ???
+9388-   FF          ???
+9389-   FF          ???
+938A-   FF          ???
+938B-   FF          ???
+938C-   FF          ???
+938D-   FF          ???
+938E-   FF          ???
+938F-   FF          ???
+9390-   FF          ???
+9391-   FF          ???
+9392-   FF          ???
+9393-   FF          ???
+9394-   FF          ???
+9395-   FF          ???
+9396-   FF          ???
+9397-   FF          ???
+9398-   FF          ???
+9399-   FF          ???
+939A-   FF          ???
+939B-   FF          ???
+939C-   FF          ???
+939D-   FF          ???
+939E-   FF          ???
+939F-   FF          ???
+93A0-   FF          ???
+93A1-   FF          ???
+93A2-   FF          ???
+93A3-   FF          ???
+93A4-   FF          ???
+93A5-   FF          ???
+93A6-   FF          ???
+93A7-   FF          ???
+93A8-   FF          ???
+93A9-   FF          ???
+93AA-   FF          ???
+93AB-   FF          ???
+93AC-   FF          ???
+93AD-   FF          ???
+93AE-   FF          ???
+93AF-   FF          ???
+93B0-   FF          ???
+93B1-   FF          ???
+93B2-   FF          ???
+93B3-   FF          ???
+93B4-   FF          ???
+93B5-   FF          ???
+93B6-   FF          ???
+93B7-   FF          ???
+93B8-   FF          ???
+93B9-   FF          ???
+93BA-   FF          ???
+93BB-   FF          ???
+93BC-   FF          ???
+93BD-   FF          ???
+93BE-   FF          ???
+93BF-   A2 FF       LDX   #$FF
+93C1-   FF          ???
+93C2-   FF          ???
+93C3-   FF          ???
+93C4-   FF          ???
+93C5-   FF          ???
+93C6-   FF          ???
+93C7-   FF          ???
+93C8-   FF          ???
+93C9-   FF          ???
+93CA-   FF          ???
+93CB-   FF          ???
+93CC-   FF          ???
+93CD-   FF          ???
+93CE-   FF          ???
+93CF-   FF          ???
+93D0-   FF          ???
+93D1-   FF          ???
+93D2-   FF          ???
+93D3-   FF          ???
+93D4-   FF          ???
+93D5-   FF          ???
+93D6-   FF          ???
+93D7-   FF          ???
+93D8-   FF          ???
+93D9-   FF          ???
+93DA-   FF          ???
+93DB-   FF          ???
+93DC-   FF          ???
+93DD-   FF          ???
+93DE-   FF          ???
+93DF-   FF          ???
+93E0-   FF          ???
+93E1-   FF          ???
+93E2-   FF          ???
+93E3-   FF          ???
+93E4-   FF          ???
+93E5-   FF          ???
+93E6-   FF          ???
+93E7-   FF          ???
+93E8-   FF          ???
+93E9-   FF          ???
+93EA-   FF          ???
+93EB-   FF          ???
+93EC-   FF          ???
+93ED-   FF          ???
+93EE-   FF          ???
+93EF-   FF          ???
+93F0-   FF          ???
+93F1-   FF          ???
+93F2-   FF          ???
+93F3-   FF          ???
+93F4-   FF          ???
+93F5-   FF          ???
+93F6-   FF          ???
+93F7-   FF          ???
+93F8-   FF          ???
+93F9-   FF          ???
+93FA-   FF          ???
+93FB-   FF          ???
+93FC-   FF          ???
+93FD-   FF          ???
+93FE-   FF          ???
+93FF-   A2 20       LDX   #$20
+9401-   24 28       BIT   $28
+9403-   2C 30 34    BIT   $3430
+9406-   38          SEC
+9407-   3C 20 24    BIT   $2420,X
+940A-   28          PLP
+940B-   2C 30 34    BIT   $3430
+940E-   38          SEC
+940F-   3C 21 25    BIT   $2521,X
+9412-   29 2D       AND   #$2D
+9414-   31 35       AND   ($35),Y
+9416-   39 3D 21    AND   $213D,Y
+9419-   25 29       AND   $29
+941B-   2D 31 35    AND   $3531
+941E-   39 3D 22    AND   $223D,Y
+9421-   26 2A       ROL   $2A
+9423-   2E 32 36    ROL   $3632
+9426-   3A          DEC
+9427-   3E 22 26    ROL   $2622,X
+942A-   2A          ROL
+942B-   2E 32 36    ROL   $3632
+942E-   3A          DEC
+942F-   3E 23 27    ROL   $2723,X
+9432-   2B          ???
+9433-   2F          ???
+9434-   33          ???
+9435-   37          ???
+9436-   3B          ???
+9437-   3F          ???
+9438-   23          ???
+9439-   27          ???
+943A-   2B          ???
+943B-   2F          ???
+943C-   33          ???
+943D-   37          ???
+943E-   3B          ???
+943F-   3F          ???
+9440-   20 24 28    JSR   $2824
+9443-   2C 30 34    BIT   $3430
+9446-   38          SEC
+9447-   3C 20 24    BIT   $2420,X
+944A-   28          PLP
+944B-   2C 30 34    BIT   $3430
+944E-   38          SEC
+944F-   3C 21 25    BIT   $2521,X
+9452-   29 2D       AND   #$2D
+9454-   31 35       AND   ($35),Y
+9456-   39 3D 21    AND   $213D,Y
+9459-   25 29       AND   $29
+945B-   2D 31 35    AND   $3531
+945E-   39 3D 22    AND   $223D,Y
+9461-   26 2A       ROL   $2A
+9463-   2E 32 36    ROL   $3632
+9466-   3A          DEC
+9467-   3E 22 26    ROL   $2622,X
+946A-   2A          ROL
+946B-   2E 32 36    ROL   $3632
+946E-   3A          DEC
+946F-   3E 23 27    ROL   $2723,X
+9472-   2B          ???
+9473-   2F          ???
+9474-   33          ???
+9475-   37          ???
+9476-   3B          ???
+9477-   3F          ???
+9478-   23          ???
+9479-   27          ???
+947A-   2B          ???
+947B-   2F          ???
+947C-   33          ???
+947D-   37          ???
+947E-   3B          ???
+947F-   3F          ???
+9480-   20 24 28    JSR   $2824
+9483-   2C 30 34    BIT   $3430
+9486-   38          SEC
+9487-   3C 20 24    BIT   $2420,X
+948A-   28          PLP
+948B-   2C 30 34    BIT   $3430
+948E-   38          SEC
+948F-   3C 21 25    BIT   $2521,X
+9492-   29 2D       AND   #$2D
+9494-   31 35       AND   ($35),Y
+9496-   39 3D 21    AND   $213D,Y
+9499-   25 29       AND   $29
+949B-   2D 31 35    AND   $3531
+949E-   39 3D 22    AND   $223D,Y
+94A1-   26 2A       ROL   $2A
+94A3-   2E 32 36    ROL   $3632
+94A6-   3A          DEC
+94A7-   3E 22 26    ROL   $2622,X
+94AA-   2A          ROL
+94AB-   2E 32 36    ROL   $3632
+94AE-   3A          DEC
+94AF-   3E 23 27    ROL   $2723,X
+94B2-   2B          ???
+94B3-   2F          ???
+94B4-   33          ???
+94B5-   37          ???
+94B6-   3B          ???
+94B7-   3F          ???
+94B8-   23          ???
+94B9-   27          ???
+94BA-   2B          ???
+94BB-   2F          ???
+94BC-   33          ???
+94BD-   37          ???
+94BE-   3B          ???
+94BF-   3F          ???
+94C0-   00          BRK
+94C1-   00          BRK
+94C2-   00          BRK
+94C3-   00          BRK
+94C4-   00          BRK
+94C5-   00          BRK
+94C6-   00          BRK
+94C7-   00          BRK
+94C8-   80 80       BRA   $944A
+94CA-   80 80       BRA   $944C
+94CC-   80 80       BRA   $944E
+94CE-   80 80       BRA   $9450
+94D0-   00          BRK
+94D1-   00          BRK
+94D2-   00          BRK
+94D3-   00          BRK
+94D4-   00          BRK
+94D5-   00          BRK
+94D6-   00          BRK
+94D7-   00          BRK
+94D8-   80 80       BRA   $945A
+94DA-   80 80       BRA   $945C
+94DC-   80 80       BRA   $945E
+94DE-   80 80       BRA   $9460
+94E0-   00          BRK
+94E1-   00          BRK
+94E2-   00          BRK
+94E3-   00          BRK
+94E4-   00          BRK
+94E5-   00          BRK
+94E6-   00          BRK
+94E7-   00          BRK
+94E8-   80 80       BRA   $946A
+94EA-   80 80       BRA   $946C
+94EC-   80 80       BRA   $946E
+94EE-   80 80       BRA   $9470
+94F0-   00          BRK
+94F1-   00          BRK
+94F2-   00          BRK
+94F3-   00          BRK
+94F4-   00          BRK
+94F5-   00          BRK
+94F6-   00          BRK
+94F7-   00          BRK
+94F8-   80 80       BRA   $947A
+94FA-   80 80       BRA   $947C
+94FC-   80 80       BRA   $947E
+94FE-   80 80       BRA   $9480
+9500-   00          BRK
+9501-   00          BRK
+9502-   00          BRK
+9503-   00          BRK
+9504-   00          BRK
+9505-   00          BRK
+9506-   00          BRK
+9507-   00          BRK
+9508-   80 80       BRA   $948A
+950A-   80 80       BRA   $948C
+950C-   80 80       BRA   $948E
+950E-   80 80       BRA   $9490
+9510-   00          BRK
+9511-   00          BRK
+9512-   00          BRK
+9513-   00          BRK
+9514-   00          BRK
+9515-   00          BRK
+9516-   00          BRK
+9517-   00          BRK
+9518-   80 80       BRA   $949A
+951A-   80 80       BRA   $949C
+951C-   80 80       BRA   $949E
+951E-   80 80       BRA   $94A0
+9520-   00          BRK
+9521-   00          BRK
+9522-   00          BRK
+9523-   00          BRK
+9524-   00          BRK
+9525-   00          BRK
+9526-   00          BRK
+9527-   00          BRK
+9528-   80 80       BRA   $94AA
+952A-   80 80       BRA   $94AC
+952C-   80 80       BRA   $94AE
+952E-   80 80       BRA   $94B0
+9530-   00          BRK
+9531-   00          BRK
+9532-   00          BRK
+9533-   00          BRK
+9534-   00          BRK
+9535-   00          BRK
+9536-   00          BRK
+9537-   00          BRK
+9538-   80 80       BRA   $94BA
+953A-   80 80       BRA   $94BC
+953C-   80 80       BRA   $94BE
+953E-   80 80       BRA   $94C0
+9540-   28          PLP
+9541-   28          PLP
+9542-   28          PLP
+9543-   28          PLP
+9544-   28          PLP
+9545-   28          PLP
+9546-   28          PLP
+9547-   28          PLP
+9548-   A8          TAY
+9549-   A8          TAY
+954A-   A8          TAY
+954B-   A8          TAY
+954C-   A8          TAY
+954D-   A8          TAY
+954E-   A8          TAY
+954F-   A8          TAY
+9550-   28          PLP
+9551-   28          PLP
+9552-   28          PLP
+9553-   28          PLP
+9554-   28          PLP
+9555-   28          PLP
+9556-   28          PLP
+9557-   28          PLP
+9558-   A8          TAY
+9559-   A8          TAY
+955A-   A8          TAY
+955B-   A8          TAY
+955C-   A8          TAY
+955D-   A8          TAY
+955E-   A8          TAY
+955F-   A8          TAY
+9560-   28          PLP
+9561-   28          PLP
+9562-   28          PLP
+9563-   28          PLP
+9564-   28          PLP
+9565-   28          PLP
+9566-   28          PLP
+9567-   28          PLP
+9568-   A8          TAY
+9569-   A8          TAY
+956A-   A8          TAY
+956B-   A8          TAY
+956C-   A8          TAY
+956D-   A8          TAY
+956E-   A8          TAY
+956F-   A8          TAY
+9570-   28          PLP
+9571-   28          PLP
+9572-   28          PLP
+9573-   28          PLP
+9574-   28          PLP
+9575-   28          PLP
+9576-   28          PLP
+9577-   28          PLP
+9578-   A8          TAY
+9579-   A8          TAY
+957A-   A8          TAY
+957B-   A8          TAY
+957C-   A8          TAY
+957D-   A8          TAY
+957E-   A8          TAY
+957F-   A8          TAY
+9580-   50 50       BVC   $95D2
+9582-   50 50       BVC   $95D4
+9584-   50 50       BVC   $95D6
+9586-   50 50       BVC   $95D8
+9588-   D0 D0       BNE   $955A
+958A-   D0 D0       BNE   $955C
+958C-   D0 D0       BNE   $955E
+958E-   D0 D0       BNE   $9560
+9590-   50 50       BVC   $95E2
+9592-   50 50       BVC   $95E4
+9594-   50 50       BVC   $95E6
+9596-   50 50       BVC   $95E8
+9598-   D0 D0       BNE   $956A
+959A-   D0 D0       BNE   $956C
+959C-   D0 D0       BNE   $956E
+959E-   D0 D0       BNE   $9570
+95A0-   50 50       BVC   $95F2
+95A2-   50 50       BVC   $95F4
+95A4-   50 50       BVC   $95F6
+95A6-   50 50       BVC   $95F8
+95A8-   D0 D0       BNE   $957A
+95AA-   D0 D0       BNE   $957C
+95AC-   D0 D0       BNE   $957E
+95AE-   D0 D0       BNE   $9580
+95B0-   50 50       BVC   $9602
+95B2-   50 50       BVC   $9604
+95B4-   50 50       BVC   $9606
+95B6-   50 50       BVC   $9608
+95B8-   D0 D0       BNE   $958A
+95BA-   D0 D0       BNE   $958C
+95BC-   D0 D0       BNE   $958E
+95BE-   D0 D0       BNE   $9590
+95C0-   00          BRK
+95C1-   00          BRK
+95C2-   00          BRK
+95C3-   00          BRK
+95C4-   00          BRK
+95C5-   00          BRK
+95C6-   00          BRK
+95C7-   00          BRK
+95C8-   00          BRK
+95C9-   00          BRK
+95CA-   00          BRK
+95CB-   00          BRK
+95CC-   00          BRK
+95CD-   00          BRK
+95CE-   00          BRK
+95CF-   00          BRK
+95D0-   00          BRK
+95D1-   10 CC       BPL   $959F
+95D3-   E9 F3       SBC   #$F3
+95D5-   F4          ???
+95D6-   04 00       TSB   $00
+95D8-   28          PLP
+95D9-   CD CF CE    CMP   $CECF
+95DC-   00          BRK
+95DD-   0A          ASL
+95DE-   CE C5 D7    DEC   $D7C5
+95E1-   00          BRK
+95E2-   1C D0 D2    TRB   $D2D0
+95E5-   A3          ???
+95E6-   16 AC       ASL   $AC,X
+95E8-   0E 00 3A    ASL   $3A00
+95EB-   D0 F2       BNE   $95DF
+95ED-   E9 EE       SBC   #$EE
+95EF-   F4          ???
+95F0-   04 00       TSB   $00
+95F2-   2E D2 E5    ROL   $E5D2
+95F5-   F0 EC       BEQ   $95E3
+95F7-   E1 E3       SBC   ($E3,X)
+95F9-   E5 04       SBC   $04
+95FB-   00          BRK
+95FC-   34 FF       BIT   $FF,X
+95FE-   35 2F       AND   $2F,X
+9600-   06 2F       ASL   $2F
+9602-   52 41       EOR   ($41)
+9604-   4D 35 2F    EOR   $2F35
+9607-   B1 00       LDA   ($00),Y
+9609-   5F          ???
+960A-   0C E8 03    TSB   $03E8
+960D-   83          ???
+960E-   20 31 36    JSR   $3631
+9611-   39 2C 35    AND   $352C,Y
+9614-   30 2C       BMI   $9642
+9616-   33          ???
+9617-   32 2C       AND   ($2C)
+9619-   32 34       AND   ($34)
+961B-   35 2C       AND   $2C,X
+961D-   31 39       AND   ($39),Y
+961F-   30 2C       BMI   $964D
+9621-   31 37       AND   ($37),Y
+9623-   36 2C       ROL   $2C,X
+9625-   39 2C 32    AND   $322C,Y
+9628-   30 31       BMI   $965B
+962A-   2C 31 30    BIT   $3031
+962D-   34 2C       BIT   $2C,X
+962F-   32 30       AND   ($30)
+9631-   38          SEC
+9632-   2C 35 2C    BIT   $2C35
+9635-   31 33       AND   ($33),Y
+9637-   33          ???
+9638-   2C 30 2C    BIT   $2C30
+963B-   39 36 2C    AND   $2C36,Y
+963E-   30 2C       BMI   $966C
+9640-   30 2C       BMI   $966E
+9642-   31 36       AND   ($36),Y
+9644-   39 2C 32    AND   $322C,Y
+9647-   35 35       AND   $35,X
+9649-   2C 31 33    BIT   $3331
+964C-   33          ???
+964D-   2C 30 2C    BIT   $2C30
+9650-   33          ???
+9651-   32 2C       AND   ($2C)
+9653-   32 34       AND   ($34)
+9655-   38          SEC
+9656-   2C 31 39    BIT   $3931
+9659-   30 2C       BMI   $9687
+965B-   39 36 00    AND   $0036,Y
+965E-   73          ???
+965F-   0C D0 07    TSB   $07D0
+9662-   42          ???
+9663-   41 D0       EOR   ($D0,X)
+9665-   39 CA 34    AND   $34CA,Y
+9668-   30 39       BMI   $96A3
+966A-   36 C8       ROL   $C8,X
+966C-   36 CA       ROL   $CA,X
+966E-   32 35       AND   ($35)
+9670-   36 00       ROL   $00,X
+9672-   81 0C       STA   ($0C,X)
+9674-   DA          PHX
+9675-   07          ???
+9676-   B9 42 41    LDA   $4142,Y
+9679-   2C E3 28    BIT   $28E3
+967C-   50 24       BVC   $96A2
+967E-   29 00       AND   #$00
+9680-   A6 0C       LDX   $0C
+9682-   E4 07       CPX   $07
+9684-   81 58       STA   ($58,X)
+9686-   D0 31       BNE   $96B9
+9688-   C1 E3       CMP   ($E3,X)
+968A-   28          PLP
+968B-   50 24       BVC   $96B1
+968D-   29 3A       AND   #$3A
+968F-   B9 42 41    LDA   $4142,Y
+9692-   C8          INY
+9693-   58          CLI
+9694-   2C E6 28    BIT   $28E6
+9697-   EA          NOP
+9698-   28          PLP
+9699-   50 24       BVC   $96BF
+969B-   2C 58 2C    BIT   $2C58
+969E-   31 29       AND   ($29),Y
+96A0-   29 3A       AND   #$3A
+96A2-   82          ???
+96A3-   58          CLI
+96A4-   00          BRK
+96A5-   AC 0C EE    LDY   $EE0C
+96A8-   07          ???
+96A9-   B1 00       LDA   ($00),Y
+96AB-   C6 0C       DEC   $0C
+96AD-   C4 09       CPY   $09
+96AF-   42          ???
+96B0-   41 D0       EOR   ($D0,X)
+96B2-   39 CA 34    AND   $34CA,Y
+96B5-   30 39       BMI   $96F0
+96B7-   36 C8       ROL   $C8,X
+96B9-   36 CA       ROL   $CA,X
+96BB-   32 35       AND   ($35)
+96BD-   36 3A       ROL   $3A,X
+96BF-   50 24       BVC   $96E5
+96C1-   D0 22       BNE   $96E5
+96C3-   22          ???
+96C4-   00          BRK
+96C5-   E8          INX
+96C6-   0C CE 09    TSB   $09CE
+96C9-   81 58       STA   ($58,X)
+96CB-   D0 31       BNE   $96FE
+96CD-   C1 E2       CMP   ($E2,X)
+96CF-   28          PLP
+96D0-   42          ???
+96D1-   41 29       EOR   ($29,X)
+96D3-   3A          DEC
+96D4-   50 24       BVC   $96FA
+96D6-   D0 50       BNE   $9728
+96D8-   24 C8       BIT   $C8
+96DA-   E7          ???
+96DB-   28          PLP
+96DC-   E2          ???
+96DD-   28          PLP
+96DE-   42          ???
+96DF-   41 C8       EOR   ($C8,X)
+96E1-   58          CLI
+96E2-   29 29       AND   #$29
+96E4-   3A          DEC
+96E5-   82          ???
+96E6-   00          BRK
+96E7-   01 0D       ORA   ($0D,X)
+96E9-   D8          CLD
+96EA-   09 BA       ORA   #$BA
+96EC-   3A          DEC
+96ED-   BA          TSX
+96EE-   E7          ???
+96EF-   28          PLP
+96F0-   34 29       BIT   $29,X
+96F2-   3B          ???
+96F3-   22          ???
+96F4-   50 52       BVC   $9748
+96F6-   45 46       EOR   $46
+96F8-   49 58       EOR   #$58
+96FA-   20 22 3B    JSR   $3B22
+96FD-   50 24       BVC   $9723
+96FF-   00          BRK
+9700-   4C A0 97    JMP   $97A0
+9703-   20 00 BF    JSR   $BF00    P8:READ(4:Ref/1,Where,reqCount,xfrCount)
+9706-   CA                $CA
+9707-   0A 97             $970A
+9709-   60          RTS
+970A-   04 01       TSB   $01
+970C-   00          BRK
+970D-   00          BRK
+970E-   00          BRK
+970F-   00          BRK
+9710-   00          BRK
+9711-   00          BRK
+9712-   20 00 BF    JSR   $BF00    P8:CLOSE(1:Ref/1)
+9715-   CC                $CC
+9716-   19 97             $9719
+9718-   60          RTS
+9719-   01 01       ORA   ($01,X)
+971B-   20 00 BF    JSR   $BF00    P8:SET_PREFIX(1:pn)
+971E-   C6                $C6
+971F-   22 97             $9722
+9721-   60          RTS
+9722-   01 25       ORA   ($25,X)
+9724-   97          ???
+9725-   05 2F       ORA   $2F
+9727-   52 41       EOR   ($41)
+9729-   4D 35 00    EOR   $0035
+972C-   00          BRK
+972D-   00          BRK
+972E-   00          BRK
+972F-   00          BRK
+9730-   00          BRK
+9731-   00          BRK
+9732-   00          BRK
+9733-   00          BRK
+9734-   00          BRK
+9735-   00          BRK
+9736-   00          BRK
+9737-   00          BRK
+9738-   00          BRK
+9739-   00          BRK
+973A-   00          BRK
+973B-   00          BRK
+973C-   00          BRK
+973D-   00          BRK
+973E-   00          BRK
+973F-   00          BRK
+9740-   00          BRK
+9741-   00          BRK
+9742-   00          BRK
+9743-   00          BRK
+9744-   00          BRK
+9745-   00          BRK
+9746-   00          BRK
+9747-   00          BRK
+9748-   00          BRK
+9749-   00          BRK
+974A-   00          BRK
+974B-   00          BRK
+974C-   00          BRK
+974D-   00          BRK
+974E-   00          BRK
+974F-   00          BRK
+9750-   00          BRK
+9751-   00          BRK
+9752-   00          BRK
+9753-   00          BRK
+9754-   00          BRK
+9755-   00          BRK
+9756-   00          BRK
+9757-   00          BRK
+9758-   00          BRK
+9759-   00          BRK
+975A-   00          BRK
+975B-   00          BRK
+975C-   00          BRK
+975D-   00          BRK
+975E-   00          BRK
+975F-   00          BRK
+9760-   00          BRK
+9761-   00          BRK
+9762-   00          BRK
+9763-   00          BRK
+9764-   00          BRK
+9765-   00          BRK
+9766-   00          BRK
+9767-   20 00 BF    JSR   $BF00    P8:QUIT(4:Type/1,Path,zz/1,zz)
+976A-   65                $65
+976B-   6E 97             $976E
+976D-   60          RTS
+976E-   04 00       TSB   $00
+9770-   00          BRK
+9771-   00          BRK
+9772-   00          BRK
+9773-   00          BRK
+9774-   00          BRK
+9775-   8D 0E 97    STA   $970E
+9778-   A9 00       LDA   #$00
+977A-   8D 0F 97    STA   $970F
+977D-   8D 0C 97    STA   $970C
+9780-   A9 6D       LDA   #$6D
+9782-   8D 0D 97    STA   $970D
+9785-   4C 03 97    JMP   $9703
+9788-   20 00 BF    JSR   $BF00    P8:ONLINE(2:UnitNum/1,Buff)
+978B-   C5                $C5
+978C-   8F 97             $978F
+978E-   60          RTS
+978F-   02          ???
+9790-   00          BRK
+9791-   00          BRK
+9792-   6C 20 00    JMP   ($0020)
+9795-   BF          ???
+9796-   C8          INY
+9797-   9A          TXS
+9798-   97          ???
+9799-   60          RTS
+979A-   03          ???
+979B-   25 97       AND   $97
+979D-   00          BRK
+979E-   68          PLA
+979F-   01 A9       ORA   ($A9,X)
+97A1-   00          BRK
+97A2-   8D 25 97    STA   $9725
+97A5-   20 58 FC    JSR   $FC58    F8ROM:HOME
+97A8-   20 6C 99    JSR   $996C
+97AB-   A0 00       LDY   #$00
+97AD-   A2 00       LDX   #$00
+97AF-   A9 28       LDA   #$28
+97B1-   20 EA 99    JSR   $99EA
+97B4-   AD 25 97    LDA   $9725
+97B7-   F0 1B       BEQ   $97D4
+97B9-   A9 01       LDA   #$01
+97BB-   8D 3A 98    STA   $983A
+97BE-   AC 3A 98    LDY   $983A
+97C1-   B9 25 97    LDA   $9725,Y
+97C4-   20 F8 99    JSR   $99F8
+97C7-   EE 3A 98    INC   $983A
+97CA-   AD 3A 98    LDA   $983A
+97CD-   CD 25 97    CMP   $9725
+97D0-   F0 EC       BEQ   $97BE
+97D2-   90 EA       BCC   $97BE
+97D4-   20 3C 98    JSR   $983C
+97D7-   8D 10 C0    STA   $C010    r:KBDSTRB
+97DA-   AD 00 C0    LDA   $C000    r:KBD  w:CLR80COL
+97DD-   C9 8D       CMP   #$8D
+97DF-   D0 06       BNE   $97E7
+97E1-   8D 10 C0    STA   $C010    r:KBDSTRB
+97E4-   4C 1B 97    JMP   $971B
+97E7-   C9 9B       CMP   #$9B
+97E9-   D0 06       BNE   $97F1
+97EB-   20 E7 98    JSR   $98E7
+97EE-   4C A5 97    JMP   $97A5
+97F1-   C9 82       CMP   #$82
+97F3-   D0 03       BNE   $97F8
+97F5-   4C 67 97    JMP   $9767
+97F8-   AC 3B 98    LDY   $983B
+97FB-   C0 FF       CPY   #$FF
+97FD-   F0 DB       BEQ   $97DA
+97FF-   C9 BA       CMP   #$BA
+9801-   B0 D7       BCS   $97DA
+9803-   C9 B0       CMP   #$B0
+9805-   90 D3       BCC   $97DA
+9807-   29 0F       AND   #$0F
+9809-   CD 3B 98    CMP   $983B
+980C-   F0 02       BEQ   $9810
+980E-   B0 CA       BCS   $97DA
+9810-   0A          ASL
+9811-   0A          ASL
+9812-   0A          ASL
+9813-   0A          ASL
+9814-   AA          TAX
+9815-   AC 25 97    LDY   $9725
+9818-   C8          INY
+9819-   A9 2F       LDA   #$2F
+981B-   99 25 97    STA   $9725,Y
+981E-   BD 00 6C    LDA   $6C00,X
+9821-   8D 3A 98    STA   $983A
+9824-   E8          INX
+9825-   C8          INY
+9826-   BD 00 6C    LDA   $6C00,X
+9829-   99 25 97    STA   $9725,Y
+982C-   E8          INX
+982D-   C8          INY
+982E-   CE 3A 98    DEC   $983A
+9831-   D0 F3       BNE   $9826
+9833-   88          DEY
+9834-   8C 25 97    STY   $9725
+9837-   4C A5 97    JMP   $97A5
+983A-   00          BRK
+983B-   00          BRK
+983C-   AD 25 97    LDA   $9725
+983F-   D0 3E       BNE   $987F
+9841-   A9 00       LDA   #$00
+9843-   8D 6B 99    STA   $996B
+9846-   20 88 97    JSR   $9788
+9849-   AC 6B 99    LDY   $996B
+984C-   B9 00 6C    LDA   $6C00,Y
+984F-   F0 1E       BEQ   $986F
+9851-   29 0F       AND   #$0F
+9853-   D0 0B       BNE   $9860
+9855-   B9 10 6C    LDA   $6C10,Y
+9858-   99 00 6C    STA   $6C00,Y
+985B-   C8          INY
+985C-   D0 F7       BNE   $9855
+985E-   F0 E9       BEQ   $9849
+9860-   99 00 6C    STA   $6C00,Y
+9863-   AD 6B 99    LDA   $996B
+9866-   18          CLC
+9867-   69 10       ADC   #$10
+9869-   8D 6B 99    STA   $996B
+986C-   4C 49 98    JMP   $9849
+986F-   AD 6B 99    LDA   $996B
+9872-   38          SEC
+9873-   E9 10       SBC   #$10
+9875-   4A          LSR
+9876-   4A          LSR
+9877-   4A          LSR
+9878-   4A          LSR
+9879-   8D 3B 98    STA   $983B
+987C-   4C 00 99    JMP   $9900
+987F-   20 93 97    JSR   $9793
+9882-   A9 00       LDA   #$00
+9884-   8D 6B 99    STA   $996B
+9887-   A9 04       LDA   #$04
+9889-   20 75 97    JSR   $9775
+988C-   A9 0D       LDA   #$0D
+988E-   8D 3A 98    STA   $983A
+9891-   A9 27       LDA   #$27
+9893-   20 75 97    JSR   $9775
+9896-   B0 34       BCS   $98CC
+9898-   AD 00 6D    LDA   $6D00
+989B-   29 F0       AND   #$F0
+989D-   C9 D0       CMP   #$D0
+989F-   D0 1C       BNE   $98BD
+98A1-   AD 00 6D    LDA   $6D00
+98A4-   29 0F       AND   #$0F
+98A6-   8D 00 6D    STA   $6D00
+98A9-   A2 00       LDX   #$00
+98AB-   AC 6B 99    LDY   $996B
+98AE-   BD 00 6D    LDA   $6D00,X
+98B1-   99 00 6C    STA   $6C00,Y
+98B4-   C8          INY
+98B5-   E8          INX
+98B6-   E0 10       CPX   #$10
+98B8-   D0 F4       BNE   $98AE
+98BA-   8C 6B 99    STY   $996B
+98BD-   CE 3A 98    DEC   $983A
+98C0-   D0 CF       BNE   $9891
+98C2-   A9 05       LDA   #$05
+98C4-   20 75 97    JSR   $9775
+98C7-   B0 03       BCS   $98CC
+98C9-   4C 8C 98    JMP   $988C
+98CC-   20 12 97    JSR   $9712
+98CF-   AD 6B 99    LDA   $996B
+98D2-   F0 0D       BEQ   $98E1
+98D4-   38          SEC
+98D5-   E9 10       SBC   #$10
+98D7-   4A          LSR
+98D8-   4A          LSR
+98D9-   4A          LSR
+98DA-   4A          LSR
+98DB-   8D 3B 98    STA   $983B
+98DE-   4C 00 99    JMP   $9900
+98E1-   A9 FF       LDA   #$FF
+98E3-   8D 3B 98    STA   $983B
+98E6-   60          RTS
+98E7-   AC 25 97    LDY   $9725
+98EA-   D0 01       BNE   $98ED
+98EC-   60          RTS
+98ED-   B9 25 97    LDA   $9725,Y
+98F0-   C9 2F       CMP   #$2F
+98F2-   F0 07       BEQ   $98FB
+98F4-   88          DEY
+98F5-   D0 F6       BNE   $98ED
+98F7-   8C 25 97    STY   $9725
+98FA-   60          RTS
+98FB-   88          DEY
+98FC-   8C 25 97    STY   $9725
+98FF-   60          RTS
+9900-   AD 3B 98    LDA   $983B
+9903-   C9 0A       CMP   #$0A
+9905-   90 05       BCC   $990C
+9907-   A9 09       LDA   #$09
+9909-   8D 3B 98    STA   $983B
+990C-   A9 00       LDA   #$00
+990E-   8D 3A 98    STA   $983A
+9911-   AC 3A 98    LDY   $983A
+9914-   C8          INY
+9915-   C8          INY
+9916-   C8          INY
+9917-   98          TYA
+9918-   0A          ASL
+9919-   0A          ASL
+991A-   0A          ASL
+991B-   A8          TAY
+991C-   A2 00       LDX   #$00
+991E-   A9 28       LDA   #$28
+9920-   20 EA 99    JSR   $99EA
+9923-   AD 3A 98    LDA   $983A
+9926-   09 B0       ORA   #$B0
+9928-   20 F8 99    JSR   $99F8
+992B-   A9 A9       LDA   #$A9
+992D-   20 F8 99    JSR   $99F8
+9930-   A9 A0       LDA   #$A0
+9932-   20 F8 99    JSR   $99F8
+9935-   AD 3A 98    LDA   $983A
+9938-   0A          ASL
+9939-   0A          ASL
+993A-   0A          ASL
+993B-   0A          ASL
+993C-   A8          TAY
+993D-   B9 00 6C    LDA   $6C00,Y
+9940-   AA          TAX
+9941-   C8          INY
+9942-   8E 69 99    STX   $9969
+9945-   8C 6A 99    STY   $996A
+9948-   AC 6A 99    LDY   $996A
+994B-   B9 00 6C    LDA   $6C00,Y
+994E-   09 80       ORA   #$80
+9950-   20 F8 99    JSR   $99F8
+9953-   EE 6A 99    INC   $996A
+9956-   CE 69 99    DEC   $9969
+9959-   D0 ED       BNE   $9948
+995B-   EE 3A 98    INC   $983A
+995E-   AD 3A 98    LDA   $983A
+9961-   CD 3B 98    CMP   $983B
+9964-   F0 AB       BEQ   $9911
+9966-   90 A9       BCC   $9911
+9968-   60          RTS
+9969-   00          BRK
+996A-   00          BRK
+996B-   00          BRK
+996C-   A0 98       LDY   #$98
+996E-   A2 00       LDX   #$00
+9970-   A9 28       LDA   #$28
+9972-   20 EA 99    JSR   $99EA
+9975-   A9 00       LDA   #$00
+9977-   8D 3A 98    STA   $983A
+997A-   AC 3A 98    LDY   $983A
+997D-   B9 8E 99    LDA   $998E,Y
+9980-   F0 0B       BEQ   $998D
+9982-   09 80       ORA   #$80
+9984-   20 F8 99    JSR   $99F8
+9987-   EE 3A 98    INC   $983A
+998A-   4C 7A 99    JMP   $997A
+998D-   60          RTS
+998E-   53          ???
+998F-   45 4C       EOR   $4C
+9991-   45 43       EOR   $43
+9993-   54          ???
+9994-   20 50 41    JSR   $4150
+9997-   54          ???
+9998-   48          PHA
+9999-   4E 41 4D    LSR   $4D41
+999C-   45 20       EOR   $20
+999E-   46 4F       LSR   $4F
+99A0-   52 20       EOR   ($20)
+99A2-   53          ???
+99A3-   43          ???
+99A4-   45 4E       EOR   $4E
+99A6-   41 52       EOR   ($52,X)
+99A8-   49 4F       EOR   #$4F
+99AA-   20 50 52    JSR   $5250
+99AD-   45 46       EOR   $46
+99AF-   49 58       EOR   #$58
+99B1-   20 20 20    JSR   $2020
+99B4-   20 20 23    JSR   $2320
+99B7-   20 54 4F    JSR   $4F54
+99BA-   20 47 4F    JSR   $4F47
+99BD-   20 44 4F    JSR   $4F44
+99C0-   57          ???
+99C1-   4E 2E 20    LSR   $202E
+99C4-   45 53       EOR   $53
+99C6-   43          ???
+99C7-   20 54 4F    JSR   $4F54
+99CA-   20 47 4F    JSR   $4F47
+99CD-   20 55 50    JSR   $5055
+99D0-   2E 20 52    ROL   $5220
+99D3-   45 54       EOR   $54
+99D5-   20 54 4F    JSR   $4F54
+99D8-   20 45 44    JSR   $4445
+99DB-   49 54       EOR   #$54
+99DD-   2E 5E 42    ROL   $425E
+99E0-   20 54 4F    JSR   $4F54
+99E3-   20 51 55    JSR   $5551
+99E6-   49 54       EOR   #$54
+99E8-   2E 00 98    ROL   $9800
+99EB-   4A          LSR
+99EC-   4A          LSR
+99ED-   4A          LSR
+99EE-   85 25       STA   $25
+99F0-   20 24 FC    JSR   $FC24    F8ROM:VTABZ
+99F3-   A9 00       LDA   #$00
+99F5-   85 24       STA   $24
+99F7-   60          RTS
+99F8-   09 80       ORA   #$80
+99FA-   4C ED FD    JMP   $FDED    F8ROM:COUT
+99FD-   00          BRK
+99FE-   00          BRK
+99FF-   00          BRK

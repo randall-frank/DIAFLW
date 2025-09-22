@@ -1,0 +1,50 @@
+Allow weapons to implement health packs  (weapon type: 0=shot, 1=explosion, 2=healing)
+Allow control over the health regen rate
+Move the display over two columns and add boundaries
+Display "behind" blocks with dropped out scanlines
+
+C9 = I
+CA = J
+CB = K
+C6 = F
+8D = ret
+B0-B9 = 0-9
+
++Right hand+Left hand +
+|M1 Carbine|M1 Carbine|
+1+10+1+10+1 = 23
+
+2+7*2+1 = 17
+17 + 23 = 40 
+
+17, 29
+
+fhpack v1.0.1 by Andy McFadden -*- Copyright 2015 by faddenSoft
+Source code available from https://github.com/fadden/fhpack
+
+Usage:
+  fhpack {-c|-d} [-h] [-1|-9] infile outfile
+
+  fhpack {-t} [-h] [-1|-9] infile1 [infile2...]
+
+Use -c to compress, -d to decompress, -t to test
+ -h: don't fill or remove hi-res screen holes
+ -9: high compression (default)
+ -1: fast compression
+
+Example: fhpack -c foo.pic foo.lz4fh
+
+
+
+Usage: tohgr [options] a.xpm [options] b.png ... [options] z.jpg 
+
+Options accepted:
+
+-hgr   : convert following files to hires images
+-dhgr  : convert following files to double hires images
+-pack  : produce packed HGR/DHGR files (Filetype $08)
+-3200  : convert following files to 320x200 super hires 3200 color images
+-q [integer]  : quality value for super hires conversion (default = 16)
+-atkin : use Atkinson dithering instead of Floyd-Steinberg dithering
+-xpm   : output preview files in XPM format instead of PNG
+-bmp   : output DHGR file in BMP format

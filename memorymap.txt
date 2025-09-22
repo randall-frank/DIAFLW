@@ -1,0 +1,138 @@
+DRAWTAB.S -> $9600 - some kind of tables??? X1-4, Y1-4 32 bytes/table
+GAME1.S -> $7400 - Look at $c000 and handle a keypress???
+GAME2.S -> $7A00 - ???
+I.O.S -> $9000 - basic prodos functions (open file, read file, save file, ...)
+I.O2.S -> $9000 - second version of the above???
+OPENING.S -> $8000 - start the game
+OPENING2.S -> $8000 - start the game second version
+PAC.S -> $0800 -> core graphics routines
+PRE.S -> $9700 -> 
+WEAPONS.S -> $7200 -> table of guns
+PRG.S -> $2000 & $1A00 -> more I/O?
+BOTTOMLINES.S -> $0C80 -> Open/Close/Disk/Quit -> list of scenarios 
+
+
+Block images can be at: $1000 or $A000 (editor or game)?  WHICHTBL selects
+
+
+TEXTSET -> X=(0-39)horiz, Y=scanline? (0-192), A=chars per line (1-40)
+TEXT -> draw char in A
+SOUND -> play sound from A (1?, 4?)
+CLEAR -> black out from 144 to 184 - 14 byte wide rectangle
+RNDMIZE -> initialize random buffer (0200)
+RNDM -> get a random number -> return in A
+DRAW -> A=direction (0=u,1=r,2=d,3=l), X,Y are the location
+HIGHLITE -> redraw the pocket and hand contents
+
+Variables/jump tables  (JMP BIGSHAPE, JMP LOOKUP, etc):
+
+BIGSHAPE =     $800
+LOOKUP   =     BIGSHAPE+3
+SET      =     LOOKUP+3
+RNDIZE   =     SET+3
+RND      =     RNDIZE+3
+TEXT     =     RND+3
+TEXTSET  =     TEXT+3
+DRAW     =     TEXTSET+3
+HIGHLITE =     DRAW+3
+POCKETS  =     HIGHLITE+3
+CLEAR    =     POCKETS+3
+MSG      =     CLEAR+3
+CLEAR2   =     MSG + 3
+
+SOUND    =     $8980
+
+HIT      =     $9009
+SCORE    =     $9006
+WHICHTBL =     $FFF
+GETPREFIX =    $900C
+
+Game.S temp Vars
+TEMP0    =     $19
+TEMP1    =     $1A
+TEMP2    =     $1B
+TEMP3    =     $1C
+TEMP4    =     $1D
+TEMP5    =     $1E
+TEMP6    =     $1F
+
+0 - $00
+1 - $50
+2 - $00
+3
+4 - $01
+5 - $00
+6 - $24
+7
+8 - $00l
+
+AA D5 AA D5 - RED
+D5 AA D5 AA - BLUE
+
+
+--------- DIAFLW.SYSTEM -----
+2000 - Custom code
+    Reads from 2800-3000 and stores to 0800-1000
+    Reads from 2100-2800 and stores to 9000-9700
+    Reads from 3000-4000 and stores to 8000-9000
+    Reads from 6000-7000 and stores to 7000-8000
+    Paint the text page from 7000-7400
+    JMP 8000
+
+--------- Runtime -----------
+0200 - random number buffer
+0800 - PAC.S - common drawing routines: BIGSHAPE-CLEAR2
+0C80 - BOTTOMLINE.S draw aspects of scenario selection
+0E00 - HIGHS -> ??? pac.s LSB of scanline start  LOOKTBLS?
+0F00 - LOWS -> ??? pac.s MSB of scanline start
+1000 - Read from BLOCKS
+2000 - HGR - Assembled from PRG.S code relocates to 1400
+4000 - Code run by LETUSGO (OPENING2) unpack and display the splash screen
+     - TAKE1 compressed image code and image
+4F00 - Unpack game screen
+5000 - Game screen data???
+5C00 - BIGFONT
+6000 - Also the I/O buffer for directory listings...
+6000 - The square data for X,Y  (IO2.S) I/O is $1100 bytes in size for square+enemy 
+7000 - ENEMY table $100 in size (note: starts with the HELP contents)
+7200 - WEAPONS.S definition tables from WEAPONS file
+7300 - Xlocation?   from STARTER file
+7301 - Ylocation?
+7303 - Selected hand
+7304 - Selected pocket
+7305 - Square X  - IO2.S
+7306 - Square Y
+7310 - pocket content array?  (weapon?, ammo?)
+7311 - more pocket info?
+7400 - GAME1.S
+7A00 - GAME2.S
+8000 - OPENING2.S start the game???
+        LETUSGO -> reads in BLOCKS, WEAPONS, STARTER, SAVED, BLOCKS2?
+8980 - SOUND routine (no source???)
+9000 - IO2.S Core I/O routines - file open/close/setprefix/etc 
+        OPEN - look for and read the SQUARExy file - prompt the user as needed
+            - regen the random table...
+9600 - TBLX -> DRAWTAB.S table of direction tiles to draw????
+9680 - TBLY -> DRAWTAB.S
+
+A000 - Icon data -> WHICHTBL can be $A0 or $10 (editor) read from BLOCKS2??
+    BLOCKS is 4096 bytes
+    128 Icons (32 bytes/icon), 14x16 pixels????   
+
+
+FONT - 512 bytes??? 0E00???
+LOOKTBLS - 511 C00????    MSB,LSB  Loaded at 0E00?
+SOUNDS - 496 - 8900
+BIGFONT - 1024 - 1C00  ($5C00?)
+HELP - 1024 - 0800
+
+-- Not part of DIAFLW.SYSTEM --
+
+PRE.S -> source code to ASCII version of prefix selection code
+
+EDIT.CODE - 9100 target - 5 Jumps at start, 9700 PRE.S compiled
+   Some version of PAC.S is included at 9100
+
+PRG.S -> source code to READ.DOCS (SYS)
+    Opens the file DIAFLW (AWP)
+    displays in 80 column text

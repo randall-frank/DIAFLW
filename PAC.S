@@ -1,0 +1,525 @@
+         ORG   $800
+         DSK   bin/PAC.BIN
+         TYP   $06  ; /BIN file
+
+
+*      START OF THE PAC ROUTINES
+* NOTE THE VALUE AT $FFF DETERMINES THE PLACE
+* FOR THE SHAPES TO COME FROM  $10 OR $A0
+WHICHTBL =     $FFF
+HIGHS    =     $E00
+LOWS     =     $F00
+RND      =     $EFAE
+RNDBUFF  =     $200
+ENEMY    =     $7000
+TBLX     =     $9600
+TBLY     =     $9680
+VERT     =     0
+TEMP1    =     1
+TEMP2    =     2
+TEMP3    =     3
+TEMP4    =     4
+TEMP5    =     5
+TEMP6    =     6
+TEMP7    =     7
+TEMP8    =     8
+INDEX    =     $FE
+START    =     $FF
+*       JUMPS TO START OF ROUTINES
+         JMP   BIGSHAPE
+         JMP   LOOKUP
+         JMP   SET
+         JMP   RNDMIZE
+         JMP   RNDM
+         JMP   TEXT
+         JMP   TEXTSET
+         JMP   DRAW
+         JMP   HIGHLITE
+         JMP   POCKETS
+         JMP   CLEAR
+         JMP   MSGS
+         JMP   CLEAR2
+         lst   off
+CLEAR    LDX   #144
+         JSR   CALC+1
+         LDA   #0
+         LDY   #14
+CL1      STA   ($26),Y
+         DEY
+         BNE   CL1
+         INX
+         CPX   #184
+         BNE   CLEAR+2
+         RTS
+RNDMIZE  LDY   #0
+         STY   TEMP1
+R1       JSR   RND
+         LDA   $9F
+         LDY   TEMP1
+         STA   RNDBUFF,Y
+         INC   TEMP1
+         BNE   R1
+         RTS
+RNDM     INC   INDEX
+         LDY   INDEX
+         CPY   START
+         BNE   R2
+         JSR   RND
+         LDY   $9F
+         STY   START
+         STY   INDEX
+R2       LDA   RNDBUFF,Y
+         RTS
+CALC     TAX
+         LDA   LOWS,X
+         STA   $26
+         LDA   HIGHS,X
+         STA   $27
+         RTS
+BIGSHAPE PHA
+         LDA   #0
+         STA   PLACE+1
+         PLA
+         LSR
+         ROR   PLACE+1
+         LSR
+         ROR   PLACE+1
+         LSR
+         ROR   PLACE+1
+         ORA   WHICHTBL
+         STA   PLACE+2
+         LDA   TBL,Y
+         STA   VERT
+         TXA
+         ASL
+         TAY
+         STY   TEMP3
+         LDA   #16
+         STA   TEMP1
+PL1      LDA   VERT
+         JSR   CALC
+         INC   $26         ; Move the blocks two columns to the right RJF
+         INC   $26
+         LDA   #2
+         STA   TEMP2
+PLACE    LDA   $FFFF
+         INC   PLACE+1
+         STA   ($26),Y
+         INY
+         DEC   TEMP2
+         BNE   PLACE
+         LDY   TEMP3
+         INC   VERT
+         DEC   TEMP1
+         BNE   PL1
+         RTS
+TBL      DFB   8,24,40,56,72,88,104
+LOOKUP   STX   TEMP1
+         STY   TEMP2
+         LDX   #0
+         LDY   #0
+PL2      INY
+         INY
+         INY
+         INY
+         LDA   ENEMY,Y
+         CMP   TEMP1
+         BNE   PL3
+         INY
+         LDA   ENEMY,Y
+         CMP   TEMP2
+         BNE   PL3
+         INY
+         INY
+         LDA   ENEMY,Y
+         SEC
+         RTS
+*       IF CARRY IS SET YOU FOUND AN ENEMY AND ITS # IS X
+PL3      INX
+         CPX   #32
+         BEQ   PL4
+         TXA
+         ASL
+         ASL
+         ASL
+         TAY
+         JMP   PL2
+PL4      LDA   TEMP2
+         LDX   #0
+         STX   TEMP3
+         LSR
+         ROR   TEMP3
+         LSR
+         ROR   TEMP3
+         ORA   #$60
+         STA   TEMP4
+         LDY   TEMP1
+         LDA   (TEMP3),Y
+         CLC
+         RTS
+SET      STX   TEMP1
+         PHA
+         TYA
+         LDY   #0
+         STY   TEMP3
+         LSR
+         ROR   TEMP3
+         LSR
+         ROR   TEMP3
+         ORA   #$60
+         STA   TEMP4
+         LDY   TEMP1
+         PLA
+         STA   (TEMP3),Y
+         RTS
+TEXTSET  STX   CURX
+         STX   XSTART
+         LDX   #0
+         STX   CURCOUNT
+         STY   CURY
+         STA   COUNT
+         RTS
+XSTART   DFB   0
+CURCOUNT DFB   0
+CURX     DFB   0
+CURY     DFB   0
+COUNT    DFB   0
+*  SET TAKES X & Y AND POINTS THE CURRENT TEXT TO THAT POINT
+* IT ALSO RESETS THE COUNTER FOR LOOPING AT ACC CHARS
+TEXT     CMP   #$FE
+         BEQ   MOVEONLY
+         PHA
+*    PRINT CHARACTER IN ACC AT CURRENT X,Y AND UPDATE
+         LDA   CURY
+         STA   TEMP1
+         LDY   CURX
+         PLA
+         AND   #$7F
+         LDX   #%00010111  ; 0x17 Then two ROLs (high order char bits)
+* Char table effectively starts at 5C00 -> %010111xx
+         STX   MOD+2
+         ASL
+         ASL
+         ROL   MOD+2
+         ASL
+         ROL   MOD+2
+         STA   MOD+1
+         LDX   #8
+         STX   TEMP2
+PL6      LDA   TEMP1
+         JSR   CALC
+MOD      LDA   $FFFF
+         STA   ($26),Y
+         INC   MOD+1
+         INC   TEMP1
+         DEC   TEMP2
+         BNE   PL6
+MOVEONLY INC   CURX
+         INC   CURCOUNT
+         LDA   CURCOUNT
+         CMP   COUNT
+         BNE   PL7
+         LDA   XSTART
+         STA   CURX
+BUMPLINE LDA   CURY
+         CLC
+         ADC   #8
+         STA   CURY
+         LDA   #0
+         STA   CURCOUNT
+PL7      RTS
+* DRAW ACC=DIR 1=R 2=D 3=L 0=U  X,Y= POSITION OF MAN
+DRAW     PHA
+         LDX   $7300
+         LDY   $7301
+         TXA
+         CLC
+         ADC   #$FD       ;(-3)
+         STA   TEMP5
+         TYA
+         CLC
+         ADC   #$FD
+         STA   TEMP6
+         PLA
+         CMP   DIR
+         BEQ   SAMEDIR
+         PHA
+         LDA   DIR
+         ASL
+         ASL
+         ASL
+         ASL
+         ASL
+         STA   TEMP7
+ERAS     LDY   TEMP7
+         LDA   TBLX,Y
+         TAX
+         CPX   #$FF
+         BEQ   SAMEDIR1
+         LDA   TBLY,Y
+         TAY
+         LDA   #4         ; BLANK SPACE
+         JSR   BIGSHAPE
+         INC   TEMP7
+         JMP   ERAS
+SAMEDIR1 PLA
+SAMEDIR  STA   DIR
+         ASL
+         ASL
+         ASL
+         ASL
+         ASL
+         STA   TEMP7
+DR       LDY   TEMP7
+         LDA   TBLX,Y
+         CMP   #$FF
+         BEQ   DROUT
+         CLC
+         ADC   TEMP5
+         TAX
+         LDA   TBLY,Y
+         CLC
+         ADC   TEMP6
+         TAY
+         CPX   #64
+         BGE   OUTSIDE
+         CPY   #64
+         BGE   OUTSIDE
+         JSR   LOOKUP
+         JMP   OK1
+OUTSIDE  LDA   #4
+OK1      PHA
+         LDY   TEMP7
+         LDA   TBLX,Y
+         TAX
+         LDA   TBLY,Y
+         TAY
+         PLA
+         JSR   BIGSHAPE
+         INC   TEMP7
+         JMP   DR
+DROUT    LDX   #3
+         LDY   #3
+         LDA   DIR
+         JMP   BIGSHAPE
+DIR      DFB   0
+*   DRAWS HIGHLITES
+*  $7303 =HAND   $7304=POCKET
+HIGHLITE LDX   #18    ; RJF was 17
+         LDY   #44
+         LDA   #30
+         JSR   TEXTSET
+         LDA   #0
+         STA   TEMP7
+H1       LDY   TEMP7
+         LDA   RL,Y
+         CMP   #$FF
+         BEQ   H2
+         JSR   TEXT
+         INC   TEMP7
+         BNE   H1
+H2       LDY   $7303
+         LDA   XRL,Y
+         STA   TEMP1
+         LDA   #44
+         STA   VERT
+         JSR   HIGHL
+         LDX   #18   ; RJF was 17
+         LDY   #92
+         LDA   #30
+         JSR   TEXTSET
+         LDA   #0
+         STA   TEMP7
+H3       LDY   TEMP7
+         LDA   P12,Y
+         CMP   #$FF
+         BEQ   H4
+         JSR   TEXT
+         INC   TEMP7
+         BNE   H3
+H4       LDX   #18   ; RJF was 17
+         LDY   #132
+         LDA   #30
+         JSR   TEXTSET
+         LDA   #0
+         STA   TEMP7
+H5       LDY   TEMP7
+         LDA   P34,Y
+         CMP   #$FF
+         BEQ   H6
+         JSR   TEXT
+         INC   TEMP7
+         BNE   H5
+H6       LDA   $7304
+         ASL
+         TAY
+         LDA   OFFSETS,Y
+         STA   TEMP1
+         LDA   OFFSETS+1,Y
+         STA   VERT
+         JMP   HIGHL
+XRL      DFB   18,29  ; RJF  was 17
+OFFSETS  DFB   0,0,18,92,29,92,18,132,29,132  ; RJF
+RL       ASC   'Right hand'
+         DFB   254   ; RJF ,254 dropping out one char
+         ASC   'Left hand '
+         DFB   255
+P12      ASC   'Pocket #1 '
+         DFB   254  ; RJF ,254
+         ASC   'Pocket #2 '
+         DFB   255
+P34      ASC   'Pocket #3 '
+         DFB   254    ; RJF ,254
+         ASC   'Pocket #4 '
+         DFB   255
+HIGHL    LDA   #8
+         STA   TEMP2
+H7       LDA   VERT
+         JSR   CALC
+         LDY   TEMP1
+         LDX   #10
+H8       LDA   ($26),Y
+         EOR   #$7F
+         STA   ($26),Y
+         INY
+         DEX
+         BNE   H8
+         INC   VERT
+         DEC   TEMP2
+         BNE   H7
+         RTS
+POCKETS  STA   TEMP6
+         ASL
+         TAY
+         LDA   XYLOC-2,Y
+         TAX
+         LDA   XYLOC-1,Y
+         TAY
+         LDA   #10
+         JSR   TEXTSET
+         LDY   TEMP6
+         DEY
+         TYA
+         ASL
+         ASL
+         TAY
+         STY   TEMP6
+         LDA   $7310,Y
+         CMP   #$FF
+         BNE   POC1
+         JSR   BLANKS
+         JMP   POC2
+POC1     ASL
+         ASL
+         ASL
+         ASL
+         ASL
+         STA   TEMP4
+         LDA   #$72
+         STA   TEMP5
+         JSR   PLOT10
+POC2     JSR   BUMPLINE
+         LDY   TEMP6
+         LDA   $7311,Y
+         CMP   #$FF
+         BNE   POC3
+         JMP   BLANKS
+POC3     ASL
+         ASL
+         ASL
+         ASL
+         ASL
+         CLC
+         ADC   #10
+         STA   TEMP4
+         LDA   #$72
+         STA   TEMP5
+         LDA   #9
+         JSR   PLOTX
+         LDY   TEMP6
+         LDA   $7312,Y
+         ORA   #$B0
+         JMP   TEXT
+BLANKS   LDA   #10
+         STA   TEMP7
+POC4     LDA   #$2D
+         JSR   TEXT
+         DEC   TEMP7
+         BNE   POC4
+         RTS
+PLOT10   LDA   #10
+PLOTX    STA   TEMP7
+         LDY   #0
+         STY   TEMP8
+POC5     LDA   (TEMP4),Y
+         JSR   TEXT
+         INC   TEMP8
+         LDY   TEMP8
+         DEC   TEMP7
+         BNE   POC5
+         RTS
+* RJF 18s were 17s
+XYLOC    DFB   18,104,29,104,18,144,29,144,18,56,29,56
+MSGS     PHA
+         LDA   #14
+         LDY   #144
+         LDX   #1
+         JSR   TEXTSET
+         PLA
+         ASL
+         TAY
+         CPY   #0
+         BNE   MSGS2
+         JMP   CLEAR
+MSGS2    LDA   PTRTBL,Y
+         STA   KLKL+1
+         LDA   PTRTBL+1,Y
+         STA   KLKL+2
+         LDA   #0
+         STA   MYCOUNT
+         JSR   CLEAR
+MSGS3    LDY   MYCOUNT
+KLKL     LDA   $FFFF,Y
+         CMP   #255
+         Beq   MSGS4
+         AND   #$7F
+         JSR   TEXT
+         INC   MYCOUNT
+         JMP   MSGS3
+MSGS4    RTS
+PTRTBL   DFB   0,0
+         DA    MSG1
+         DA    MSG2
+         DA    MSG3
+         DA    MSG4
+         DA    MSG5
+         DA    MSG6
+MSG1     ASC   'No ammo.'
+         dfb   255
+MSG2     ASC   'No weapon.'
+         dfb   255
+MSG3     ASC   'Improper ammo.'
+         dfb   255
+MSG4     ASC   'Hand must be  '
+         ASC   'empty to      '
+         asc   'search.'
+         dfb   255
+MSG5     ASC   'Game paused.  '
+         ASC   'Press RETURN.'
+         dfb   255
+MSG6     ASC   'No room in    '
+         ASC   'pocket.'
+         dfb   255
+MYCOUNT  dfb   0
+CLEAR2   LDA   #$20
+         STA   CLMOD+2
+         LDX   #$20
+         LDA   #$0
+CL21     LDY   #0
+CLMOD    STA   $2000,Y
+         DEY
+         BNE   CLMOD
+         INC   CLMOD+2
+         DEX
+         BNE   CL21
+         RTS
