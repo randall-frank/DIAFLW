@@ -3,23 +3,7 @@
          TYP   $06  ; /BIN file
 
          LST   Off
-WHICHTBL =     $FFF
-BIGSHAPE =     $800
-LOOKUP   =     BIGSHAPE+3
-SET      =     LOOKUP+3
-RNDIZE   =     SET+3
-RND      =     RNDIZE+3
-TEXT     =     RND+3
-TEXTSET  =     TEXT+3
-DRAW     =     TEXTSET+3
-HIGHLITE =     DRAW+3
-POCKETS  =     HIGHLITE+3
-CLEAR    =     POCKETS+3
-HIT      =     $9009
-SCORE    =     $9006
-GETPREFIX =    $900C
-SHOWSPLASH =   $4000
-SHOWPLAY =     $4003   ; was $4F00
+         PUT  COMMON.S
 
 TEMP0    =     $19
 TEMP1    =     $1A
@@ -37,20 +21,6 @@ TEMP6    =     $1F
          sta   $3f4
          JMP   LETSGO
 NSD      ASC   'Name:  Score: Damage:'
-CLEAR2   LDA   #00
-         STA   TEMP0
-         LDA   #$20
-         STA   TEMP1
-CL1      LDY   #0
-         TYA
-CL2      STA   (TEMP0),Y
-         INY
-         BNE   CL2
-         INC   TEMP1
-         LDA   TEMP1
-         CMP   #$40
-         BNE   CL1
-         RTS
 FILEN    STA   TEMP1
          STY   TEMP0
          LDY   #16
@@ -125,11 +95,11 @@ WEAPONS  HEX   07
 BLOCKS2  HEX   07
          ASC   'BLOCKS2        '
 PROMPT   PHA
-         JSR   CLEAR2
+         JSR   PAC_CLEAR2
          LDA   #40
          LDX   #0
          LDY   #96
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          PLA
          STA   TT+25
          LDA   #0
@@ -138,14 +108,14 @@ P1       LDY   TEMP0
          LDA   TT,Y
          CMP   #$FF
          BEQ   P2
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP0
          JMP   P1
 P2       STA   $C010
 P3       LDA   $C000
          BPL   P3
          STA   $C010
-         JSR   CLEAR2
+         JSR   PAC_CLEAR2
          RTS
 TT       ASC   'PLACE SCENARIO DISK SIDE A IN A DRIVE.'
          DFB   255
@@ -156,7 +126,7 @@ LETSGO   JSR   SHOWSPLASH  ; Set up graphics splash screen
          JMP   BYEBYE
 LETUSGO  
          STA   $C010
-         JSR   GETPREFIX
+         JSR   IO_GETPREFIX
          LDA   #>BLOCKS
          LDY   #<BLOCKS
          JSR   OFILE
@@ -227,7 +197,7 @@ UI3      LDA   #>WEAPONS
          LDA   #0
          STA   $8FFF
          LDA   #$10
-         STA   WHICHTBL
+         STA   PAC_WHICHTBL
          LDA   #>SAVED
          LDY   #<SAVED
          JSR   OFILE
@@ -252,23 +222,23 @@ GAME     JSR   SHOWPLAY
          LDA   #7
          LDX   #19
          LDY   #8
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #0
          STA   TEMP1
 G11      LDY   TEMP1
          LDA   NSD,Y
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP1
          LDY   TEMP1
          CPY   #21
          BNE   G11
          JSR   $9000
-         JSR   HIGHLITE
+         JSR   PAC_HIGHLITE
          LDA   #0
-         JSR   DRAW
+         JSR   PAC_DRAW
          LDA   #1
          STA   TEMP1
-G1       JSR   POCKETS
+G1       JSR   PAC_POCKETS
          INC   TEMP1
          LDA   TEMP1
          CMP   #7
@@ -278,10 +248,10 @@ G1       JSR   POCKETS
          LDA   #30
          LDX   #24
          LDY   #8
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDY   TEMP1
 G2       LDA   $73A0,Y
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP1
          LDY   TEMP1
          CPY   #15
@@ -289,12 +259,12 @@ G2       LDA   $73A0,Y
          LDA   #30
          LDX   #17
          LDY   #176
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #0
          STA   TEMP1
          TAY
 G3       LDA   $7380,Y
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP1
          LDY   TEMP1
          CPY   #22
@@ -302,29 +272,29 @@ G3       LDA   $7380,Y
          LDA   #20
          LDX   #25
          LDY   #16
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   $7308
          ORA   #$B0
-         JSR   TEXT
+         JSR   PAC_TEXT
          LDA   $7309
          ORA   #$B0
-         JSR   TEXT
+         JSR   PAC_TEXT
          LDA   $730A
          ORA   #$B0
-         JSR   TEXT
+         JSR   PAC_TEXT
          LDA   $730B
          ORA   #$B0
-         JSR   TEXT
+         JSR   PAC_TEXT
          LDA   #20
          LDX   #26
          LDY   #24
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   $730C
          ORA   #$B0
-         JSR   TEXT
+         JSR   PAC_TEXT
          LDA   $730D
          ORA   #$B0
-         JSR   TEXT
+         JSR   PAC_TEXT
          LDA   #0
          STA   $7302
 BIGLOOP  LDA   #$FF
@@ -394,9 +364,9 @@ LOOP7    CMP   #100
 LOOP8    TXA
          BEQ   JLOOP2
 DOIT2    PHA
-         LDA   WHICHTBL
+         LDA   PAC_WHICHTBL
          EOR   #$B0
-         STA   WHICHTBL
+         STA   PAC_WHICHTBL
          PLA
          JSR   $7408
          JMP   JOYIT
@@ -408,17 +378,17 @@ JLOOP2   DEC   T2
          JMP   LOOP1
 UJU2     DEC   T3
          BEQ   DO
-         LDA   WHICHTBL
+         LDA   PAC_WHICHTBL
          EOR   #$B0
-         STA   WHICHTBL
+         STA   PAC_WHICHTBL
          LDA   $7307
-         JSR   DRAW
+         JSR   PAC_DRAW
          LDA   #$20
          STA   T2
          JMP   LOOP1
-DO       LDA   WHICHTBL
+DO       LDA   PAC_WHICHTBL
          EOR   #$B0
-         STA   WHICHTBL
+         STA   PAC_WHICHTBL
          JSR   $7400
 DOP3     JSR   $7A00
          LDA   $7302
@@ -429,35 +399,35 @@ BIG      CMP   #1
          CMP   #2
          BEQ   WIN
          JMP   SAVEGAME
-WIN      JSR   CLEAR
+WIN      JSR   PAC_CLEAR
          JSR   $9003
          LDA   #0
          STA   TEMP1
          LDA   #14
          LDX   #1
          LDY   #144
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
 W2       LDY   TEMP1
          LDA   WNI,Y
          CMP   #$FF
          BEQ   W1
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP1
          JMP   W2
 W1       JMP   QAGAIN
-DEAD     JSR   CLEAR
+DEAD     JSR   PAC_CLEAR
          JSR   $9003
          LDA   #0
          STA   TEMP1
          LDA   #14
          LDX   #1
          LDY   #144
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
 D2       LDY   TEMP1
          LDA   DED,Y
          CMP   #$FF
          BEQ   D1
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP1
          JMP   D2
 D1       JMP   QAGAIN
@@ -505,7 +475,7 @@ JKJ      LDA   $7300,Y
 T1       DFB   0
 T2       DFB   0
 T3       DFB   0
-NEWCOMER JSR   CLEAR2
+NEWCOMER JSR   PAC_CLEAR2
          LDA   #>DATA
          LDY   #<DATA
          JSR   OFILE
@@ -575,8 +545,8 @@ NTOP     LDA   #0
          LDA   #40
          LDX   #0
          LDY   #0
-         JSR   TEXTSET
-         JSR   CLEAR2
+         JSR   PAC_TEXTSET
+         JSR   PAC_CLEAR2
          LDX   THISPAGE
          LDA   $7000,X
          STA   F2+1
@@ -600,13 +570,13 @@ F3       PLA
          CMP   #$8D
          BNE   NOTRET
 F4       LDA   #$A0
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP6
          LDA   TEMP6
          CMP   #39
          BNE   F4
          LDA   #$A0
-NOTRET   JSR   TEXT
+NOTRET   JSR   PAC_TEXT
          INC   TEMP6
          LDA   TEMP6
          CMP   #40
@@ -643,18 +613,18 @@ NB2      INC   THISPAGE
          INC   THISPAGE
          JMP   NTOP
 OUT      STA   $C010
-INPUT    JSR   CLEAR2
+INPUT    JSR   PAC_CLEAR2
          LDA   #40
          LDY   #44
          LDX   #0
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #0
          STA   TEMP1
 JJK      LDY   TEMP1
          LDA   LINEE,Y
          CMP   #$FF
          BEQ   JJKK
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP1
          JMP   JJK
 LINEE    ASC   'Your objective square is:'
@@ -666,14 +636,14 @@ JJKK     LDA   #5
          LDA   #40
          LDY   #100
          LDX   #0
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #0
          STA   TEMP1
 N5       LDY   TEMP1
          LDA   LINE,Y
          CMP   #$FF
          BEQ   N6
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP1
          JMP   N5
 LINE     ASC   'Enter your name:_______________'
@@ -681,7 +651,7 @@ LINE     ASC   'Enter your name:_______________'
 N6       LDA   #16
          LDX   #16
          LDY   #100
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #0
          STA   TEMP1
          STA   $C010
@@ -703,7 +673,7 @@ LJK      CMP   #$8D
          CPY   #15
          BEQ   N7
          STA   $73A0,Y
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP1
          JMP   N7
 BKSPACE  LDA   TEMP1
@@ -715,16 +685,16 @@ BKSPACE  LDA   TEMP1
          LDY   #100
          TAX
          LDA   #16
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #$DF
-         JSR   TEXT
+         JSR   PAC_TEXT
          LDA   TEMP1
          CLC
          ADC   #15
          TAX
          LDY   #100
          LDA   #16
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          DEC   TEMP1
          JMP   N7
 N9       LDA   #$A0
@@ -757,14 +727,14 @@ JOYSTICK DFB   0
 DRAWBL   LDA   #40
          LDX   #0
          LDY   #22*8
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #0
          STA   TEMP6
 DBL1     LDY   TEMP6
          LDA   DBLTEXT,Y
          CMP   #$FF
          BEQ   DBL2
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP6
          JMP   DBL1
 DBL2     RTS
@@ -777,18 +747,18 @@ W3       LDA   $C000
          STA   $C010
          LDA   #0
          STA   TEMP1
-WW1      JSR   CLEAR
+WW1      JSR   PAC_CLEAR
          LDA   #14
          LDX   #1
          LDY   #144
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   TEMP1
          STA   TEMP2
 WW2      LDY   TEMP2
          LDA   AGAINYN,Y
          CMP   #$FF
          BEQ   WW3
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   TEMP2
          JMP   WW2
 WW3      STA   $C010

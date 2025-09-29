@@ -88,8 +88,11 @@ D5 AA D5 AA - BLUE
 1000 - Read from BLOCKS
 2000 - HGR - Assembled from PRG.S code relocates to 1400
 4000 - Code run by LETUSGO (OPENING2) unpack and display the splash screen
-     - TAKE1 compressed image code and image
-4F00 - Unpack game screen
+4003 - Unpack and display the play screen
+4100 - Packed splash screen 0x08A5
+4A00 - Packed play screen 0x023D
+4E00 - TBLX -> DRAWTAB.S table of direction tiles to draw????
+4F00 - TBLY -> DRAWTAB.S
 5000 - Game screen data???
 5C00 - BIGFONT
 6000 - Also the I/O buffer for directory listings...
@@ -102,13 +105,25 @@ D5 AA D5 AA - BLUE
 7304 - Selected pocket
 7305 - Square X  - IO2.S
 7306 - Square Y
+7308 - Score X000 0-9
+7309 - Score 0X00
+730A - Score 00X0
+730B - Score 000X
+730C - Hit X0 0-9
+730D - Hit 0X
 7310 - pocket content array?  (weapon?, ammo?)
 7311 - more pocket info?
 7400 - GAME1.S
 7A00 - GAME2.S
 8000 - OPENING2.S start the game???
         LETUSGO -> reads in BLOCKS, WEAPONS, STARTER, SAVED, BLOCKS2?
-8980 - SOUND routine (no source???)
+8980 - SOUND routine (no source???) -
+       A = 0 - "tick"
+       A = 1 - "fire"
+       A = 2 - "long fire"
+       A = 3 - "chirp" (bad key)
+       A = 4 - "short shot"
+
 9000 - IO2.S Core I/O routines - file open/close/setprefix/etc 
         OPEN - look for and read the SQUARExy file - prompt the user as needed
             - regen the random table...

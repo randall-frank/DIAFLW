@@ -2,18 +2,14 @@
          DSK   bin/IO2.BIN
          TYP   $06  ; /BIN file
 
-CLEAR    =     $81E
-TEXT     =     $80F
-TEXTSET  =     TEXT+3
-RNDIZE   =     $809
-RND      =     RNDIZE+3
-LOOKUP   =     $803
-CLEAR2   =     CLEAR+6
+         PUT  COMMON.S
+
          JMP   OPEN
          JMP   CLOSE
          JMP   SCORE
          JMP   HIT
          JMP   GETPREFIX  ; RETURN NUMBER IN ACC AND LIST @6000
+
          LST   OFF
 FILENAME HEX   08D3D1D5C1D2C50000
 OFILE    JSR   $BF00
@@ -70,29 +66,29 @@ JUJ2
          CLC
          ADC   #$C1
          STA   MESS+24
-IN       JSR   CLEAR
+IN       JSR   PAC_CLEAR
          LDY   #144
          LDX   #1
          LDA   #14
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #0
          STA   8
 T1       LDY   8
          LDA   MESS,Y
          CMP   #$FF
          BEQ   DONE
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   8
          JMP   T1
 DONE     STA   $C010
          LDA   $C000
          BPL   DONE+3
          STA   $C010
-         JSR   CLEAR
+         JSR   PAC_CLEAR
          JMP   OPEN
 MESS     ASC   'PLACE SCENARIODISK SIDE A INA DRIVE.'
          DFB   255
-OK       JSR   RNDIZE
+OK       JSR   PAC_RNDIZE
          JSR   TESTOLD
          LDA   #0
          STA   DLEN
@@ -115,16 +111,16 @@ TOPPER   TXA
          BNE   TOP1
          LDA   #6
          STA   $7000,Y
-NEXT     JSR   RND
+NEXT     JSR   PAC_RND
          AND   #$3F
          STA   7
-         JSR   RND
+         JSR   PAC_RND
          AND   #$3F
          STA   8
          TAY
          LDA   7
          TAX
-         JSR   LOOKUP
+         JSR   PAC_LOOKUP
          BCS   NEXT
          CMP   #106
          BGE   YEA
@@ -140,7 +136,7 @@ TOP1     INC   5
          LDX   5
          CPX   #32
          BNE   TOPPER
-         JSR   RNDIZE
+         JSR   PAC_RNDIZE
          RTS
 CLOSE    LDA   #$0
          STA   DPOS
@@ -177,13 +173,13 @@ AGAIN    LDA   $7308,Y
 SCOK     LDX   #25
          LDY   #16
          LDA   #5
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #0
          STA   9
          LDY   9
 SC2      LDA   $7308,Y
          ORA   #$B0
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   9
          LDY   9
          CPY   #4
@@ -211,13 +207,13 @@ HIT      LDA   $730D
 HOK      LDX   #26
          LDY   #24
          LDA   #3
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   $730C
          ORA   #$B0
-         JSR   TEXT
+         JSR   PAC_TEXT
          LDA   $730D
          ORA   #$B0
-         JMP   TEXT
+         JMP   PAC_TEXT
 TESTOLD  LDY   $8FFF
          BEQ   NEWREAD
 TO1      LDA   $8EFE,Y
@@ -291,20 +287,20 @@ GETPREFIX JSR  $BF00
          INC   FIRST_TIME
          JMP   GPTOP
 GPTOP1   JSR   BACKUP
-GPTOP    JSR   CLEAR2
+GPTOP    JSR   PAC_CLEAR2
          STA   $C052
-         JSR   BOTTOMLINE
+         JSR   DRAW_TEXTBOX
          LDY   #8
          LDX   #1
          LDA   #38
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   PREFIX
          BEQ   GP2
          LDA   #1
          STA   STOR1
 GP1      LDY   STOR1
          LDA   PREFIX,Y
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   STOR1
          LDA   STOR1
          CMP   PREFIX
@@ -527,7 +523,7 @@ DNLOOP   LDA   LINE_NUM
          TAY
          LDX   #1
          LDA   #40
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #0
          STA   DIRFLG
          LDA   STOR1
@@ -537,7 +533,7 @@ DNLOOP   LDA   LINE_NUM
 MYLOOPE  LDA   #16
          STA   PPP
 MYLOOP   LDA   #$A0
-         JSR   TEXT
+         JSR   PAC_TEXT
          DEC   PPP
          BNE   MYLOOP
          JMP   DDN88
@@ -576,9 +572,9 @@ DRICN    TXA
          BNE   DRICN1
          LDA   #$8E
 DRICN1
-         JSR   TEXT
+         JSR   PAC_TEXT
          PLA
-         JSR   TEXT
+         JSR   PAC_TEXT
 DN6      LDY   PPPP
          LDA   $6000,Y
          LDY   DIRFLG
@@ -588,12 +584,12 @@ DN6      LDY   PPPP
          BEQ   DDN8
 DDN7
          ORA   #$80
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   PPPP
          DEC   PPP
          BNE   DN6
 DDN8     LDA   #$A0
-         JSR   TEXT
+         JSR   PAC_TEXT
          INC   PPPP
          LDA   PPPP
          AND   #$0F
@@ -613,53 +609,53 @@ AUTO     DFB   0
 CUR_LINE DFB   0
 LINE_NUM DFB   0
 FIRST_TIME DFB 0
-BOTTOMLINE JSR $0C80
+DRAW_TEXTBOX JSR PAC_BOTTOMLINE
          LDA   #1
          LDY   #6*8
          LDX   #0
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #10
          STA   PPP
 BL1      LDA   #$19
-         JSR   TEXT
+         JSR   PAC_TEXT
          DEC   PPP
          BNE   BL1
          LDA   #1
          LDX   #25
          LDY   #6*8
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #10
          STA   PPP
 BL2      LDA   #$19
-         JSR   TEXT
+         JSR   PAC_TEXT
          DEC   PPP
          BNE   BL2
          LDY   #5*8
          LDX   #0
          LDA   #26
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #$14
-         JSR   TEXT
+         JSR   PAC_TEXT
          LDA   #24
          STA   PPP
 BL3      LDA   #$18
-         JSR   TEXT
+         JSR   PAC_TEXT
          DEC   PPP
          BNE   BL3
          LDA   #$15
-         JSR   TEXT
+         JSR   PAC_TEXT
          LDY   #16*8
          LDX   #0
          LDA   #26
-         JSR   TEXTSET
+         JSR   PAC_TEXTSET
          LDA   #$16
-         JSR   TEXT
+         JSR   PAC_TEXT
          LDA   #24
          STA   PPP
 BL4      LDA   #$18
-         JSR   TEXT
+         JSR   PAC_TEXT
          DEC   PPP
          BNE   BL4
          LDA   #$17
-         JSR   TEXT
+         JSR   PAC_TEXT
 BL5      RTS

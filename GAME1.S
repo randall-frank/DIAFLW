@@ -14,8 +14,11 @@ HIGHLITE =     DRAW+3
 POCKETS  =     HIGHLITE+3
 CLEAR    =     POCKETS+3
 MSG      =     CLEAR+3
+CLEAR2   =     MSGS+3
+BOTTOMLINE =   CLEAR2+3
 HIT      =     $9009
 SCORE    =     $9006
+
 TEMP0    =     0
 TEMP1    =     1
 TEMP2    =     2
@@ -26,6 +29,7 @@ TEMP6    =     6
 TEMP7    =     7
 TEMP8    =     8
 SOUND    =     $8980
+
          LST   OFF
          LDA   $C000
          BMI   L1
@@ -124,10 +128,12 @@ L41      LDA   (TEMP0),Y
          STA   (TEMP0),Y
          JSR   APOC
 L42      JMP   MOVE
+
+* Set up TEMP0,TEMP1 for pocket,  TEMP2,TEMP3 for hand
 HPOC     LDA   #$73
          STA   TEMP1
          STA   TEMP3
-         LDY   $7304
+         LDY   $7304  ; Selected pocket
          DEY
          TYA
          ASL
@@ -135,7 +141,7 @@ HPOC     LDA   #$73
          CLC
          ADC   #$10
          STA   TEMP0
-         LDA   $7303
+         LDA   $7303  ; Selected hand
          CLC
          ADC   #4
          ASL
@@ -196,7 +202,7 @@ L73      JMP   MOVE
 EMPTYPOCKET LDA #6
          STA   MESSAGE
          JMP   MOVE
-L8       CMP   #$D7  'W'
+L8       CMP   #$D7  ; 'W'
          BNE   L9
          JSR   HPOC
          LDY   #0

@@ -60,7 +60,7 @@ play     ; play screen packed at $4A00
          rts
 
 inflate
-* Packed image at $4100, unpack to $2000
+* Packed image at srcptr, unpack to $2000
 
          lda   #$00     
          sta   dstptr

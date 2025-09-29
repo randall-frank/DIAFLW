@@ -1,14 +1,9 @@
 Allow weapons to implement health packs  (weapon type: 0=shot, 1=explosion, 2=healing)
 Allow control over the health regen rate
-Move the display over two columns and add boundaries
 Display "behind" blocks with dropped out scanlines
+Check on game save/etc 
+Reconsider prefix handling for editors...
 
-C9 = I
-CA = J
-CB = K
-C6 = F
-8D = ret
-B0-B9 = 0-9
 
 +Right hand+Left hand +
 |M1 Carbine|M1 Carbine|

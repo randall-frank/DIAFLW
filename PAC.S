@@ -12,8 +12,8 @@ LOWS     =     $F00
 RND      =     $EFAE
 RNDBUFF  =     $200
 ENEMY    =     $7000
-TBLX     =     $9600
-TBLY     =     $9680
+TBLX     =     $4E00   ; $9600
+TBLY     =     $4F00   ; $9680
 VERT     =     0
 TEMP1    =     1
 TEMP2    =     2
@@ -25,6 +25,12 @@ TEMP7    =     7
 TEMP8    =     8
 INDEX    =     $FE
 START    =     $FF
+
+HGRSRC_LO =     $E0
+HGRSRC_HI =     $E1
+HGRTGT_LO =     $26
+HGRTGT_HI =     $27
+
 *       JUMPS TO START OF ROUTINES
          JMP   BIGSHAPE
          JMP   LOOKUP
@@ -39,12 +45,13 @@ START    =     $FF
          JMP   CLEAR
          JMP   MSGS
          JMP   CLEAR2
+         JMP   BOTTOMLINE
          lst   off
 CLEAR    LDX   #144
          JSR   CALC+1
          LDA   #0
          LDY   #14
-CL1      STA   ($26),Y
+CL1      STA   (HGRTGT_LO),Y
          DEY
          BNE   CL1
          INX
@@ -72,22 +79,22 @@ R2       LDA   RNDBUFF,Y
          RTS
 CALC     TAX
          LDA   LOWS,X
-         STA   $26
+         STA   HGRTGT_LO
          LDA   HIGHS,X
-         STA   $27
+         STA   HGRTGT_HI
          RTS
 BIGSHAPE PHA
          LDA   #0
-         STA   PLACE+1
+         STA   HGRSRC_LO
          PLA
          LSR
-         ROR   PLACE+1
+         ROR   HGRSRC_LO
          LSR
-         ROR   PLACE+1
+         ROR   HGRSRC_LO
          LSR
-         ROR   PLACE+1
+         ROR   HGRSRC_LO
          ORA   WHICHTBL
-         STA   PLACE+2
+         STA   HGRSRC_HI
          LDA   TBL,Y
          STA   VERT
          TXA
@@ -98,16 +105,16 @@ BIGSHAPE PHA
          STA   TEMP1
 PL1      LDA   VERT
          JSR   CALC
-         INC   $26         ; Move the blocks two columns to the right RJF
-         INC   $26
-         LDA   #2
-         STA   TEMP2
-PLACE    LDA   $FFFF
-         INC   PLACE+1
-         STA   ($26),Y
+         INC   HGRTGT_LO         ; Move the blocks two columns to the right RJF
+         INC   HGRTGT_LO
+         LDX   #0
+         LDA   (HGRSRC_LO,X)
+         INC   HGRSRC_LO
+         STA   (HGRTGT_LO),Y
          INY
-         DEC   TEMP2
-         BNE   PLACE
+         LDA   (HGRSRC_LO,X)
+         INC   HGRSRC_LO
+         STA   (HGRTGT_LO),Y
          LDY   TEMP3
          INC   VERT
          DEC   TEMP1
@@ -209,7 +216,7 @@ TEXT     CMP   #$FE
 PL6      LDA   TEMP1
          JSR   CALC
 MOD      LDA   $FFFF
-         STA   ($26),Y
+         STA   (HGRTGT_LO),Y
          INC   MOD+1
          INC   TEMP1
          DEC   TEMP2
@@ -235,14 +242,16 @@ DRAW     PHA
          TXA
          CLC
          ADC   #$FD       ;(-3)
-         STA   TEMP5
+         STA   TEMP5      ; X-3
          TYA
          CLC
          ADC   #$FD
-         STA   TEMP6
+         STA   TEMP6      ; Y-3
          PLA
          CMP   DIR
          BEQ   SAMEDIR
+         BNE   SAMEDIR    ; RJF no need to erase on rotate as we are painting everything
+* Erase the blocks of the previous direction         
          PHA
          LDA   DIR
          ASL
@@ -250,7 +259,8 @@ DRAW     PHA
          ASL
          ASL
          ASL
-         STA   TEMP7
+         ASL   ; RJF  dir*64 for TBLX and TBLY index
+         STA   TEMP7      ; Index into the TBLX,TBLY arrays
 ERAS     LDY   TEMP7
          LDA   TBLX,Y
          TAX
@@ -259,7 +269,7 @@ ERAS     LDY   TEMP7
          LDA   TBLY,Y
          TAY
          LDA   #4         ; BLANK SPACE
-         JSR   BIGSHAPE
+         JSR   BIGSHAPE   ; X=Relative to TEMP5, Y=Relative to TEMP6, A=shape
          INC   TEMP7
          JMP   ERAS
 SAMEDIR1 PLA
@@ -269,6 +279,7 @@ SAMEDIR  STA   DIR
          ASL
          ASL
          ASL
+         ASL   ; RJF  dir*64 for TBLX and TBLY index
          STA   TEMP7
 DR       LDY   TEMP7
          LDA   TBLX,Y
@@ -287,7 +298,7 @@ DR       LDY   TEMP7
          BGE   OUTSIDE
          JSR   LOOKUP
          JMP   OK1
-OUTSIDE  LDA   #4
+OUTSIDE  LDA   #4      ; Blank for outside of the grid
 OK1      PHA
          LDY   TEMP7
          LDA   TBLX,Y
@@ -295,13 +306,13 @@ OK1      PHA
          LDA   TBLY,Y
          TAY
          PLA
-         JSR   BIGSHAPE
+         JSR   BIGSHAPE  ; X=Relative to TEMP5, Y=Relative to TEMP6, A=shape
          INC   TEMP7
          JMP   DR
 DROUT    LDX   #3
          LDY   #3
          LDA   DIR
-         JMP   BIGSHAPE
+         JMP   BIGSHAPE  ; Draw the character (DIR) in the center (3,3)
 DIR      DFB   0
 *   DRAWS HIGHLITES
 *  $7303 =HAND   $7304=POCKET
@@ -378,9 +389,9 @@ H7       LDA   VERT
          JSR   CALC
          LDY   TEMP1
          LDX   #10
-H8       LDA   ($26),Y
+H8       LDA   (HGRTGT_LO),Y
          EOR   #$7F
-         STA   ($26),Y
+         STA   (HGRTGT_LO),Y
          INY
          DEX
          BNE   H8
@@ -440,9 +451,11 @@ POC3     ASL
          LDA   $7312,Y
          ORA   #$B0
          JMP   TEXT
+
+* Output 10 'blank' characters
 BLANKS   LDA   #10
          STA   TEMP7
-POC4     LDA   #$2D
+POC4     LDA   #$20   ; 2D='-'  20=' '
          JSR   TEXT
          DEC   TEMP7
          BNE   POC4
@@ -523,3 +536,57 @@ CLMOD    STA   $2000,Y
          DEX
          BNE   CL21
          RTS
+
+* Bottomline - draw the UI for the scenario selection screen
+BOTTOMLINE
+         LDX   #30
+         LDY   #6*8
+         LDA   #9
+         JSR   TEXTSET
+         LDY   #0
+         STY   CNT
+LOOP     LDY   CNT
+         LDA   LINES,Y
+         BEQ   OUTLOOP
+         JSR   TEXT
+         INC   CNT
+         JMP   LOOP
+OUTLOOP
+         LDA   #40
+         LDY   #0
+         LDX   #0
+         JSR   TEXTSET
+         ldy   #0
+         sty   CNT
+LOOP2    LDY   CNT
+         LDA   LINES2,Y
+         BEQ   OL1
+         JSR   TEXT
+         INC   CNT
+         JMP   LOOP2
+OL1      RTS
+LINES    HEX   14181818181818181519
+         ASC   'O:Open '
+         hex   19161818181818181817
+         hex   14181818181818181519
+         ASC   'U:DirUp'
+         hex   19161818181818181817
+         HEX   14181818181818181519
+MYLINE   ASC   'D:Disk '
+         hex   19161818181818181817
+         hex   14181818181818181519
+         ASC   'Q:Quit '
+         hex   19161818181818181817
+         DFB   0
+CNT      DFB   0
+LINES2   HEX   1418
+         ASC   'Select a scenario to play'
+         hex   A0181818181818181818181815
+         hex   19
+         asc   '                                      '
+         hex   1919
+         asc   '                                      '
+         hex   19
+         hex   1618181818181818181818181818181818181818
+         hex   1818181818181818181818181818181818181817
+         dfb   0
