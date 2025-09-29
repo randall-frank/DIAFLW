@@ -125,6 +125,8 @@ LETSGO   JSR   SHOWSPLASH  ; Set up graphics splash screen
          BNE   LETUSGO
          JMP   BYEBYE
 LETUSGO  
+         LDA   #0
+         JSR   PAC_SETMASK
          STA   $C010
          JSR   IO_GETPREFIX
          LDA   #>BLOCKS

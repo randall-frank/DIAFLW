@@ -3,7 +3,7 @@
          typ   $06  ; /BIN file
 
          org   $7000
-         asc   " Death is a Four Letter Word 1.1.0 Help "
+         asc   " Death is a Four Letter Word 1.1.4 Help "
          asc   "---Key---Action-------------------------"
          asc   "   ^B    Execute a ProDOS BYE           "
          asc   "   ^Q    Abort the current mission      "

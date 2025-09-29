@@ -5,7 +5,6 @@ assembler = ".\\Merlin32_v1.2_b2\\Windows\\Merlin32.exe"
 assembler_libdir = ".\\Merlin32_v1.2_b2\\Library\\"
 
 files = {
-    # "BOTTOMLINE.S": 0x0C80,
     "DRAWTAB.S": 0x4E00,  # 0x9600,
     "GAME1.S": 0x7400,
     "GAME2.S": 0x7A00,
@@ -46,7 +45,6 @@ bins = {
     "bin/diaflw_splash.fgr": 0x4100, 
     "bin/diaflw_play.fgr": 0x4A00,   
     "bin/HELP.BIN": 0x7000,          # this is overwritten after moved to text
-    # "bin/BOTTOMLINE.BIN": 0x2C80,    # reloc=0x0C80,
     "bin/GAME1.BIN": 0x6400,         # reloc=0x7400,
     "bin/GAME2.BIN": 0x6A00,         # reloc=0x7A00,
     "bin/IO2.BIN": 0x2100,           # reloc=0x9000,
@@ -86,7 +84,13 @@ with open(outname, "wb") as fp:
     fp.write(data)
     
 print(f"Wrote: {outname}")
-    
+
+# use CiderPress II CLI to place the file into the testing IMG
+cp2 = "C:/Users/rjfrank/Desktop/CiderPressII/cp2.exe"
+cmd = [cp2, "add", "--strip-paths", "--overwrite", "disks/Testing.2mg", outname]
+result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+print(f"Updated testing 2mg file: {result.stdout} {result.stderr}")
+
 
 # Build 'READ.DOCS,TSYS' from 'bin/PRG.BIN'
  

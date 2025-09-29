@@ -31,6 +31,9 @@ HGRSRC_HI =     $E1
 HGRTGT_LO =     $26
 HGRTGT_HI =     $27
 
+MASKBYTE  =     $71
+MASKON    =     $72
+
 *       JUMPS TO START OF ROUTINES
          JMP   BIGSHAPE
          JMP   LOOKUP
@@ -46,6 +49,8 @@ HGRTGT_HI =     $27
          JMP   MSGS
          JMP   CLEAR2
          JMP   BOTTOMLINE
+         JMP   SETMASK
+
          lst   off
 CLEAR    LDX   #144
          JSR   CALC+1
@@ -83,6 +88,14 @@ CALC     TAX
          LDA   HIGHS,X
          STA   HGRTGT_HI
          RTS
+
+* Set scanline masking for blocks in the accumulator 0=none 1=even
+SETMASK  CMP   #0
+         BEQ   THEMASK
+         LDA   #31
+THEMASK  STA   MASKON
+         RTS
+
 BIGSHAPE PHA
          LDA   #0
          STA   HGRSRC_LO
@@ -100,14 +113,31 @@ BIGSHAPE PHA
          TXA
          ASL
          TAY
+         INY   ; Move the blocks two columns to the right RJF
+         INY
          STY   TEMP3
-         LDA   #16
+         LDA   #16    ; Blocks are 16 scanlines high
          STA   TEMP1
-PL1      LDA   VERT
-         JSR   CALC
-         INC   HGRTGT_LO         ; Move the blocks two columns to the right RJF
-         INC   HGRTGT_LO
-         LDX   #0
+
+BLK_LINE LDX   VERT   ; Set up scanline addr
+         LDA   LOWS,X
+         STA   HGRTGT_LO
+         LDA   HIGHS,X
+         STA   HGRTGT_HI
+
+         LDA   MASKON   ; are we drawing this line?
+         AND   TEMP1
+         BEQ   DRAWLINE
+
+         LDA   #0      ; Draw a blank line
+         INC   HGRSRC_LO
+         INC   HGRSRC_LO
+         STA   (HGRTGT_LO),Y
+         INY
+         STA   (HGRTGT_LO),Y
+         JMP   NEXT
+
+DRAWLINE LDX   #0
          LDA   (HGRSRC_LO,X)
          INC   HGRSRC_LO
          STA   (HGRTGT_LO),Y
@@ -115,14 +145,17 @@ PL1      LDA   VERT
          LDA   (HGRSRC_LO,X)
          INC   HGRSRC_LO
          STA   (HGRTGT_LO),Y
-         LDY   TEMP3
+
+NEXT     LDY   TEMP3
          INC   VERT
          DEC   TEMP1
-         BNE   PL1
+         BNE   BLK_LINE
          RTS
+
 TBL      DFB   8,24,40,56,72,88,104
 LOOKUP   STX   TEMP1
          STY   TEMP2
+         ; Scan the enemy table
          LDX   #0
          LDY   #0
 PL2      INY
@@ -136,7 +169,7 @@ PL2      INY
          LDA   ENEMY,Y
          CMP   TEMP2
          BNE   PL3
-         INY
+         INY   ; The location is an enemy, return the proper block
          INY
          LDA   ENEMY,Y
          SEC
@@ -237,6 +270,8 @@ BUMPLINE LDA   CURY
 PL7      RTS
 * DRAW ACC=DIR 1=R 2=D 3=L 0=U  X,Y= POSITION OF MAN
 DRAW     PHA
+         LDA   #0
+         JSR   SETMASK
          LDX   $7300
          LDY   $7301
          TXA
@@ -283,6 +318,13 @@ SAMEDIR  STA   DIR
          STA   TEMP7
 DR       LDY   TEMP7
          LDA   TBLX,Y
+         CMP   #$FE
+         BNE   CHECK_DONE
+         LDA   #1     ; 254=switch to "hidden" mode
+         JSR   SETMASK
+         INC   TEMP7
+         JMP   DR
+CHECK_DONE
          CMP   #$FF
          BEQ   DROUT
          CLC
@@ -296,7 +338,7 @@ DR       LDY   TEMP7
          BGE   OUTSIDE
          CPY   #64
          BGE   OUTSIDE
-         JSR   LOOKUP
+         JSR   LOOKUP   ; if carry is set, then enemy.
          JMP   OK1
 OUTSIDE  LDA   #4      ; Blank for outside of the grid
 OK1      PHA
@@ -309,7 +351,11 @@ OK1      PHA
          JSR   BIGSHAPE  ; X=Relative to TEMP5, Y=Relative to TEMP6, A=shape
          INC   TEMP7
          JMP   DR
-DROUT    LDX   #3
+* Draw the player in the center (3,3)
+DROUT    
+         LDA   #0
+         JSR   SETMASK
+         LDX   #3
          LDY   #3
          LDA   DIR
          JMP   BIGSHAPE  ; Draw the character (DIR) in the center (3,3)
