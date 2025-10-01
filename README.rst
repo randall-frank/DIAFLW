@@ -5,8 +5,8 @@ Death is a Four Letter Word: DIAFLW
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
 
-.. |APPLE| image:: https://img.shields.io/badge/Retro-Apple%20II-red.svg
-   :target: https://mirrors.apple2.org.za/ftp.apple.asimov.net/
+.. |APPLE| image:: https://img.shields.io/badge/Apple%20II-ProDOS-404040.svg?logo=apple&logoColor=ee0000
+   :target: https://github.com/AppleWin/AppleWin
 
 
 .. |Itch| image:: https://img.shields.io/badge/Itch.io-fa5c5c.svg

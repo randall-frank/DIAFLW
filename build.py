@@ -7,7 +7,15 @@ assembler_libdir = ".\\Merlin32_v1.2_b2\\Library\\"
 ciderpresscli = ".\\ciderpress\\cp2.exe"
 fhpack = ".\\fhpack.exe"
 
-version = "1.1.4"  # Also HELP.S
+
+version = "1.2.0"  
+
+# HELP_SRC.S -> HELP.S
+with open("HELP_SRC.S", "r") as fp:
+    text = fp.read()
+    with open("HELP.S", "w") as out:
+        text = text.replace("V_NUM", version)
+        out.write(text)
 
 files = {
     "DRAWTAB.S": 0x4E00,  # 0x9600,
