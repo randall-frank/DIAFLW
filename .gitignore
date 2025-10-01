@@ -1,4 +1,10 @@
 hmonster/
 fhpack-master/
 disks/
-Merlin32_v1.2_b2/
+Merlin*/
+ciderpres*/
+images/
+bin/*.BIN
+bin/*.fgr
+bin/_*
+DIAFLW.SYSTEM#ff2000

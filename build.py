@@ -1,8 +1,11 @@
+import shutil
 import subprocess
 import os
 
 assembler = ".\\Merlin32_v1.2_b2\\Windows\\Merlin32.exe"
 assembler_libdir = ".\\Merlin32_v1.2_b2\\Library\\"
+ciderpresscli = ".\\ciderpress\\cp2.exe"
+version = "1.1.4"  # Also HELP.S
 
 files = {
     "DRAWTAB.S": 0x4E00,  # 0x9600,
@@ -79,17 +82,62 @@ for name, addr in bins.items():
     length = len(local)
     data[offset:offset+length] = local
 
-outname = "bin/DIAFLW.SYSTEM#ff2000"
+outname = "DIAFLW.SYSTEM#ff2000"
 with open(outname, "wb") as fp:
     fp.write(data)
-    
-print(f"Wrote: {outname}")
+print(f"Wrote system file: {outname}")
 
 # use CiderPress II CLI to place the file into the testing IMG
-cp2 = "C:/Users/rjfrank/Desktop/CiderPressII/cp2.exe"
-cmd = [cp2, "add", "--strip-paths", "--overwrite", "disks/Testing.2mg", outname]
+cmd = [ciderpresscli, "add", "--strip-paths", "--overwrite", "disks/Testing.2mg", outname]
 result = subprocess.run(cmd, capture_output=True, text=True, check=True)
 print(f"Updated testing 2mg file: {result.stdout} {result.stderr}")
+
+# Create a release .2mg image
+rel_filename = "DIAFLW_Release.2mg"
+try:
+    os.remove(rel_filename)
+except Exception:
+    pass
+cmd = [ciderpresscli, "create-disk-image", rel_filename, "800K", "prodos"]
+result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+print(f"Created release disk image: {result.stdout} {result.stderr}")
+cmd = [ciderpresscli, "rename", rel_filename, ":", f"DIAFLW_{version}"]
+result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+print(f"Renamed release disk image: {result.stdout} {result.stderr}")
+
+# Copy system files - PRODOS, BASIC...  
+cmd = [ciderpresscli, "add", "--strip-paths", "DIAFLW_Release.2mg", "SYSTEM"]
+result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+print(f"System files added to disk image: {result.stdout} {result.stderr}")
+# and DIAFLW.SYSTEM
+cmd = [ciderpresscli, "add", "--strip-paths", "DIAFLW_Release.2mg", outname]
+result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+print(f"System file added to disk image: {result.stdout} {result.stderr}")
+
+# Copy scenarios
+cmd = [ciderpresscli, "add", rel_filename, "SCENARIOS"]
+result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+print(f"Scenarios added to disk image: {result.stdout} {result.stderr}")
+# rename them to include trailing '.'
+for name in os.listdir("SCENARIOS"):
+    if os.path.isdir(os.path.join("SCENARIOS", name)):
+        cmd = [ciderpresscli, "rename", rel_filename, f"SCENARIOS/{name}", f"SCENARIOS/{name}."]
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        print(f"Renamed: SCENARIOS/{name}")
+
+for name in os.listdir("basic"):
+    if name.upper().endswith(".ABAS"):
+        root = os.path.splitext(name)[0]
+        try:
+            os.remove(os.path.join("basic", root))
+        except Exception:
+            pass
+        # make a temp copy to rename the file so the import is clean
+        shutil.copy(os.path.join("basic", name), os.path.join("basic", root))
+        cmd = [ciderpresscli, "import", "--strip-paths", rel_filename, "bas",  f"basic/{root}"]
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        os.remove(os.path.join("basic", root))
+        print(f"Imported: basic/{name} as {root}")
 
 
 # Build 'READ.DOCS,TSYS' from 'bin/PRG.BIN'

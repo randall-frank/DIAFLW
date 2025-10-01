@@ -384,6 +384,7 @@ EMPTYHAND LDA  #4
 L13      CMP   #$C8 ; 'H'
          BNE   L14
          JMP   MOVE
+* 'heal' one point of damage
 L139     LDA   #1
          CLC
          ADC   $730D
@@ -690,9 +691,9 @@ GROUND   CMP   #64
          JSR   SET
          RTS
 MOVE     STA   $C010
-         LDA   MCOUNT
+         LDA   MCOUNT  ; ? so as I read this, one needs to 'move' MCOUNT times before a 1 point heal.  CCCC is a table that speeds healing when one is in bad shape
          BPL   V1
-         JSR   L139
+         JSR   L139  ;  add one point of health.
          LDA   $730C
          LSR
          TAY
