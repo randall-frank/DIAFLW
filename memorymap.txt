@@ -151,3 +151,8 @@ EDIT.CODE - 9100 target - 5 Jumps at start, 9700 PRE.S compiled
 PRG.S -> source code to READ.DOCS (SYS)
     Opens the file DIAFLW (AWP)
     displays in 80 column text
+
+
+MP4 -> GIF
+.\ffmpeg.exe -i trim.mp4 -vf "fps=10,scale=294:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 gameplay.gif
+

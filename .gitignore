@@ -5,6 +5,7 @@ Merlin*/
 ciderpres*/
 images/
 bin/*.BIN
-bin/*.fgr
 bin/_*
 DIAFLW.SYSTEM#ff2000
+DIAFLW_Release.2mg
+.vscode/

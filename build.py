@@ -5,6 +5,8 @@ import os
 assembler = ".\\Merlin32_v1.2_b2\\Windows\\Merlin32.exe"
 assembler_libdir = ".\\Merlin32_v1.2_b2\\Library\\"
 ciderpresscli = ".\\ciderpress\\cp2.exe"
+fhpack = ".\\fhpack.exe"
+
 version = "1.1.4"  # Also HELP.S
 
 files = {
@@ -33,14 +35,17 @@ for name, address in files.items():
 # Build splash screen image
 # cmd = [".\\tohgr.exe", "hgr", "-atkin", "diaflw_splash.png"]
 # result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-cmd = [".\\fhpack.exe", "-c", "diaflw_splash.hgr", "bin/diaflw_splash.fgr"]
-result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-cmd = [".\\fhpack.exe", "-c", "diaflw_play.hgr", "bin/diaflw_play.fgr"]
-result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-
+if not os.path.exists(os.path.join("bin","diaflw_splash.fgr")):
+    cmd = [fhpack, "-c", "diaflw_splash.hgr", "bin/diaflw_splash.fgr"]
+    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    print("Generated: bin/diaflw_splash.fgr")
+if not os.path.exists(os.path.join("bin","diaflw_play.fgr")):
+    cmd = [fhpack, "-c", "diaflw_play.hgr", "bin/diaflw_play.fgr"]
+    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    print("Generated: bin/diaflw_play.fgr")
     
 bins = {
-    "bin/LOADER.BIN": 0x2000,
+    "bin/LOADER.BIN": 0x2000, 
     "bin/BIGFONT#061c00": 0x5C00,
     "bin/SOUNDS#068900": 0x3900,     # reloc=0x8900
     "bin/LOOKTBLS#060C00": 0x2E00,   # reloc=0x0E00
