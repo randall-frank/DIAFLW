@@ -1,0 +1,716 @@
+ __________________________________________________________
+|                                                          |
+|  Death Is a Four Letter Word:  The Ultimate Adventure    |
+|__________________________________________________________|
+|                                                          |
+|    Program Development:  Randy Frank                     |
+|    Original Concepts:    Randy Frank                     |
+|    Editor Development:   Randy Frank and Gary Frank      |
+|    Playtesting:          John Laird, Randy Frank         |
+|    Documentation by:     Gary Frank                      |
+|    Many thanks to:       John Laird                      |
+|__________________________________________________________|
+
+   Prolouge:
+
+     The original concepts behind Death Is a Four Letter Word, (hereto
+referred to as DIAFLW) began with the idea to leap beyond the classic
+adventure/style, wander through a block terrain, hack about with a
+sword adventures (read: Ultima VII) and to develop a happy medium
+between arcade action and the 'mission' style game.  It was also
+desirable to let any user create or modify a scenario and to keep the
+game system simple.  This is the result.
+     DIAFLW is totally uncopyprotected and is a fairly open system.
+It is freely modifyable by anyone who wishes to do so.  This, however,
+is at your own risk.  The program is a 41 block SYS file entitled
+DIAFLW.SYSTEM.  The remainder of the disk can contain the editors
+(completely in Applesoft with one machine language routine..) or a
+scenario (completely in binary files with one text file).
+     To execute DIAFLW, execute DIAFLW.SYSTEM by either bootup, the
+dash (-) command, or the ProDOS 'BYE'.  The program will (after a
+nifty title page) scan all active ProDOS devices and display their
+names. You then select the device (by pathname) to use as the scenario
+disk, and the subdirectory(s) in which the DIAFLW scenario files are
+located, if applicable. Note, a directory containing a DIAFLW scenario
+must end with '.'. That is how DIAFLW identifies scenario directories.
+    A scenario subdirectory must contain the scenario files, but not
+the DIAFLW.SYSTEM file itself, because once that file is executed, the
+disk containing it is never needed again (unless it contains the
+scenario as well).  Since the DIAFLW.SYSTEM program is not needed on
+the scenario disk, and the five DIAFLW files barely take up 60 blocks,
+(unless the scenario is abnormally huge) the disk can have multiple
+scenarios (in different subdirectories), or the remaining blocks can
+be used for storing any other ProDOS files.
+     The only limitation is that each scenario must be in its own
+directory or subdirectory, since multiple filenames are illegal except
+in different subdirectories. (i.e. /WORK/ALIENS./WEAPONS is different
+from /WORK/SDI./WEAPONS)  On the other end, however, there is nothing
+stopping you from making a scenario so huge that it takes up 20 disks.
+Each of these disks, however, must have the same pathname.
+    This documentation consists of three parts.  Parts I and II
+describe how to play the game, and how to make your own scenario using
+the editors, while Part III describes some of the technical aspects of
+the file and data storage for those of you who want to know precisely
+where your files are going.
+     Dive in, and may all your pockets be full..
+
+
+     Part I:  Playing the game
+
+   Getting Ready..
+
+     Whether the DIAFLW.SYSTEM file is '-'d, 'BYE'd or has been set up
+to be the startup system, it is executed to begin the game.  It opens
+to a nifty title sequence.  Press any key to interrupt this sequence.
+The game will respond by scanning all active ProDOS devices (note:
+/RAM is recognized..) then display all of the volume names.
+     This opening sequence is essentially a treewalking system.
+Select the volume by pressing a number key.  DIAFLW will then display
+what subdirectories (if any) are on the disk.  Continue this until you
+are in the subdirectory which contains the desired scenario. 'U' backs
+up one level and rescans the devices if on the top level.  Return
+selects the scenario and begins play.  The working volume prefix is
+displayed at the top of the screen.  'Q' will execute a ProDOS BYE at
+this point.
+     If you were resuming an old game on the disk the game will find
+it and jump straight into play.  If not, the game will give you a
+scenario briefing.  (You can abort the briefing at anytime by pressing
+any key.  The first time you play any scenario it is advised that you
+read the whole thing.) The computer will display one page at a time
+and then wait for a keypress to display the next page.
+
+   Playing The Game..
+
+     When the briefing is over it will show you what the target square
+looks like and ask you to enter your name.  Enter your name and the
+press RETURN.  If you make a mistake press ESC and it will let you
+start over.  Now the game screen will appear.  Your name, score, and
+damage will appear in the upper right hand corner.  Below that is a
+display of what weapons and ammo you are carrying.  Below that is the
+scenario name.  In the lower left hand corner is a dialog box and
+above it is the playing field.  You are located in the center of the
+playing field and as you move the terrain scrolls under you.  Your
+weapons are displayed the the six boxes labeled for hands or pockets.
+The currently active hand and pocket are highlighted.
+
+   The Commands..
+
+     The active hand is the hand which will fire, drop, or search dead
+bodies.  The active pocket is the one to which weapons and ammo may be
+placed or readied into the active hand.  You may select the active
+pocket with the 1-4 keys and the 5-6 keys select the right or left
+hand as active.  The active hand may fire in the direction you are
+facing by pressing the F key.  If you are on top of a dead body it may
+be searched with the S key provided that the active hand is empty.
+The D key will drop whatever is in the active hand.  It is lost
+forever.  Four other keys facilitate the passing of weapons and ammo
+to and from pockets.  These are A,W,R, and L.  This table will explain
+the functions:
+
+    (1-4)       Selects pocket 1-4
+    (5)         Selects left hand
+    (6)         Selects right hand
+    (F)ire      Fires the active hand
+    (D)rop      Drop weapon & ammo in active hand
+    (S)earch    Searches a body
+    (A)mmo      Moves ammo from hand to pocket.
+    (W)eapon    Moves weapon from hand to pocket.
+    (L)oad      Moves ammo from pocket to hand.
+    (R)eady     Moves weapon from pocket to hand.
+
+     The destination of ammo or a weapon must be empty.  A weapon will
+fire only if there is a supply of the correct ammo with the weapon in
+the active hand.
+     (Control-S) is a sound toggle, and ESC will pause the game.
+(Control-B) aborts a game in progress and executes a ProDOS 'BYE'.
+(Control-J) toggles joystick control and (Control-Q) aborts the
+current game and puts you back at the title sequence.  Pressing
+(Control-@) will save the current game to disk.  If you start up the
+game with this PLAYER disk again it will immediately put you in the
+game mode.
+
+   Movement and Healing..
+
+     Movement is simple.  The J and K keys turn you 90 degrees left
+and right respectively and the I key moves you forward one space.  You
+are only able to see what is directly in front of you.  You are blind
+to three quarters of the playing field.  Some things are impossible to
+walk through.  Most may be walked through freely.  Most of the
+impassible terrain may be shot at and turned into passable rubble.  (A
+very handy means of escape.)
+     Healing is a tricky process.  Your character can recover one
+point of damage for every ten steps he takes across the terrain.  This
+is difficult to accomplish with enemies around, and an adept player
+will notice that being stopped by impassable terrain counts as a step,
+and will use the repeat feature to continually 'bump' his player
+against a piece of terrain during moments of safety..
+
+   Game Specifics..
+
+     To win you must get to a TARGET square.  This is the object or
+person you are sent to retrieve and/or destroy.  It can look like
+anything the scenario calls for it to look like.  The TARGET square
+cannot move or fire.
+     The game is played on a series of 64x64 grids called SQUARES.  A
+LEVEL is made of a 4x4 grid of the larger SQUARES.  A scenario can
+have more than one level in it, and these are considered levels of
+elevation.  Elevators or stairs can be found to take you from level to
+level.
+     Each 64x64 square can have 32 men/objects defending it, so a 4x4
+level can have a total of 512 enemies wandering its 16 squares.  Some
+of these defenders can be defined as motionless traps.  The terrain
+consists of up, down, one- or two-way stairs; passable,
+impassable-destructible, and indestructible terrain; and a target
+square.  You are free to do whatever you please but watch your step!
+Your enemy in this game can be very deadly.
+
+
+     Part II: Making a scenario
+
+   Getting Started..
+
+     If you get bored with the various scenarios provided by the
+authors (some of which were slapped together in a matter of hours..)
+the DIAFLW system allows for a full editing feature.  Before we begin,
+it would be helpful to learn about the structure of the DIAFLW world..
+     A scenario consists of the following files (all of which are
+Binary except for DATA):
+
+ STARTER   Contains the starting information of the player
+          (position, possessions, damage, score, etc..)
+ BLOCKS    Contains the bitmaps of the 128 shapes that are
+          used by the SQUARE files.
+ BLOCKS2   (Optional)  This is the set of alternate bitmaps used
+          for animation.  If the file does not exist the game plays
+          normally but without animated terrain.
+ WEAPONS   Contains the information of the eight possible
+          weapons (name, power, type, ammo name, etc..)
+ DATA      The text file which contains the mission
+          briefing.
+ SQUARExy  Contains the 64x64 bytes corresponding to the
+          contents of square x on level y and the
+          information concerning the enemies on that square.
+
+     The ProDOS setup allows more than one scenario on a volume
+PROVIDED they are in different subdirectories so as not to clash
+filenames.  It is recommended that the volume of a scenario disk with
+multiple scenarios be named appropriately.  /SCENARIOS or /SPACE.GAMES
+for example.  The individual scenario files should be in the
+appropriately named subdirectoy.  A sample of this recommended layout
+is as follows:
+                        /WORLD.WAR.II
+    __________________________|____________________________
+   |               |               |                       |
+/EAGLES.NEST    /DAMBUSTERS     /NAVARONE                PRODOS
+   |               |               |_____________        BASIC.SYSTEM
+BLOCKS          BLOCKS             |             |       DIAFLW.SYSTEM
+WEAPONS         WEAPONS         /FORCE.10     /GUNS.OF
+STARTER         STARTER            |             |
+DATA            DATA            BLOCKS        BLOCKS
+SQUARExy        SUQARExy        WEAPONS       WEAPONS
+                                STARTER       STARTER
+                                DATA          DATA
+                                SQUARExy      SQUARExy
+
+     The PRODOS and the .SYSTEM files are completely optional.  Note
+that /RAM is a valid device prefix.  The five scenario files can be
+placed in a subdirectory in /RAM and played completely from memory.
+     The only file of which there might be more than one is the
+SQUARExy file.  This file contains 64x64 (4096) bytes of value 0-127
+corresponding to the applicable shape in that space, and 32x8 (256)
+bytes of information regarding the status of the enemies in that
+SQUARE, 8 bytes per man.  The naming system for the SQUARE files is
+SQUARExy where x=square location and y=level.  This system is
+demonstrated here:
+
+ 0  1  2  3     0 1 2 3    Each 'x' code        -----------------
+ 4  5  6  7     4 5 6 7    represents a        / 0 / 1 / 2 / 3 /  Level 2
+ 8  9 10 11     8 9 A B    SQUARExy file      / 4 / 5 / 6 / 7 /
+12 13 14 15     C D E F    & 64x64 spaces    / 8 / 9 / A / B /---
+                                            / C / D / E / F /  /  Level 1
+ Square #    File 'x' code                 -----------------  /
+                                             / 8 / 9 / A / B /---
+ Each 'cell' in the 4 by 4 grid             / C / D / E / F /  /  Level 0
+comprising a level is defined    -----     -----------------  /
+by a SQUARExy file.    ------>  / 8 /  <---  / 8 / 9 / A / B /
+This cell's SQUARExy file      -----        / C / D / E / F /
+is named SQUARE80.                         -----------------
+
+     If the player walks off the bottom of SQUARE80, he enters
+'SQUAREC0' and this file is loaded.  If he goes UP from SQUARE80, then
+SQUARE 81 will be loaded.  Therefore, while the lateral motion of any
+scenario is limited to 256 by 256 (64x4 by 64x4) spaces, the vertical
+motion is virtually unlimited, although it is recommended not to
+exceed 16 levels, as this has a tendency to be garbled by problems in
+the ASCII table.  The maximum number of SQUARExy files cannot exceed
+256 in any one single scenario.
+
+   Second Thoughts..
+
+     It is VERY important when creating a square to remember the
+layout of the entire scenario.  Errors occur if the player is allowed
+to march into a SQUARE that you have not defined as a file.  To
+prevent this, wall the outside of a SQUARE's side with indestructible
+terrain.  I.E. if the SQUARE to the right of SQUARE00 is not defined,
+place indestructible terrain (shape 6) along the right side of
+SQUARE00.  For a two SQUARE scenario where they are joined left to
+right, place indestructible terrain along all but the right wall of
+the left SQUARE, and all but the left wall of the right SQUARE,
+forming a situation similar to the one here:
+
+     Be conscious of your placement of elevators    ###########  ###########
+as well.  Don't place a down elevator in the lowest  #                      #
+level of a scenario.  You should also be aware of   # SQUARE00    SQUARE10 #
+whether or not there is a way down once you have    #                      #
+gone up.  Usually you should place a down elevator  ###########  ###########
+in the same space of the up elevator in the floor
+below, although one-way elevators are not only possible, but interesting.
+Utilize caution, and it is recommended to sketch out the scenario beforehand.
+                   _____
+            _____ /     / SQUARE12    An example of a scenario overview is
+           /     /____ //            shown here.  Squares can be mapped in
+ SQUARE01 /_____|_____|// SQUARE11   whatever arrangement suits your need,
+          |_____|_____|/             the given areas in a level are more than
+ SQUARE00 |_____|/                   ample to create a playable scenario, and
+                                     plot possibilities are limitless.
+
+   Creating an Idea..
+
+     The type of game plan possible by the DIAFLW system is fairly
+straightforward, and one only needs to generate a 'plot', as it were.
+The atmosphere can be changed by using different shapes, and any time
+frame can be represented.  Use your imagination.  Is the player a
+Soldier of Fortune?  a Civil War refugee? a Space Pirate? a Tank? a
+Swashbuckler?
+     The only restrictions put on the creator of the scenario is that
+a 'Target Square' must be present.  Once the player reaches this
+space, which can be anywhere in the playing field, the game ends, and
+the mission is successful.  One other small restriction is the
+atmosphere of the game.  That is, DIAFLW is designed to simulate
+combat where the player is very powerful, and he is pitted against
+several hundred less powerful enemies which drop like flies.  This is
+all very good for a 'Terminator' or an 'Aliens' scenario where the
+player is superhuman or the enemies are less than human.  But a 'Wild
+West' scenario is difficult (not impossible) to simulate well, as luck
+comes into play heavier than skill when the human player is pitted
+against 10 or less enemies who are nearly as powerful as he is.
+     Aside from these restrictions, the creator is only stopped by the
+size of the playing feild and the number of shapes, both of which have
+proved to be more than ample for the creation of an exciting scenario.
+
+   Using the editors..
+
+     The DIAFLW editors are written completely in Applesoft, and can
+be edited at your discretion.  The EDITORS program serves as a 'Main
+Menu' to the editors, and should be run first.  You will be presented
+with a list of options, each of which is described following this.
+You are strongly recommended to use a separate formatted disk to
+create and edit your scenario.
+
+  o  You will have to put the master back in only if you (Q)uit from
+    an editor, as this option chains back into the EDITORS
+    program/menu.
+
+     Every editor begins with a scenario disk insert request.  After
+this, you will be able to enter the name of the subdirectory where the
+desired scenario rests, or get a catalog if you wish.
+     The editors are listed here, by the EDITORS option to select,
+with the Applesoft program name in parentheses:
+
+  1) Create a master diskette. (MASTER.CREATE)
+
+     The MASTER.CREATE program simply asks you to insert a diskette,
+asks confirmation of the create, and then copies several files.  This
+program creates the following: A blank SQUARE00 file with 32 unused
+men, a standard WEAPONS file, a standard STARTER file, a standard
+BLOCKS file, and a blank DATA file (to be filled with mission
+briefing).
+
+     WARNING: If these files already exist on the disk you insert,
+they will be over-written!!  If your SQUARE00 file has walls in it, it
+will be replaced by the blank one, and all your work will be lost!!
+
+     These files can then be edited with the editors provided.  To
+create more SQUARExy files, simply load an existing SQUARExy file,
+edit it to look like the SQUARE you need, then SAVE IT UNDER A NEW
+NAME.  If these instructions are followed precisely, no problems
+should occur.
+
+  2) Edit the blocks. (BLOCK.EDIT)
+
+     The BLOCK.EDIT program first asks you to insert the working
+scenario disk.  After a bit, the screen will pop up.  To the right, a
+display of the shapes from the BLOCKS file is shown.  To the left
+there will be a sketching area.  The box in the upper left is only a
+scratchpad the computer uses to temporarily store a shape.  Pay it no
+mind.
+     The sketching area will first appear black.  Inside it is a
+one-pixel drawing tool that is moved with the W,A,S, and Z keys.  On
+the shape display, a block cursor appears which selects the active
+shape.  It is controlled by the I,J,K, and M keys.  To edit a shape,
+simply highlight it with the IJKM cursor, and press U.  The shape is
+loaded into the sketchpad.  Edit it with the WASZ cursor - Space bar
+plots at the cursor position, 0-7 selects the color, and T toggles the
+autosketch on and off.  Then select the location you want to place the
+sketchpad shape into with the IJKM cursor, and press P.  Do this for
+every shape in the BLOCKS file you wish to change.
+     Press D to get the disk options, when you wish to save your
+changes, or reload the BLOCKS file.  Both disk options allow you to
+save/load either the BLOCKS or the BLOCKS2 file.  If a BLOCKS2 file is
+included in a scenario, DIAFLW will load this file and animate the
+display by alternating between the two sets of shapes.  This process
+is optional but adds visual excitement to the game.
+
+     The shape numbers have the following restrictions:
+
+Shapes 0-3      Reserved for the four facings of the player.
+Shape  4        Reserved blank space. (Do not edit)
+Shape  5        Reserved for the target shape.
+Shape  6        Reserved for the indestructible terrain shape.
+Shape  7        Reserved for the gunfire shape.
+Shapes 8-13     Reserved for explosion shapes.
+Shape  14       Reserved for the up elevator/stairs shape.
+Shape  15       Reserved for the down elevator/stairs shape.
+Shape  16       Reserved for the dead body shape.
+Shapes 17-63    Reserved for the enemy/trap shapes.
+Shapes 64-105   Reserved for impassable-destructible terrain
+                 shapes.
+Shape  106-109  Reserved for rubble shapes.
+Shape  110-127  Reserved for passable terrain shapes (floor
+                 patterns, doors, etc.)
+
+  3) Edit the squares. (SQUARE.EDIT)
+
+     The SQUARE.EDIT program allows you to edit the data in a single
+64x64 SQUARE.  After inserting the scenario disk and pressing a key,
+the heads up display pops up, with the shapes from the BLOCKS file on
+the right, with its IJKM cursor, and a view of the SQUARE on the left.
+This 'view' shows only a 7x7 area of the entire SQUARE, and its
+position is controlled by the W,A,S, and Z cursor.
+     Press the D key to get the disk options, where you can load a
+SQUARE into memory, or save the current memory into a SQUARE of any
+name.  Use caution.  Once a SQUARE is loaded, it is edited by pressing
+the Space bar to place the shape pointed to by the IJKM cursor into
+the space pointed to by the WASZ cursor.
+     Using the spacebar repeatedly to plot blocks on large areas can
+get a little tedious, so to mass-plotting utilities were included.
+The T key toggles the autoplot on and off.  When the autoplot is on,
+the selected shape is plotted wherever the WASZ cursor moves.  The
+other option is the B or Box command.  This is for drawing rectangular
+regions of a certain shape, used most often for floors.  Move the WASZ
+cursor to the space in the upper left hand corner of the rectangle you
+wish to make and press B.  The Box mode will activate.  Move the WASZ
+cursor to the lower right corner, and press B again.  A rectangle will
+be drawn of the shape pointed to by IJKM.  Note: When the Box mode is
+activated, any key except W,A,S and Z will cancel it.
+     The V key is a new option; it places a full overview of the
+SQUARE in memory onto the screen, showing the entire SQUARE instead of
+just a 7x7 area.
+     There is nothing stopping you from placing any of the 128 shapes
+onto the SQUARE, but this is not recommended.  It is good practice to
+use ONLY the blank space, the indestructible terrain, the
+elevator/stairs, the impassable-destructible terrain, the rubble, and
+the passable terrain.  Use of, say, the explosion shapes is not
+restricted, but is not advised as it could create confusion, as would
+be using the enemy shapes or the gunfire shape.  Have fun.
+
+  4) Edit the starter file. (STARTER.EDIT)
+
+     The STARTER.EDIT program allows you to edit the various elements
+of the player character when he begins his mission.  Pressing P edits
+the starting position of the player, his starting SQUARE, and his x,y
+coordinates within that SQUARE.  D edits the starting damage, and N
+edits the name of the scenario.  H allows you to edit the contents of
+the players hands and pockets as he begins the game, and S saves the
+setup to disk.  This is the simplest of the editors.
+
+  5) Edit the men in each square. (MEN.EDIT)
+
+     The MEN.EDIT program edits the men in each SQUARE.  It is
+important to note that the enemy men information for a SQUARE is
+stored in the SQUARExy file itself, as a set of 256 bytes trailing
+after the 4096 bytes of terrain data itself.  Therefore, no special
+'MEN' file is loaded.  Instead the standard D for disk options allows
+you to read in (or save) the SQUARE files.  The actual 64x64 data
+created in the SQUARE.EDIT program, however, is never touched by
+MEN.EDIT, just as the men info is never touched by SQUARE.EDIT.
+     The same two cursors that are in SQUARE.EDIT are in MEN.EDIT, as
+is the heads up display.  The O and P keys, however, scroll back and
+forth in the 32 sets of information which define the 32 men.  When the
+space bar is pressed, the man number selected by the OP keys is
+defined to start the game at the location of the WASZ cursor, with the
+shape pointed to by the IJKM cursor.  Some other data must be entered,
+including the style of enemy or trap the man is, his point value, and
+what weapon/ammo (if any) he uses when alive, and can be found on his
+dead corpse if searched.
+
+Style              Description
+
+Nonmoving        Attacks only when in line with the player.
+Xfinder          Tries to match X coordinates with the player.
+Yfinder          Tries to match Y coordinates with the player.
+XYbest           (Killer) Matches whichever coordinate is
+                  nearer with the player.
+Random           Moves about at random.
+50% Rnd/Kilr     Sometimes moves at random, sometimes behaves
+                  as a Killer
+Trap: Once on    Fires once when player steps into its space.
+Trap: Once near  Fires once when player steps in line with
+                  its space.
+Trap: Mult on    Fires multiple times when player steps into
+                  its space.
+Trap: Mult near  Fires multiple times when player steps in
+                  line with trap.
+Selfsetup        (Placer) A 'Killer' style enemy who randomly selects
+                  its own starting location.
+Dead             Killed. Deceased. Expired. Kicked the bucket. Can be
+                  searched.  (Weapons lying on the floor should be
+                  defined as dead men with weapons using the
+                  appropriate shape.)
+
+     The location and shape of the man selected by the OP keys can be
+found by pressing the F key.  The WASZ cursor will leap instantly to
+the location, and the IJKM cursor will leap to the shape number.  The
+V key will display a complete view of the SQUARE, with the enemy
+locations lit up, and the current WASZ cursor position shown by a
+plus.
+     A set of 'macros' can be defined while inside the program.  It
+becomes tiresome to punch in the point value, man style, weapon style,
+etc. so to help entry of these values, a set of auto-definitions is
+provided as follows.
+     Pressing open-apple and a number key (1-9) will start the macro
+definition phase.  Enter the style value, point value, etc. that you
+want that number key to represent during editing.  When you are
+finished, that number key is defined at those values and when that
+corresponding number is pressed in normal editing, the man pointed to
+by OP is set to the WASZ position with the IJKM shape and with the
+weapon/point/style defined by the number key that was pressed.
+     None of the number keys are defined when MEN.EDIT starts up.
+This technique becomes useful.  If you want several men of a certain
+type, define that type with open-apple-1 (or some other undefined
+number) and when you wish to place that man type, press the
+corresponding number key instead of the space bar.
+
+  6) Edit the weapons file. (WEAPONS.EDIT)
+
+     The WEAPONS.EDIT program, after inserting the scenario disk,
+displays the eight possible weapons in the scenario.  Pressing 0-7
+selects which weapon to edit.  Once the weapon is selected, N edits
+the name of the weapon, and A edits the name of the ammunition it
+uses.  The weapon name is restricted to 10 characters, and the ammo
+name to 9.  T edits the type of weapon, entering 0 for a shot weapon,
+and 1 for explosive.  D edits the amount of damage done to the player
+if hit by the weapon.  A damage level of 10 is deadly, while a level
+of 3 is pretty lame.
+     P changes the 'power' level of the weapon.  This is the
+percentage chance of the weapon to:
+
+ a) Destroy a piece of impassable-destructible terrain (turning it
+    into passable rubble) and
+ b) Kill an enemy if it hits.                            #
+                                                        ###
+     Note that an explosive weapon creates a plus shape  #  and any
+creatures or terrain (not including the player) in any of the five
+spaces will undergo a power check to see if it is killed or destroyed.
+Gunfire weapons only affect the first thing they hit.  S saves the
+current setup.
+
+   Other stuff..
+
+     The DATA file is a standard text file which contains the mission
+briefing.  Edit it with any text file editor, but remember that the
+file will be displayed in 40 columns, and use UPPER CASE only.  End
+the file with the tilde (~) character, and do not use carriage returns
+or linefeeds unless they are after the tilde (~).  Carriage Returns
+elsewhere will show up as M's on the screen.
+
+  The Q command quits from any editor into the EDITORS menu program.
+
+
+   The Commands:
+
+ BLOCK.EDIT                            SQUARE.EDIT
+
+(IJKM) Move main cursor               (IJKM) Move main cursor
+(WASZ) Move secondary cursor          (WASZ) Move secondary cursor
+Space  Plot/Unplot                    Space  Plot block
+ (T)   Toggle autoplot on/off          (T)   Toggle autoplot on/off
+(0-7)  Color select                    (B)   Plot a box.
+ (P)   Place sketchpad into memory     (V)   View Square (very slow..)
+ (U)   Upload memory into sketchpad    (D)   Disk options
+ (D)   Disk options
+                                       STARTER.EDIT
+ MEN.EDIT
+                                       (D)   Edit damage
+(IJKM) Move main cursor                (H)   Edit hand/pocket contents
+(WASZ) Move secondary cursor           (N)   Edit scenario name
+ (OP)  Scroll thru enemy data          (P)   Edit position
+Space  Define enemy                    (S)   Save setup
+ (F)   Find the selected enemy
+ (V)   View square                     WEAPONS.EDIT
+ (D)   Disk operations
+                                       (N)   Edit weapon name
+ DATA file                             (P)   Edit power value
+                                       (T)   Edit weapon type
+Standard ASCII text file in lower      (D)   Edit damage value
+case, no carriage returns, ending      (A)   Edit ammo name
+with the tilde (~) character.         (0-7)  Select weapon to edit
+                                       (S)   Save setup
+
+   Notes..
+
+  o  You are recommended to edit the BLOCKS and the WEAPONS first,
+    then the SQUARES, then the MEN, then the STARTER.  This saves a
+    great deal of frustration.
+
+  o  Note that if you modify shape number 84 in the BLOCKS file, ALL
+    cells in ALL of the SQUARExy files which contain the number 84
+    will display the new shape.
+
+  o  The Self-Setup type of enemy will always set itself up in a
+    passable terrain space.  This space might be the same space the
+    player starts out on...
+
+  o  If you have placed indestructible terrain on one edge of a
+    square, try not to allow the player to enter that square by that
+    edge.  The player will wind up standing on a terrain piece he is
+    not supposed to be.  DIAFLW will choke on this.
+
+  o  Try not to create a situation the player cannot get out of.  I.E.
+    don't have a set of stairs go up into a SQUARE that is completely
+    sealed and has no stairway leading back down. (unless it contains
+    the target)
+
+  o  If you wish to have a weapon just lying around to be picked up,
+    create a shape in BLOCKS that looks like a weapon in a shape
+    number reserved as an enemy, and define a man in that shape as a
+    dead body with the applicable weapon.
+
+  o  Define special 'Trap' shapes in the enemy reserved range of the
+    BLOCKS file if you plan to use traps.  A trap shape should look
+    like anything but a man.  Trap spaces are treated as passable
+    terrain that attacks.
+
+  o  When in doubt, make notes!  Sketch out a floor plan, if possible.
+
+
+     Part III: Technical notes
+
+   File specifications..
+
+           File                 BLOAD address and length
+
+          STARTER             A$6E00, L$FF      A28160, L255
+          WEAPONS             A$6F00, L$FF      A28416, L255
+          BLOCKS              A$7000, L$FFF     A28672, L4095
+          BLOCKS2 (optional)  A$7000, L$FFF     A28672, L4095
+          SQUARExy            A$8000, L$10FF    A32786, L4351
+          EDIT.CODE           A$9100, L$4FE     A37120, L1278
+          SCENARIO.STCODE     A$6E00, L$2300    A28160, L8960
+
+   Stuff about SQUARExy files..
+
+     A SQUARExy file, when first created, will be approx. 10 blocks
+long.  This contains the SQUARE information as it is found at the
+start of an adventure.  Since the men and the terrain tends to get
+shot up very badly during the course of the game, and DIAFLW can store
+only one SQUARE in memory at a time, something special will happen to
+the file..
+     When the player walks off the edge of a SQUARE, the shot-up
+version of that SQUARE disappears from memory.  If the player were to
+return to that SQUARE, the fresh SQUARExy file would be loaded, and
+the SQUARE would appear to be not shot up.  To prevent this, DIAFLW
+saves a copy of the shot-up terrain as an 'appendix' to the SQUARE
+file, so if the player returns to that SQUARE, the shot-up version can
+be loaded again.  This 'appendix' is added to the SQUARExy file on
+disk, making it approx. 18 blocks long.  The actual length of the file
+is then 2 x $1100 or $2200 bytes long.  The BLOAD length, however,
+remains $1100, so if the file is loaded by one of the Applesoft
+editors, only the 'fresh' SQUARE will be loaded.
+     This process is actually fooling ProDOS into thinking the file is
+shorter than it is.  DIAFLW uses ProDOS's Read/Write Block routines,
+and bypasses these complications.  So DIAFLW is the only program with
+access to the shot-up portion of the SQUAREs since it reads its data
+directly.  This needn't concern the developer, but is the explanation
+of why the SQUARExy files, when walked into by a player, expand to 18
+blocks.
+
+   Stuff about MASTER.CREATE and SCENARIO.STCODE
+
+     The SCENARIO.STCODE file is a binary file which loads at $6E00
+(28160) and has a length of $2300 (8960).  Here is a breakdown of what
+it contains:
+
+$6E00 - $6EFF  The default STARTER data (empty hands, scenario name of TEST)
+$6F00 - $6FFF  The default WEAPONS data (Mac-10, M-16, Autoloader, .45, etc.)
+$7000 - $7FFF  The default BLOCKS data  (shapes from the Terminator scenario)
+$8000 - $8FFF  The default SUQARE00     (empty, surrounded by indestructible)
+$9000 - $90FF  The default MEN data     (32 unused enemies)
+
+     This file is used by EDITORS to purge memory locations, and is
+used by MASTER.CREATE to make a scenario disk.  Inspection of
+MASTER.CREATE will reveal that it simply loads SCENARIO.STCODE, then
+saves it off in sections to the disk in drive 1, overwriting whatever
+files are named such.
+
+   Stuff about the MEN data..
+
+     A SQUARExy file, you will notice, is $1100 bytes long.  It
+consists of a 64x64 bytemap of that square.  The values in the first
+$1000 (64 x 64 = 4096 = $1000) bytes will not exceed 127, as these
+values correspond to shape numbers in the BLOCKS file, and there are
+only 128 shapes. (0-127)  Note that values higher than this will
+result in errors.  The high bit is used dynamically by DIAFLW during
+execution, but all of the first $1000 bytes will still be 0-127 when
+DIAFLW completes execution or saving.
+     The values in the latter $100 (256) bytes is the MEN information
+for that SQUARE.  Each man/trap has 8 bytes allocated to it,
+containing its status, X and Y, shape #, weapon type, ammo type, ammo
+left, and point value.  These 32 sets of eight bytes form the trail
+end of any SQUARExy file. (8x32=256)
+
+   Stuff about EDIT.CODE..
+
+     All of the editors except STARTER.EDIT and WEAPONS.EDIT use a
+small set of machine-language routines located in the file EDIT.CODE
+($9100 - $95FE).  The routines in this file perform various tasks for
+the editors including drawing the shapes, moving the shapes, creating
+cursors, and creating the 7x7 reigon display.
+
+
+   Afterword:
+
+     Well, I hope that about sums it up.  I hope enough of the system
+information was covered here.  About the best advice I can give to a
+potential Death Is A Four Letter Word scenario developer is to use
+plenty of disks until he knows what sort of file manipulation is going
+on.  Many things have been accidentally overwritten during the
+development of all of my scenarios, and I consider myself to be fairly
+fluent with the system.  I always keep backups of the editors and my
+scenarios, and I advise other developers to do the same.
+     If these precautions are followed, and nothing too exotic is done
+(like defining an enemy with the resrved gunfire shape, allowing the
+player to enter an indestructible space, or making it possible to
+enter a SQUARE that is not defined..) the system will hold up fairly
+well.
+     Once of the cosmetic problems I have noticed in my personal use
+is that hand-to-hand combat is pretty limited.  Both the men and the
+player have to be 'firing' something.  To get around this, I defined
+all the men (aliens) to have the weapon 'CLAW+BITE'.  They still
+appear to be firing something, but when their corpses are searched, a
+useless weapon is found.  Much ado was raised when the player picked a
+'CLAW+BITE' up off of a dead body, but this was the only way to solve
+certain problems.
+     Overall, it is an excellent system, and any problems can be
+overcome by simple ingenuity.  It is flexible and open, and, as far as
+I'm concerned, can simulate virtually anything.  Some adventure ideas:
+
+ Swashbuckling pirates.. BOLO supertanks.. post-holocaust raiders..
+ 1930's gumshoes.. the Civil War.. anti-terrorist actions.. choppers..
+ underwater recovery.. space marines.. Transformers.. BattleDroids..
+ the Wild West.. Russian strongholds.. World War II.. World War III..?
+
+     But I've rambled long enough.  Enjoy the game.  Share with
+friends.  Play our scenarios.  Create your own.  Face the challenge.
+
+Good luck, and remember: Death is a four letter word..
