@@ -1,19 +1,20 @@
 Death is a Four Letter Word: DIAFLW
 ===================================
-|MIT| |APPLE| |Itch|
+|MIT||APPLE||Itch|
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
 
-.. |APPLE| image:: https://img.shields.io/badge/Apple%20II-ProDOS-404040.svg?logo=apple&logoColor=ee0000
+.. |APPLE| image:: https://img.shields.io/badge/Apple%20II-ProDOS-0000C0.svg?logo=apple&logoColor=ee0000
    :target: https://github.com/AppleWin/AppleWin
-
 
 .. |Itch| image:: https://img.shields.io/badge/Itch.io-fa5c5c.svg
    :target: https://myleftgoat.itch.io/diaflw?secret=50yDyW9gEaXGdvbVIRAq7yh3h4M
 
 
-.. |title| image:: TBD
+.. image:: banner.png
+   :alt: Splash screen banner
+   :align: center
 
 
 Overview

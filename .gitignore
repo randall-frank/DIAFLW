@@ -9,3 +9,4 @@ bin/_*
 DIAFLW.SYSTEM#ff2000
 DIAFLW_Release.2mg
 .vscode/
+/HELP.S

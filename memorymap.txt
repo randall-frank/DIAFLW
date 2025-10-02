@@ -101,16 +101,20 @@ D5 AA D5 AA - BLUE
 7200 - WEAPONS.S definition tables from WEAPONS file
 7300 - Xlocation?   from STARTER file
 7301 - Ylocation?
+7302 - Z?
 7303 - Selected hand
 7304 - Selected pocket
 7305 - Square X  - IO2.S
 7306 - Square Y
+7307 - current direction
 7308 - Score X000 0-9
 7309 - Score 0X00
 730A - Score 00X0
 730B - Score 000X
 730C - Hit X0 0-9
 730D - Hit 0X
+730E - Steps between heals
+730F - Size of heals
 7310 - pocket content array?  (weapon?, ammo?)
 7311 - more pocket info?
 7400 - GAME1.S
@@ -134,12 +138,33 @@ A000 - Icon data -> WHICHTBL can be $A0 or $10 (editor) read from BLOCKS2??
     BLOCKS is 4096 bytes
     128 Icons (32 bytes/icon), 14x16 pixels????   
 
+STARTER - base
+    (Q) State - @base, 13 bytes
+    (0) X pos
+    (1) Y pos
+    (2) Z pos?
+    (3) - current pocket
+    (4) - current hand
+    (5) X Square
+    (6) Y Square
+    (7) - current direction
+    (8) Score X000
+    (9) Score 0X00
+    (10) Score 00X0
+    (11) Score 000X
+    (12) Damage hi X0
+    (13) Damage lo 0X
+    (14) Steps/heal
+    (15) Heal amount
+ 
+    (ST(x,y) x=(0-6), y=(0-3)) - @base+16, 24 bytes
+    S$ - @base + 128, 21 bytes??? - scenario name
 
 FONT - 512 bytes??? 0E00???
 LOOKTBLS - 511 C00????    MSB,LSB  Loaded at 0E00?
 SOUNDS - 496 - 8900
 BIGFONT - 1024 - 1C00  ($5C00?)
-HELP - 1024 - 0800
+
 
 -- Not part of DIAFLW.SYSTEM --
 
