@@ -1,6 +1,6 @@
 Death is a Four Letter Word: DIAFLW
 ===================================
-|MIT||APPLE||Itch|
+|MIT| |APPLE| |Itch|
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
