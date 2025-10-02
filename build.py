@@ -8,7 +8,7 @@ ciderpresscli = ".\\ciderpress\\cp2.exe"
 fhpack = ".\\fhpack.exe"
 
 
-version = "1.2.0"  
+version = "1.2.2"  
 
 # HELP_SRC.S -> HELP.S
 with open("HELP_SRC.S", "r") as fp:
@@ -25,11 +25,12 @@ files = {
     "OPENING2.S": 0x8000,
     "PAC.S": 0x0800,
     "PRE.S": 0x9700,
-    "PRG.S": 0x2000,   # stand alone documentation reader READ.DOCS.SYS (DIAFLW.AWP)
     "WEAPONS.S": 0x7200,
     "DECOMP_IMG.S": 0x4000,
     "LOADER.S": 0x2000,
     "HELP.S": 0x7000,
+    "READ_DOCS.S": 0x2000,  # stand alone documentation reader READ.DOCS.SYS (DIAFLW.DOCS,TXT)
+    # "PRG.S": 0x2000,   # stand alone documentation reader READ.DOCS.SYS (DIAFLW,AWP)
 }
 
 # compile sources
@@ -99,6 +100,13 @@ outname = "DIAFLW.SYSTEM#ff2000"
 with open(outname, "wb") as fp:
     fp.write(data)
 print(f"Wrote system file: {outname}")
+
+# Build docs file
+with open("diaflw_docs.txt", "r") as fp:
+    text = fp.read()
+    with open("SYSTEM/DIAFLW.DOCS#040000", "w") as out:
+        text = text.replace("V_NUM", version)
+        out.write(text)
 
 # use CiderPress II CLI to place the file into the testing IMG
 cmd = [ciderpresscli, "add", "--strip-paths", "--overwrite", "disks/Testing.2mg", outname]

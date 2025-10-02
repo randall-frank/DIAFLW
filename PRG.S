@@ -94,7 +94,7 @@ P2       LDY   0
          JSR   $FDED
          INC   0
          LDA   0
-         CMP   #160
+         CMP   #160  ; two lines 80+80
          BNE   P2
          LDA   #22
          sta   37
@@ -102,14 +102,16 @@ P2       LDY   0
          LDA   #0
          STA   0
 P3       LDY   0
-         LDA   TITLES+80,Y
+         LDA   TITLES+160,Y
          JSR   $FDED
          INC   0
          LDA   0
-         CMP   #80
+         CMP   #80  ; one line
          BNE   P3
          RTS
 TITLES   ASC   '                 Documentation for Death'
          ASC   ' is a Four Letter Word                  '
          asc   '----------------------------------------'
          asc   '----------------------------------------'
+         ASC   '---------------- Arrow keys to page up/d'
+         ASC   'own, escape key to exit ----------------'

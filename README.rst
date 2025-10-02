@@ -68,10 +68,10 @@ at the top of the source tree will meet the requirement.
 
 Documentation and Issues
 ------------------------
-Most of the documentation for the game and editors is included in the AppleWorks WP file
-included in the disk image.  There is a READ.DOCS system file that can be used to view
-the AWP file.   Alternatively, the file has been exported to
-an ASCII text file `here <exported_diaflw_docs.txt>`_.
+Documentation for the game and editors is included in the DIAFLOW.DOCS text file
+included in the disk image.  There is a READ.DOCS system file that can be used 
+to view the file.   Alternatively, the source to the docs file is 
+available `here <diaflw_docs.txt>`_.
 
 Please feel free to post issues and other questions at `DIAFLW Issues
 <https://github.com/randall-frank/DIAFLW/issues>`_. This is the best place

@@ -1,17 +1,17 @@
- __________________________________________________________
-|                                                          |
-|  Death Is a Four Letter Word:  The Ultimate Adventure    |
-|__________________________________________________________|
-|                                                          |
-|    Program Development:  Randy Frank                     |
-|    Original Concepts:    Randy Frank                     |
-|    Editor Development:   Randy Frank and Gary Frank      |
-|    Playtesting:          John Laird, Randy Frank         |
-|    Documentation by:     Gary Frank                      |
-|    Many thanks to:       John Laird                      |
-|__________________________________________________________|
+ ____________________________________________________________
+|                                                            |
+| Death Is a Four Letter Word: The Ultimate Adventure vV_NUM |
+|____________________________________________________________|
+|                                                            |
+|    Program Development:  Randy Frank                       |
+|    Original Concepts:    Randy Frank                       |
+|    Editor Development:   Randy Frank and Gary Frank        |
+|    Playtesting:          John Laird, Randy Frank           |
+|    Documentation by:     Gary Frank                        |
+|    Many thanks to:       John Laird                        |
+|____________________________________________________________|
 
-   Prolouge:
+   Prologue:
 
      The original concepts behind Death Is a Four Letter Word, (hereto
 referred to as DIAFLW) began with the idea to leap beyond the classic
@@ -259,7 +259,7 @@ the left SQUARE, and all but the left wall of the right SQUARE,
 forming a situation similar to the one here:
 
      Be conscious of your placement of elevators    ###########  ###########
-as well.  Don't place a down elevator in the lowest  #                      #
+as well.  Don't place a down elevator in the lowest #                      #
 level of a scenario.  You should also be aware of   # SQUARE00    SQUARE10 #
 whether or not there is a way down once you have    #                      #
 gone up.  Usually you should place a down elevator  ###########  ###########

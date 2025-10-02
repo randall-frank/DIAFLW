@@ -10,3 +10,6 @@ DIAFLW.SYSTEM#ff2000
 DIAFLW_Release.2mg
 .vscode/
 /HELP.S
+_Fileinformation.txt
+SYSTEM/DIAFLW.DOCS#040000
+SYSTEM/READ.DOCS#ff0000
