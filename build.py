@@ -127,6 +127,10 @@ result = subprocess.run(cmd, capture_output=True, text=True, check=True)
 print(f"Renamed release disk image: {result.stdout} {result.stderr}")
 
 # Copy system files - PRODOS, BASIC...  
+try:
+    os.remove("SYSTEM/_FileInformation.txt")
+except Exception:
+    pass
 cmd = [ciderpresscli, "add", "--strip-paths", "DIAFLW_Release.2mg", "SYSTEM"]
 result = subprocess.run(cmd, capture_output=True, text=True, check=True)
 print(f"System files added to disk image: {result.stdout} {result.stderr}")
