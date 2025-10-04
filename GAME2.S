@@ -23,6 +23,10 @@ TEMP4    =     $1D
 TEMP5    =     $1E
 TEMP6    =     $1F
 SOUND    =     $8980
+
+* Main game step - 7A00
+
+LOCAL_GAMESTEP
          LDA   #31
          STA   TEMP0
 TOP1     JSR   MOVE

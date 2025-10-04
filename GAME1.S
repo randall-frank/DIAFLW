@@ -2,22 +2,7 @@
          DSK   bin/GAME1.BIN
          TYP   $06  ; /BIN file
 
-BIGSHAPE =     $800
-LOOKUP   =     BIGSHAPE+3
-SET      =     LOOKUP+3
-RNDIZE   =     SET+3
-RND      =     RNDIZE+3
-TEXT     =     RND+3
-TEXTSET  =     TEXT+3
-DRAW     =     TEXTSET+3
-HIGHLITE =     DRAW+3
-POCKETS  =     HIGHLITE+3
-CLEAR    =     POCKETS+3
-MSG      =     CLEAR+3
-CLEAR2   =     MSGS+3
-BOTTOMLINE =   CLEAR2+3
-HIT      =     $9009
-SCORE    =     $9006
+         PUT  COMMON.S
 
 TEMP0    =     0
 TEMP1    =     1
@@ -28,9 +13,17 @@ TEMP5    =     5
 TEMP6    =     6
 TEMP7    =     7
 TEMP8    =     8
-SOUND    =     $8980
 
          LST   OFF
+
+         JMP   LOCAL_USERSTEP
+
+* shared vars
+         DFB   0  ; POWER
+         DFB   0  ; EXPLOST
+         DFB   0  ; DAMAGE
+
+LOCAL_USERSTEP
          LDA   $C000
          BMI   L1
          JMP   MOVE
@@ -68,7 +61,7 @@ BZZ      CMP   #0
          LDA   #4
 BZZ1
          STA   $7304 ; Selected pocket
-         JSR   HIGHLITE
+         JSR   PAC_HIGHLITE
          RTS
 L2       CMP   #$8D  ; 'CR'
          BNE   LZZ4
@@ -84,7 +77,7 @@ LZ3      CMP   #$B0  ; '0'
          LDA   #1
 LZZ3
          STA   $7303 ; selected hand?
-         JSR   HIGHLITE
+         JSR   PAC_HIGHLITE
          JMP   MOVE
 LZQ3     CMP   #$88  ; 'TAB'
          BNE   LZQ4
@@ -101,18 +94,18 @@ LZQ4     CMP   #$95  ;  '?'
 L3       CMP   #$9B  ; '?'
          BNE   L4
          LDA   #5
-         JSR   MSG
+         JSR   PAC_MSG
          STA   $C010
 L31      LDA   $C000
          CMP   #$8D
          BNE   L31
          STA   $C010
          LDA   #0
-         JSR   MSG
+         JSR   PAC_MSG
          JMP   MOVE
 L4       CMP   #$CC  ; 'L'
          BNE   L5
-         JSR   HPOC
+         JSR   IO_HPOC
          LDY   #1
          LDA   (TEMP2),Y
          CMP   #$FF
@@ -129,32 +122,10 @@ L41      LDA   (TEMP0),Y
          JSR   APOC
 L42      JMP   MOVE
 
-* Set up TEMP0,TEMP1 for pocket,  TEMP2,TEMP3 for hand
-HPOC     LDA   #$73
-         STA   TEMP1
-         STA   TEMP3
-         LDY   $7304  ; Selected pocket
-         DEY
-         TYA
-         ASL
-         ASL
-         CLC
-         ADC   #$10
-         STA   TEMP0
-         LDA   $7303  ; Selected hand
-         CLC
-         ADC   #4
-         ASL
-         ASL
-         CLC
-         ADC   #$10
-         STA   TEMP2
-         RTS
-
 * Pocket/hand exchange
 L5       CMP   #$C1  ; 'A'
          BNE   L6
-         JSR   HPOC
+         JSR   IO_HPOC
          LDY   #1
 L52      LDA   (TEMP0),Y
          CMP   #$FF
@@ -171,7 +142,7 @@ L51      LDA   (TEMP2),Y
 L53      JMP   MOVE
 L6       CMP   #$C4  ; 'D'
          BNE   L7
-         JSR   HPOC
+         JSR   IO_HPOC
          LDA   #$FF
          LDY   #3
 L61      STA   (TEMP2),Y
@@ -180,14 +151,14 @@ L61      STA   (TEMP2),Y
          JSR   APOC
          JMP   MOVE
 APOC     LDA   $7304
-         JSR   POCKETS
+         JSR   PAC_POCKETS
          LDA   $7303
          CLC
          ADC   #5
-         JMP   POCKETS
+         JMP   PAC_POCKETS
 L7       CMP   #$D2  ; 'R'
          BNE   L8
-         JSR   HPOC
+         JSR   IO_HPOC
          LDY   #0
          LDA   (TEMP2),Y
          CMP   #$FF
@@ -204,7 +175,7 @@ EMPTYPOCKET LDA #6
          JMP   MOVE
 L8       CMP   #$D7  ; 'W'
          BNE   L9
-         JSR   HPOC
+         JSR   IO_HPOC
          LDY   #0
          LDA   (TEMP0),Y
          CMP   #$FF
@@ -223,7 +194,7 @@ L9       CMP   #$CB  ; 'K'
          LDA   $7307
          AND   #3
          STA   $7307
-         JSR   DRAW
+         JSR   PAC_DRAW
          JMP   MOVE
 L10      CMP   #$CA  ; 'J'
          BNE   L11
@@ -232,7 +203,7 @@ L10      CMP   #$CA  ; 'J'
          LDA   #3
          STA   $7307
 L101     LDA   $7307
-         JSR   DRAW
+         JSR   PAC_DRAW
          JMP   MOVE
 
 * Move forward
@@ -257,7 +228,7 @@ L11L     DEC   MCOUNT  ; Move handler
          LDX   TEMP71
          CPX   #64
          BGE   NPLANE
-         JSR   LOOKUP
+         JSR   PAC_LOOKUP
          BCS   L111
          CMP   #64
          BLT   L112
@@ -279,9 +250,9 @@ L111     LDA   TEMP71
          LDA   TEMP81
          STA   $7301
          LDA   $7307
-         JSR   DRAW
-         LDA   #0
-         JSR   SOUND
+         JSR   PAC_DRAW
+         LDA   #SOUND_TICK
+         JSR   PLAYSOUND
 NOGO     JMP   MOVE
 DX       DFB   0,255,1,0,0,1,255,0
 NPLANE   LDA   $7305
@@ -317,7 +288,7 @@ NP1      STY   $7300
          TAY
 NP2      STY   $7301
          LDA   $7307
-         JSR   DRAW
+         JSR   PAC_DRAW
          JMP   MOVE
 UP       JSR   $9003
          INC   $7306
@@ -330,9 +301,9 @@ DOWN1    LDA   TEMP71
          STA   $7301
          JSR   $9000
          LDA   $7307
-         JSR   DRAW
-         LDA   #0
-         JSR   SOUND
+         JSR   PAC_DRAW
+         LDA   #SOUND_TICK
+         JSR   PLAYSOUND
          JMP   MOVE
 TEMP71   DFB   0
 TEMP81   DFB   0
@@ -348,7 +319,7 @@ L12      CMP   #$D3  ;  'S'
          BNE   L13
          LDX   $7300
          LDY   $7301
-         JSR   LOOKUP
+         JSR   PAC_LOOKUP
          BCC   L121
          TXA
          ASL
@@ -357,7 +328,7 @@ L12      CMP   #$D3  ;  'S'
          STA   TEMP7
          LDA   #$70
          STA   TEMP8
-         JSR   HPOC
+         JSR   IO_HPOC
          LDY   #0
          LDA   (TEMP7),Y
          BNE   L121
@@ -384,40 +355,17 @@ EMPTYHAND LDA  #4
 L13      CMP   #$C8 ; 'H'
          BNE   L14
          JMP   MOVE
+
 * 'heal' one point of damage
-L139     LDA   #1
-         CLC
-         ADC   $730D
-         STA   $730D
-         CMP   #$0A
-         BLT   L131
-         SEC
-         SBC   #$0A
-         STA   $730D
-         INC   $730C
-         LDA   $730C
-         CMP   #$0A
-         BLT   L131
-         LDA   #9
-         STA   $730D
-         STA   $730C
-L131     LDX   #26
-         LDY   #24
-         LDA   #5
-         JSR   TEXTSET
-         LDA   $730C
-         ORA   #$B0
-         JSR   TEXT
-         LDA   $730D
-         ORA   #$B0
-         JMP   TEXT
+L139     JMP   IO_HITINC ; RJF
+
 L14      CMP   #$C6  ;  'F'
          BEQ   L141
          JMP   L15
 
 * Fire weapon
 L141     DEC   MCOUNT
-         JSR   HPOC
+         JSR   IO_HPOC
          LDY   #0
          LDA   (TEMP2),Y
          STA   COUNT
@@ -446,7 +394,21 @@ L142     INY
 L143     TXA
          STA   (TEMP2),Y
          JSR   APOC
-         LDA   #3
+         JSR   IO_GETWINFO ; Check for heath type
+         LDA   EXPLOST
+         CMP   #2
+         BNE   NOTHEAL
+
+         ; Handle health pack/shot/etc
+HEALLOOP LDA   DAMAGE
+         BEQ   HEALCOMPLETE
+         JSR   IO_HITINC
+         DEC   DAMAGE
+         JMP   HEALLOOP
+HEALCOMPLETE         
+         JMP   MOVE    ;???
+
+NOTHEAL  LDA   #3      ; Firing track
          STA   X1POS
          STA   Y1POS
          STA   COUNT
@@ -465,9 +427,9 @@ L143     TXA
 L144     LDX   X1POS
          LDY   Y1POS
          LDA   #7
-         JSR   BIGSHAPE
-         LDA   #4
-         JSR   SOUND
+         JSR   PAC_BIGSHAPE
+         LDA   #SOUND_SHOT
+         JSR   PLAYSOUND
          LDY   #40
 LDELAY   LDA   #200
          SEC
@@ -477,7 +439,7 @@ LDELAY   LDA   #200
          BNE   LDELAY
          LDX   XPOS
          LDY   YPOS
-         JSR   LOOKUP
+         JSR   PAC_LOOKUP
          BCC   L145
          JMP   COLLIDE
 L145     CMP   #64
@@ -489,7 +451,7 @@ L146     CMP   #6
          BEQ   L146-3
          LDX   X1POS
          LDY   Y1POS
-         JSR   BIGSHAPE
+         JSR   PAC_BIGSHAPE
 START    LDA   XPOS
          CLC
          ADC   DELTAX
@@ -513,6 +475,7 @@ START    LDA   XPOS
          DEC   COUNT
          BPL   L144
 FDONE    JMP   MOVE
+
 DELTAX   DFB   0
 DELTAY   DFB   0
 COUNT    DFB   0
@@ -520,8 +483,6 @@ XPOS     DFB   0
 YPOS     DFB   0
 X1POS    DFB   0
 Y1POS    DFB   0
-POWER    DFB   0
-EXPLOST  DFB   0
 
 * keypress handling continued...
 L15      CMP   #$93  ; '^S'
@@ -545,30 +506,15 @@ L17      CMP   #$8A  ; '^J'
          BEQ   L171
 
 * unknown keypress
-         LDA   #3
-DOSND    JSR   SOUND
+         LDA   #SOUND_CHIRP
+DOSND    JSR   PLAYSOUND
          STA   $C010
 
 * More keypress handling...
 L171     JMP   MOVE+3
 
-COLLIDE  JSR   HPOC
-         LDY   #0
-         LDA   (TEMP2),Y
-         ASL
-         ASL
-         ASL
-         ASL
-         ASL
-         STA   TEMP2
-         LDA   #$72
-         STA   TEMP3
-         LDY   #19
-         LDA   (TEMP2),Y
-         STA   POWER
-         INY
-         LDA   (TEMP2),Y
-         STA   EXPLOST
+COLLIDE  JSR   IO_HPOC
+         JSR   IO_GETWINFO  ; get the weapon info
          JSR   DOIT
          LDA   EXPLOST
          BEQ   DONEE
@@ -614,11 +560,11 @@ COL3     DEC   YPOS
          BGE   DONEF
          BGE   DONEF
          JSR   DOIT
-DONEF    LDA   #2
-         JSR   SOUND
+DONEF    LDA   #SOUND_LONGFIRE
+         JSR   PLAYSOUND
          JMP   DDD1
-DONEE    LDA   #1
-         JSR   SOUND
+DONEE    LDA   #SOUND_FIRE
+         JSR   PLAYSOUND
 DDD1     LDY   #40
 DD1      LDA   #200
          SEC
@@ -627,22 +573,22 @@ DD1      LDA   #200
          DEY
          BNE   DD1
          LDA   $7307
-         JSR   DRAW
+         JSR   PAC_DRAW
          JMP   MOVE
 EXPTBL   DFB   8,9,10,11,12,13,8,11
-DOIT     JSR   RND
+DOIT     JSR   PAC_RND
          AND   #$7
          TAY
          LDA   EXPTBL,Y
          LDX   X1POS
          LDY   Y1POS
-         JSR   BIGSHAPE
-         JSR   RND
+         JSR   PAC_BIGSHAPE
+         JSR   PAC_RND
          CMP   POWER
          BGE   NODAM
          LDX   XPOS
          LDY   YPOS
-         JSR   LOOKUP
+         JSR   PAC_LOOKUP
          BCC   GROUND
          TXA
          ASL
@@ -659,8 +605,8 @@ DOIT     JSR   RND
          STA   ($26),Y
          INY
          STA   ($26),Y
-         JSR   SCORE
-         JSR   SCORE
+         JSR   IO_SCORE
+         JSR   IO_SCORE
          JMP   NODAM
 MAN1     CMP   #$80
          BLT   MAN2
@@ -674,7 +620,7 @@ MAN2     LDA   #0
          INY
          LDA   #16
          STA   ($26),Y
-MAN3     JSR   SCORE
+MAN3     JSR   IO_SCORE
          DEC   COUNT
          BNE   MAN3
 NODAM    RTS
@@ -682,13 +628,13 @@ GROUND   CMP   #64
          BLT   NODAM
          CMP   #106
          BGE   NODAM
-         JSR   RND
+         JSR   PAC_RND
          AND   #3
          CLC
          ADC   #106
          LDX   XPOS
          LDY   YPOS
-         JSR   SET
+         JSR   PAC_SET
          RTS
 MOVE     STA   $C010
          LDA   MCOUNT  ; ? so as I read this, one needs to 'move' MCOUNT times before a 1 point heal.  CCCC is a table that speeds healing when one is in bad shape
@@ -704,9 +650,11 @@ V1       LDA   MESSAGE
          BNE   VV2
          RTS
 VV2      STA   OLDMSG
-         JMP   MSG
+         JMP   PAC_MSG
+
 MCOUNT   DFB   255
 MLEFT    DFB   0
 CCCC     DFB   4,7,9,12,15
 MESSAGE  DFB   0
 OLDMSG   DFB   0
+

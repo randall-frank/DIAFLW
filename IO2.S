@@ -7,8 +7,11 @@
          JMP   OPEN
          JMP   CLOSE
          JMP   SCORE
-         JMP   HIT
+         JMP   LOCAL_HIT
          JMP   GETPREFIX  ; RETURN NUMBER IN ACC AND LIST @6000
+         JMP   LOCAL_HITINC
+         JMP   LOCAL_HPOC
+         JMP   LOCAL_GETWINFO
 
          LST   OFF
 FILENAME HEX   08D3D1D5C1D2C50000
@@ -185,7 +188,29 @@ SC2      LDA   $7308,Y
          CPY   #4
          BNE   SC2
          RTS
-HIT      LDA   $730D
+
+LOCAL_HITINC   
+         LDA   $730D
+         CLC
+         ADC   #1
+         STA   $730D
+         CMP   #10     ; if below 10, done...
+         BNE   HOK
+         LDA   #0
+         STA   $730D
+         LDA   $730C
+         CLC
+         ADC   #1
+         STA   $730C
+         CMP   #10     ; if below 10, done...
+         BNE   HOK
+         LDA   #9      ; set to 99
+         STA   $730D
+         STA   $730C
+         JMP   HOK
+
+LOCAL_HIT      
+         LDA   $730D
          SEC
          SBC   #1
          STA   $730D
@@ -204,16 +229,8 @@ HIT      LDA   $730D
          STA   $730D
          LDA   #1
          STA   $7302
-HOK      LDX   #26
-         LDY   #24
-         LDA   #3
-         JSR   PAC_TEXTSET
-         LDA   $730C
-         ORA   #$B0
-         JSR   PAC_TEXT
-         LDA   $730D
-         ORA   #$B0
-         JMP   PAC_TEXT
+HOK      JMP   LOCAL_DRAWHEALTH
+
 TESTOLD  LDY   $8FFF
          BEQ   NEWREAD
 TO1      LDA   $8EFE,Y
@@ -659,3 +676,67 @@ BL4      LDA   #$18
          LDA   #$17
          JSR   PAC_TEXT
 BL5      RTS
+
+; Shared with GAME1.S
+TEMP0    =     0
+TEMP1    =     1
+TEMP2    =     2
+TEMP3    =     3
+
+* Set up TEMP0,TEMP1 for pocket,  TEMP2,TEMP3 for hand
+LOCAL_HPOC
+         LDA   #$73
+         STA   TEMP1
+         STA   TEMP3
+         LDY   $7304  ; Selected pocket
+         DEY
+         TYA
+         ASL
+         ASL
+         CLC
+         ADC   #$10
+         STA   TEMP0
+         LDA   $7303  ; Selected hand
+         CLC
+         ADC   #4
+         ASL
+         ASL
+         CLC
+         ADC   #$10
+         STA   TEMP2
+         RTS
+
+* get the current hand weapon info: power, type, damage 
+LOCAL_GETWINFO
+         LDY   #0
+         LDA   (TEMP2),Y
+         ASL
+         ASL
+         ASL
+         ASL
+         ASL
+         STA   TEMP2
+         LDA   #$72
+         STA   TEMP3
+         LDY   #19
+         LDA   (TEMP2),Y  ; Weapon power
+         STA   POWER
+         INY
+         LDA   (TEMP2),Y  ; Weapon type
+         STA   EXPLOST
+         INY
+         LDA   (TEMP2),Y  ; Weapon damage
+         STA   DAMAGE
+         RTS
+
+LOCAL_DRAWHEALTH
+         LDX   #26
+         LDY   #24
+         LDA   #3
+         JSR   PAC_TEXTSET
+         LDA   $730C
+         ORA   #$B0
+         JSR   PAC_TEXT
+         LDA   $730D
+         ORA   #$B0
+         JMP   PAC_TEXT

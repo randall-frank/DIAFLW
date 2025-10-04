@@ -62,7 +62,7 @@ the `DIAFLW_Release.2mg` file:
 One can adjust the pathnames to CiderPress and Merlin at the top of the build.py file.
 
 Note: fhpack.exe is optional.  It allows for the splash and play background images to
-be changed.  It compresses the binary files to save memory.  It can be built using
+be changed.  It is used to compresses image files to save memory.  It can be built using
 the cygwin C compiler very easily. Having a copy of `fhpack.exe` and `cygwin1.dll` 
 at the top of the source tree will meet the requirement. 
 

@@ -4,9 +4,9 @@
 
          ASC   'UZI 9MM   '
          ASC   '9MM CLIP '
-         DFB   128
-         DFB   0
-         DFB   6
+         DFB   128    ; Power (% chance to kill enemy)
+         DFB   0      ; Type 0=shot,1=explosion,2=healing
+         DFB   6      ; Damage (damage to player if hit by it)
          DS    10
          ASC   'H&K 12PSH '
          ASC   'H&K CLIP '

@@ -1,15 +1,13 @@
-DRAWTAB.S -> $9600 - some kind of tables??? X1-4, Y1-4 32 bytes/table
+DRAWTAB.S -> $4E00-$4FFF directional view tables
 GAME1.S -> $7400 - Look at $c000 and handle a keypress???
-GAME2.S -> $7A00 - ???
+GAME2.S -> $7A00 - One pass of the game state (move/fire enemies)
 I.O.S -> $9000 - basic prodos functions (open file, read file, save file, ...)
 I.O2.S -> $9000 - second version of the above???
 OPENING.S -> $8000 - start the game
 OPENING2.S -> $8000 - start the game second version
 PAC.S -> $0800 -> core graphics routines
-PRE.S -> $9700 -> 
-WEAPONS.S -> $7200 -> table of guns
-PRG.S -> $2000 & $1A00 -> more I/O?
-BOTTOMLINES.S -> $0C80 -> Open/Close/Disk/Quit -> list of scenarios 
+PRE.S -> $9700 -> Used by editors for selecting prefix in ASCII
+WEAPONS.S -> $7200 -> table of guns 
 
 
 Block images can be at: $1000 or $A000 (editor or game)?  WHICHTBL selects
@@ -117,8 +115,8 @@ D5 AA D5 AA - BLUE
 730F - Size of heals
 7310 - pocket content array?  (weapon?, ammo?)
 7311 - more pocket info?
-7400 - GAME1.S
-7A00 - GAME2.S
+7400 - GAME1.S - Player side of a game "step"
+7A00 - GAME2.S - More enemies, etc one game "step"
 8000 - OPENING2.S start the game???
         LETUSGO -> reads in BLOCKS, WEAPONS, STARTER, SAVED, BLOCKS2?
 8980 - SOUND routine (no source???) -
@@ -131,8 +129,10 @@ D5 AA D5 AA - BLUE
 9000 - IO2.S Core I/O routines - file open/close/setprefix/etc 
         OPEN - look for and read the SQUARExy file - prompt the user as needed
             - regen the random table...
-9600 - TBLX -> DRAWTAB.S table of direction tiles to draw????
-9680 - TBLY -> DRAWTAB.S
+9600 - free
+9700 - free
+
+- free to 9FFF???  
 
 A000 - Icon data -> WHICHTBL can be $A0 or $10 (editor) read from BLOCKS2??
     BLOCKS is 4096 bytes

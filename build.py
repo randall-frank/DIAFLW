@@ -8,7 +8,7 @@ ciderpresscli = ".\\ciderpress\\cp2.exe"
 fhpack = ".\\fhpack.exe"
 
 
-version = "1.2.2"  
+version = "1.3.0"  
 
 # HELP_SRC.S -> HELP.S
 with open("HELP_SRC.S", "r") as fp:
@@ -18,19 +18,18 @@ with open("HELP_SRC.S", "r") as fp:
         out.write(text)
 
 files = {
-    "DRAWTAB.S": 0x4E00,  # 0x9600,
+    "DRAWTAB.S": 0x4E00,
     "GAME1.S": 0x7400,
     "GAME2.S": 0x7A00,
     "IO2.S": 0x9000,
     "OPENING2.S": 0x8000,
     "PAC.S": 0x0800,
-    "PRE.S": 0x9700,
+    "PRE.S": 0x9700,   # Park of the editors, not core game
     "WEAPONS.S": 0x7200,
     "DECOMP_IMG.S": 0x4000,
     "LOADER.S": 0x2000,
     "HELP.S": 0x7000,
     "READ_DOCS.S": 0x2000,  # stand alone documentation reader READ.DOCS.SYS (DIAFLW.DOCS,TXT)
-    # "PRG.S": 0x2000,   # stand alone documentation reader READ.DOCS.SYS (DIAFLW,AWP)
 }
 
 # compile sources
