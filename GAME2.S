@@ -2,19 +2,8 @@
          DSK   bin/GAME2.BIN
          TYP   $06  ; /BIN file
 
-BIGSHAPE =     $800
-LOOKUP   =     BIGSHAPE+3
-SET      =     LOOKUP+3
-RNDIZE   =     SET+3
-RND      =     RNDIZE+3
-TEXT     =     RND+3
-TEXTSET  =     TEXT+3
-DRAW     =     TEXTSET+3
-HIGHLITE =     DRAW+3
-POCKETS  =     HIGHLITE+3
-CLEAR    =     POCKETS+3
-HIT      =     $9009
-SCORE    =     $9006
+         PUT  COMMON.S
+
 TEMP0    =     $19
 TEMP1    =     $1A
 TEMP2    =     $1B
@@ -22,7 +11,7 @@ TEMP3    =     $1C
 TEMP4    =     $1D
 TEMP5    =     $1E
 TEMP6    =     $1F
-SOUND    =     $8980
+
 
 * Main game step - 7A00
 
@@ -33,14 +22,14 @@ TOP1     JSR   MOVE
          DEC   TEMP0
          BPL   TOP1
          LDA   $7307
-         JSR   DRAW
+         JSR   PAC_DRAW
          LDA   #31
          STA   TEMP0
 TOP2     JSR   FIRE
          DEC   TEMP0
          BPL   TOP2
          RTS
-MOVE     JSR   RND
+MOVE     JSR   PAC_RND
          CMP   #$B0
          BLT   M1
          RTS
@@ -98,10 +87,10 @@ PICK     LDY   TEMP2
          BEQ   BEST
          DEY
          BEQ   RAND
-         JSR   RND
+         JSR   PAC_RND
          CMP   #$60
          BGE   BEST
-RAND     JSR   RND
+RAND     JSR   PAC_RND
          AND   #3
          JMP   MOVIT
 XIN      LDA   XPOS
@@ -148,7 +137,7 @@ M6       STA   XN
          STA   YN
          LDX   XN
          TAY
-         JSR   LOOKUP
+         JSR   PAC_LOOKUP
          BCS   NOWAY
          CMP   #4
          BEQ   M7
@@ -191,7 +180,7 @@ F1       PHA
          JSR   DELT
          PLA
          JSR   SPEC
-         JSR   RND
+         JSR   PAC_RND
          LDX   TEMP1
          CMP   INNER
          BGE   F1111
@@ -265,9 +254,9 @@ DFIRE    STA   DIR
 LOOP     LDA   #7
          LDX   TEMP3
          LDY   TEMP4
-         JSR   BIGSHAPE
+         JSR   PAC_BIGSHAPE
          LDA   #4
-         JSR   SOUND
+         JSR   PLAYSOUND
          LDY   #50
 DELAY    LDA   #200
          SEC
@@ -284,7 +273,7 @@ DELAY    LDA   #200
          JMP   ONTARGET
 F9       LDX   XPOS
          LDY   YPOS
-         JSR   LOOKUP
+         JSR   PAC_LOOKUP
          PHP
          PHA
          PHA
@@ -297,7 +286,7 @@ F9       LDX   XPOS
          LDA   #4
 F11      LDX   TEMP3
          LDY   TEMP4
-         JSR   BIGSHAPE
+         JSR   PAC_BIGSHAPE
          PLA
          PLP
          BCC   F99
@@ -328,16 +317,16 @@ F97      LDA   DIR
          ADC   DIRS+1,X
          STA   TEMP4
          JMP   LOOP
-ONTARGET JSR   RND
+ONTARGET JSR   PAC_RND
          AND   #3
          CLC
          ADC   #8
          LDX   #3
          LDY   #3
-         JSR   BIGSHAPE
+         JSR   PAC_BIGSHAPE
          LDA   #1
-         JSR   SOUND
-         JSR   RND
+         JSR   PLAYSOUND
+         JSR   PAC_RND
          CMP   #$B0
          BGE   ONE1
          LDX   TEMP1
@@ -353,7 +342,7 @@ ONTARGET JSR   RND
          LDY   #21
          LDA   (TEMP5),Y
          STA   TEMP3
-O1       JSR   HIT
+O1       JSR   IO_HIT
          DEC   TEMP3
          BPL   O1
 ONE1     LDY   #60
@@ -366,7 +355,7 @@ DELAY2   LDA   #200
          LDA   $7307
          LDX   #3
          LDY   #3
-         JMP   BIGSHAPE
+         JMP   PAC_BIGSHAPE
 SPEC     PHA
          LDA   DELTAX
          BEQ   S2
