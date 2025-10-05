@@ -1,6 +1,6 @@
 Use names in COMMONS.S instead of naked addresses
 
-Allow control over the health regen rate
+Allow control over the health regen rate - STEPS_TO_HEAL=FF (FF=table), HEAL_SIZE=1
 
 # Display "behind" blocks with dropped out scanlines
 Check on game save/etc 

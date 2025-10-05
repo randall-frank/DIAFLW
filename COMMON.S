@@ -53,8 +53,8 @@ SQUARE_Y        = $7306
 PLAYER_DIR      = $7307
 PLAYER_SCORE_LO = $7308  ; X000,0X00,00X0,000X
 PLAYER_HIT_LO   = $730C  ; X0,0X
-STEPS_TO_HEAL   = $730E
-HEAL_SIZE       = $730F
+STEPS_TO_HEAL   = $730E  ; FF=table
+HEAL_SIZE       = $730F  ; default=1
 
 * Sound
 PLAYSOUND       = $8980

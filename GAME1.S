@@ -355,10 +355,6 @@ EMPTYHAND LDA  #4
 L13      CMP   #$C8 ; 'H'
          BNE   L14
          JMP   MOVE
-
-* 'heal' one point of damage
-L139     JMP   IO_HITINC 
-
 L14      CMP   #$C6  ;  'F'
          BEQ   L141
          JMP   L15
@@ -403,7 +399,7 @@ L143     TXA
          ; Handle health pack/shot/etc
 HEALLOOP LDA   DAMAGE
          BEQ   HEALCOMPLETE
-         JSR   IO_HITINC
+         JSR   IO_HITINC   ; Heal one point
          DEC   DAMAGE
          JMP   HEALLOOP
 HEALCOMPLETE         
@@ -640,12 +636,28 @@ GROUND   CMP   #64
 MOVE     STA   $C010
          LDA   MCOUNT  ; ? so as I read this, one needs to 'move' MCOUNT times before a 1 point heal.  CCCC is a table that speeds healing when one is in bad shape
          BPL   V1
-         JSR   L139  ;  add one point of health.
-         LDA   $730C
+
+         LDA   HEAL_SIZE   ; Heal some number of points (0=no walking healing)
+         STA   MCOUNT      ; temporarily use MCOUNT to loop over the number of points to add
+MOREHEAL LDA   MCOUNT
+         CMP   #0
+         BEQ   HEALDONE
+         JSR   IO_HITINC   ; add one point of health.
+         DEC   MCOUNT
+         JMP   MOREHEAL
+
+HEALDONE LDA   STEPS_TO_HEAL   ; reset the new step count
+         CMP   #$FF
+         BEQ   USETABLE        ; FF=original table based on current health
+         STA   MCOUNT          ; if not FF, the number is the number of steps between heals
+         JMP   V1
+
+USETABLE LDA   $730C  ; set up the counter of moves to the next heal
          LSR
          TAY
          LDA   CCCC,Y
          STA   MCOUNT
+         
 V1       LDA   MESSAGE
          CMP   OLDMSG
          BNE   VV2

@@ -111,8 +111,8 @@ D5 AA D5 AA - BLUE
 730B - Score 000X
 730C - Hit X0 0-9
 730D - Hit 0X
-730E - Steps between heals
-730F - Size of heals
+730E - Steps between heals  FF = use table
+730F - Size of heals        01
 7310 - pocket content array?  (weapon?, ammo?)
 7311 - more pocket info?
 7400 - GAME1.S - Player side of a game "step"
