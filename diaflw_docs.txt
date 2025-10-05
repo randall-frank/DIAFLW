@@ -20,8 +20,8 @@ sword adventures (read: Ultima VII) and to develop a happy medium
 between arcade action and the 'mission' style game.  It was also
 desirable to let any user create or modify a scenario and to keep the
 game system simple.  This is the result.
-     DIAFLW is totally uncopyprotected and is a fairly open system.
-It is freely modifyable by anyone who wishes to do so.  This, however,
+     DIAFLW is not copy protected and is a fairly open system.
+It is freely modifiable by anyone who wishes to do so.  This, however,
 is at your own risk.  The program is a 41 block SYS file entitled
 DIAFLW.SYSTEM.  The remainder of the disk can contain the editors
 (completely in Applesoft with one machine language routine..) or a
@@ -64,7 +64,7 @@ to be the startup system, it is executed to begin the game.  It opens
 to a nifty title sequence.  Press any key to interrupt this sequence.
 The game will respond by scanning all active ProDOS devices (note:
 /RAM is recognized..) then display all of the volume names.
-     This opening sequence is essentially a treewalking system.
+     This opening sequence is essentially a tree-walking system.
 Select the volume by pressing a number key.  DIAFLW will then display
 what subdirectories (if any) are on the disk.  Continue this until you
 are in the subdirectory which contains the desired scenario. 'U' backs
@@ -207,7 +207,7 @@ BLOCKS          BLOCKS             |             |       DIAFLW.SYSTEM
 WEAPONS         WEAPONS         /FORCE.10     /GUNS.OF
 STARTER         STARTER            |             |
 DATA            DATA            BLOCKS        BLOCKS
-SQUARExy        SUQARExy        WEAPONS       WEAPONS
+SQUARExy        SQUARExy        WEAPONS       WEAPONS
                                 STARTER       STARTER
                                 DATA          DATA
                                 SQUARExy      SQUARExy
@@ -295,7 +295,7 @@ West' scenario is difficult (not impossible) to simulate well, as luck
 comes into play heavier than skill when the human player is pitted
 against 10 or less enemies who are nearly as powerful as he is.
      Aside from these restrictions, the creator is only stopped by the
-size of the playing feild and the number of shapes, both of which have
+size of the playing field and the number of shapes, both of which have
 proved to be more than ample for the creation of an exciting scenario.
 
    Using the editors..
@@ -422,7 +422,14 @@ the starting position of the player, his starting SQUARE, and his x,y
 coordinates within that SQUARE.  D edits the starting damage, and N
 edits the name of the scenario.  H allows you to edit the contents of
 the players hands and pockets as he begins the game, and S saves the
-setup to disk.  This is the simplest of the editors.
+setup to disk.
+     DIAFLW includes a health regeneration system of one point for
+every so many steps of movement taken.  By default, 1 point is healed
+for 4 to 15 steps (faster the more damaged the player is).  This is
+called "table" rate.  The E key allows the designer to customize this
+rate.  For example, 5 health every 2 steps.  Setting the points to
+0 can be useful in a scenario that uses "health" type weapons (2) 
+exclusively to heal the player.
 
   5) Edit the men in each square. (MEN.EDIT)
 
@@ -548,16 +555,17 @@ Space  Plot/Unplot                    Space  Plot block
 (WASZ) Move secondary cursor           (N)   Edit scenario name
  (OP)  Scroll thru enemy data          (P)   Edit position
 Space  Define enemy                    (S)   Save setup
- (F)   Find the selected enemy
- (V)   View square                     WEAPONS.EDIT
- (D)   Disk operations
-                                       (N)   Edit weapon name
+ (F)   Find the selected enemy         (E)   Edit hEalth regen options
+ (V)   View square                     
+ (D)   Disk operations                 WEAPONS.EDIT
+                                       
  DATA file                             (P)   Edit power value
                                        (T)   Edit weapon type
 Standard ASCII text file in lower      (D)   Edit damage value
 case, no carriage returns, ending      (A)   Edit ammo name
 with the tilde (~) character.         (0-7)  Select weapon to edit
                                        (S)   Save setup
+                                       (N)   Edit weapon name
 
    Notes..
 
@@ -602,11 +610,11 @@ with the tilde (~) character.         (0-7)  Select weapon to edit
 
            File                 BLOAD address and length
 
-          STARTER             A$6E00, L$FF      A28160, L255
-          WEAPONS             A$6F00, L$FF      A28416, L255
-          BLOCKS              A$7000, L$FFF     A28672, L4095
-          BLOCKS2 (optional)  A$7000, L$FFF     A28672, L4095
-          SQUARExy            A$8000, L$10FF    A32786, L4351
+          STARTER             A$6E00, L$100     A28160, L256
+          WEAPONS             A$6F00, L$100     A28416, L256
+          BLOCKS              A$7000, L$1000    A28672, L4096
+          BLOCKS2 (optional)  A$7000, L$1000    A28672, L4096
+          SQUARExy            A$8000, L$1100    A32786, L4352
           EDIT.CODE           A$9100, L$4FE     A37120, L1278
           SCENARIO.STCODE     A$6E00, L$2300    A28160, L8960
 
@@ -677,7 +685,7 @@ end of any SQUARExy file. (8x32=256)
 small set of machine-language routines located in the file EDIT.CODE
 ($9100 - $95FE).  The routines in this file perform various tasks for
 the editors including drawing the shapes, moving the shapes, creating
-cursors, and creating the 7x7 reigon display.
+cursors, and creating the 7x7 region display.
 
 
    Afterword:
@@ -691,7 +699,7 @@ development of all of my scenarios, and I consider myself to be fairly
 fluent with the system.  I always keep backups of the editors and my
 scenarios, and I advise other developers to do the same.
      If these precautions are followed, and nothing too exotic is done
-(like defining an enemy with the resrved gunfire shape, allowing the
+(like defining an enemy with the reserved gunfire shape, allowing the
 player to enter an indestructible space, or making it possible to
 enter a SQUARE that is not defined..) the system will hold up fairly
 well.
