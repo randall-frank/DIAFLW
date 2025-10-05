@@ -357,7 +357,7 @@ L13      CMP   #$C8 ; 'H'
          JMP   MOVE
 
 * 'heal' one point of damage
-L139     JMP   IO_HITINC ; RJF
+L139     JMP   IO_HITINC 
 
 L14      CMP   #$C6  ;  'F'
          BEQ   L141
@@ -394,6 +394,7 @@ L142     INY
 L143     TXA
          STA   (TEMP2),Y
          JSR   APOC
+         JSR   IO_HPOC
          JSR   IO_GETWINFO ; Check for heath type
          LDA   EXPLOST
          CMP   #2

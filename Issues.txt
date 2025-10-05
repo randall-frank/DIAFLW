@@ -1,18 +1,13 @@
-Allow weapons to implement health packs  (weapon type: 0=shot, 1=explosion, 2=healing)
+Use names in COMMONS.S instead of naked addresses
+
 Allow control over the health regen rate
+
 # Display "behind" blocks with dropped out scanlines
 Check on game save/etc 
 Reconsider prefix handling for editors...
 
+Creating a new "master" should create a new directory
 
-+Right hand+Left hand +
-|M1 Carbine|M1 Carbine|
-1+10+1+10+1 = 23
-
-2+7*2+1 = 17
-17 + 23 = 40 
-
-17, 29
 
 fhpack v1.0.1 by Andy McFadden -*- Copyright 2015 by faddenSoft
 Source code available from https://github.com/fadden/fhpack

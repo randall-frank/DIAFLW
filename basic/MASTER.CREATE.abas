@@ -3,26 +3,27 @@
  8  PRINT : PRINT D$;"BLOAD ";A$;"SCENARIO.STCODE"
  10  HOME 
  20  PRINT "DEATH IS A FOUR LETTER WORD MASTER MAKER----------------------------------------"
- 40  PRINT " INSERT A FORMATTED DISK IN THE DRIVE"
- 50  PRINT "AND PRESS 'Y' TO CREATE A ONE-SQUARE"
- 51  PRINT "SCENARIO WITH STANDARD BLOCKS, WEAPONS,"
- 52  PRINT "AND A BLANK SQUARE00 WITH 32 UNUSED MEN."
- 60  PRINT " YOU MAY THEN EDIT THIS MASTER SCENARIO"
- 61  PRINT "USING THE VARIOUS EDITORS.": PRINT 
- 70  PRINT "(NOTE:NOTHING WILL BE ERASED FROM THE"
- 71  PRINT "DISK THAT IS USED, BUT ANY D.I.A.F.L.W."
- 72  PRINT "FILES WILL BE OVERWRITTEN BY THE DEFAULT";
- 80  PRINT "FILES THAT THIS PROGRAM CREATES.)"
- 100  VTAB 18: HTAB 1: PRINT " DO YOU WANT TO DO THIS NOW? (Y/N)";: GET A$: IF A$ <  > "N" AND A$ <  > "Y" THEN 100
+ 40  PRINT " This tool will create a sub-directory"
+ 50  PRINT "containing a one-square scenario with"
+ 51  PRINT "standard blocks, weapons and a blank"
+ 52  PRINT "SQUARE00 with 32 unused men."
+ 60  PRINT " You may then edit this scenario using"
+ 61  PRINT "the various editors.": PRINT 
+ 70  PRINT "(Note: The directory name must end with"
+ 71  PRINT "a period. This is how DIAFLW identifies"
+ 72  PRINT "a scenario directory. This program will"
+ 80  PRINT "add the period automatically.)"
+ 100  VTAB 18: HTAB 1: PRINT " Do you want to do this now? (Y/N)";: GET A$: IF A$ <  > "N" AND A$ <  > "Y" THEN 100
  110  IF A$ = "N" THEN  HOME : GOTO 3020
  111  GOSUB 5000
- 120  HOME : PRINT "CREATING.."
+ 115  GOSUB 6000
+ 120  HOME : PRINT "Creating.."
  121  PRINT 
- 130  PRINT "  BLOCKS.."
+ 130  PRINT "  Blocks.."
  140  PRINT D$;"BSAVE BLOCKS,A$7000,L$1000"
- 150  PRINT "  WEAPONS.."
+ 150  PRINT "  Weapons.."
  160  PRINT D$;"BSAVE WEAPONS,A$6F00,L$100"
- 170  PRINT "  STARTER.."
+ 170  PRINT "  Starter.."
  180  PRINT D$;"BSAVE STARTER,A$6E00,L$100"
  190  PRINT "  DATA.."
  200  PRINT D$;"OPEN DATA"
@@ -31,13 +32,22 @@
  230  PRINT D$;"CLOSE DATA"
  240  PRINT "  SQUARE00.."
  250  PRINT D$;"BSAVE SQUARE00,A$8000,L$1100"
- 255  HOME : PRINT : PRINT "INSERT THE EDITORS DISK AND PRESS A KEY";: GET A$
+ 255  HOME : PRINT : PRINT "Insert the editors disk and press a key";: GET A$
  300  GOTO 3020
  3000 BA = 9 * 4096 + 6 * 256:A$ = ""
  3010  FOR X = 1 TO  PEEK (BA):A$ = A$ +  CHR$ ( PEEK (BA + X)): NEXT 
  3015  RETURN 
- 3020  GOSUB 3000: PRINT  CHR$ (4);"RUN ";A$;"EDITORS"
+ 3020  GOSUB 3000: PRINT  D$;"RUN ";A$;"EDITORS"
  3030  END 
- 5000  HOME : PRINT : PRINT "INSERT SCENARIO DISK AND PRESS ANY KEY";: GET A$: HOME 
+ 5000  HOME : PRINT : PRINT "Select the parent directory (RETURN)";: GET A$: HOME 
  5001  CALL 9 * 4096 + 256 * 7
  5002  HOME : RETURN 
+ 6000  HOME : PRINT "Enter the new subdirectory name."
+ 6002  PRINT D$;"PREFIX": INPUT P$
+ 6005  PRINT "Parent directory:" : PRINT P$ : PRINT
+ 6010  INPUT "Name (RETURN=Abort): ", S$
+ 6015  IF LEN(S$) = 0 THEN RETURN
+ 6020 S$ = LEFT$(S$, 14) + "."
+ 6030 PRINT D$;"CREATE ";S$;",TDIR"
+ 6040 PRINT D$;"PREFIX ";S$
+ 6050 RETURN

@@ -8,19 +8,19 @@
  10  HOME : PRINT "EDITORS FOR DEATH IS A FOUR LETTER WORD"
  20  PRINT "----------------------------------------"
  25  PRINT 
- 30  PRINT "BLOAD SCENARIO.STCODE"
- 40  VTAB 5: HTAB 1: PRINT "OPTION        EDITOR"
+ 30  PRINT CHR$(4);"BLOAD SCENARIO.STCODE"
+ 40  VTAB 5: HTAB 1: PRINT "Option        Editor"
  45  PRINT 
- 50  PRINT "  (1)    CREATE A SCENARIO DISK"
- 60  PRINT "  (2)    EDIT THE BLOCKS"
- 70  PRINT "  (3)    EDIT THE SQUARES"
- 80  PRINT "  (4)    EDIT THE MEN IN EACH SQUARE"
- 90  PRINT "  (5)    EDIT THE STARTER FILE"
- 100  PRINT "  (6)    EDIT THE WEAPONS FILE"
- 101  PRINT "  (7)    EDIT THE MISSION BRIEFING"
- 102  PRINT : PRINT "  (8)    EXIT TO BASIC"
- 103  PRINT "  (9)    EXIT TO PRODOS 'BYE'"
- 110  PRINT : PRINT "ENTER YOUR CHOICE:";: GET A$:A =  VAL (A$): IF A < 1 OR A > 9 THEN 40
+ 50  PRINT "  (1)    Create a scenario directory"
+ 60  PRINT "  (2)    Edit the blocks"
+ 70  PRINT "  (3)    Edit the squares"
+ 80  PRINT "  (4)    Edit the men in each square"
+ 90  PRINT "  (5)    Edit the starter file"
+ 100  PRINT "  (6)    Edit the weapons file"
+ 101  PRINT "  (7)    Edit the mission briefing"
+ 102  PRINT : PRINT "  (8)    Exit to basic"
+ 103  PRINT "  (9)    Exit to ProDOS 'BYE'"
+ 110  PRINT : PRINT "Enter your choice:";: GET A$:A =  VAL (A$): IF A < 1 OR A > 9 THEN 40
  120 T =  VAL (A$)
  130  ON T GOTO 150,160,170,180,190,200,210,220,230
  150  PRINT : PRINT  CHR$ (4)"RUN MASTER.CREATE"
