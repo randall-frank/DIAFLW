@@ -1,13 +1,25 @@
 Use names in COMMONS.S instead of naked addresses
-
-Allow control over the health regen rate - STEPS_TO_HEAL=FF (FF=table), HEAL_SIZE=1
-
 # Display "behind" blocks with dropped out scanlines
-Check on game save/etc 
 Reconsider prefix handling for editors...
 
-Creating a new "master" should create a new directory
+Add weapon type (3) for 'key' that can transform block from (64-105) to one from (110-127)
+"firing" a key transforms the block "Power" to "Damage"
+Keys have an ammo count (number of successful uses) 
 
+
+
+SQUAREXY
+
+X = hex of x+(y*4) x=[0,4], y=[0,4]
+Y = hex of z value z=[0,15]
+
+Note: left handled coordinate system
+
+first $1100 bytes is the "base", second (optional) $1100 is the saved state
+
+
+
+-----------------------------------------
 
 fhpack v1.0.1 by Andy McFadden -*- Copyright 2015 by faddenSoft
 Source code available from https://github.com/fadden/fhpack

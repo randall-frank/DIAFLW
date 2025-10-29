@@ -56,6 +56,10 @@ PLAYER_HIT_LO   = $730C  ; X0,0X
 STEPS_TO_HEAL   = $730E  ; FF=table
 HEAL_SIZE       = $730F  ; default=1
 
+* Scenario state (IO2.S)
+VISITED_TABLE   = $8F00  ; X,Y X,Y X,Y
+VISITED_LENGTH  = $8FFF  ; number used bytes in VISITED_TABLE (2*# of x,y entries)
+
 * Sound
 PLAYSOUND       = $8980
 SOUND_TICK      = 0

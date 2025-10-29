@@ -121,11 +121,11 @@ the functions:
      The destination of ammo or a weapon must be empty.  A weapon will
 fire only if there is a supply of the correct ammo with the weapon in
 the active hand.
-     (Control-S) is a sound toggle, and ESC will pause the game.
+     (Control-V) is a sound toggle, and ESC will pause the game.
 (Control-B) aborts a game in progress and executes a ProDOS 'BYE'.
 (Control-J) toggles joystick control and (Control-Q) aborts the
 current game and puts you back at the title sequence.  Pressing
-(Control-@) will save the current game to disk.  If you start up the
+(Control-S) will save the current game to disk.  If you start up the
 game with this PLAYER disk again it will immediately put you in the
 game mode.
 
@@ -444,7 +444,7 @@ MEN.EDIT, just as the men info is never touched by SQUARE.EDIT.
      The same two cursors that are in SQUARE.EDIT are in MEN.EDIT, as
 is the heads up display.  The O and P keys, however, scroll back and
 forth in the 32 sets of information which define the 32 men.  When the
-space bar is pressed, the man number selected by the OP keys is
+space bar is pressed, the man number selected by the O,P keys is
 defined to start the game at the location of the WASZ cursor, with the
 shape pointed to by the IJKM cursor.  Some other data must be entered,
 including the style of enemy or trap the man is, his point value, and
@@ -475,7 +475,7 @@ Dead             Killed. Deceased. Expired. Kicked the bucket. Can be
                   defined as dead men with weapons using the
                   appropriate shape.)
 
-     The location and shape of the man selected by the OP keys can be
+     The location and shape of the man selected by the O,P keys can be
 found by pressing the F key.  The WASZ cursor will leap instantly to
 the location, and the IJKM cursor will leap to the shape number.  The
 V key will display a complete view of the SQUARE, with the enemy
@@ -617,6 +617,7 @@ with the tilde (~) character.         (0-7)  Select weapon to edit
           SQUARExy            A$8000, L$1100    A32786, L4352
           EDIT.CODE           A$9100, L$4FE     A37120, L1278
           SCENARIO.STCODE     A$6E00, L$2300    A28160, L8960
+          SAVED (saved game)  A$8E00, L$200
 
    Stuff about SQUARExy files..
 
@@ -644,6 +645,16 @@ access to the shot-up portion of the SQUAREs since it reads its data
 directly.  This needn't concern the developer, but is the explanation
 of why the SQUARExy files, when walked into by a player, expand to 18
 blocks.
+ 
+   Saved games: SAVED
+
+     As noted previously, the SQUARExy files contain the base state
+as well as the current play game play state.  When a game is saved,
+a file named SAVED is created.  It consists of 256 bytes of player
+state (score, name, hand/pocket contents, etc) followed by a table
+listing all of the SQUARE x,y pairs that had been written during the
+current play-through.  DIAFLW uses that table to decide to read the
+base or saved state whenever it needs to read a SQUARE file.
 
    Stuff about MASTER.CREATE and SCENARIO.STCODE
 

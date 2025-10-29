@@ -14,7 +14,8 @@
          JMP   LOCAL_GETWINFO
 
          LST   OFF
-FILENAME HEX   08D3D1D5C1D2C50000
+FILENAME HEX   08
+         ASC   'SQUARE  '  ; was 08D3D1D5C1D2C50000
 OFILE    JSR   $BF00
          HEX   C8
          DA    OPDOS
@@ -46,6 +47,8 @@ CFILE    JSR   $BF00
          DA    CPDOS
          RTS
 CPDOS    HEX   0101
+
+; Open/read the SQUAREXY file...
 OPEN     LDX   #1
          LDA   $7305
          ORA   #$B0
@@ -141,6 +144,7 @@ TOP1     INC   5
          BNE   TOPPER
          JSR   PAC_RNDIZE
          RTS
+
 CLOSE    LDA   #$0
          STA   DPOS
          LDA   #$11
@@ -231,6 +235,8 @@ LOCAL_HIT
          STA   $7302
 HOK      JMP   LOCAL_DRAWHEALTH
 
+; Scan the table of SQUAREXY files that have been touched
+; and adjust the offset based on if the file had been loaded previously
 TESTOLD  LDY   $8FFF
          BEQ   NEWREAD
 TO1      LDA   $8EFE,Y
@@ -239,16 +245,20 @@ TO1      LDA   $8EFE,Y
          LDA   $8EFF,Y
          CMP   $7306
          BNE   NOTIT
+
+         ; File has been visited, read with $1100 offset
          LDA   #$11
          STA   DPOS+1
          LDA   #0
          STA   DPOS
          JSR   PFILE
          RTS
+
 NOTIT    DEY
          DEY
          BNE   TO1
-NEWREAD  LDA   #0
+
+NEWREAD  LDA   #0 ; first time the SQUAREXY file is read, add it to the list
          STA   DPOS
          STA   DPOS+1
          JSR   PFILE
@@ -261,6 +271,7 @@ NEWREAD  LDA   #0
          INY
          STY   $8FFF
          RTS
+
 SETPREFIX JSR  $BF00
          HEX   C6
          DA    PPARAMS

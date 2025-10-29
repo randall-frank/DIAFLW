@@ -57,12 +57,15 @@
  545  PRINT "Color=";C;"  "
  546  PRINT "Toggle=";P;"  "
  550  IF A$ = "D" THEN 1000
+ 560  IF A$ = "?" THEN 3000
+ 570  IF A$ = "#" THEN 4000
  600  GOTO 200
  1000  PRINT : PRINT : PRINT : PRINT "Disk operations:"
- 1010  PRINT "S)ave  L)oad"
+ 1010  PRINT "S)ave  L)oad  RET)urn"
  1020  GET A$
- 1021  PRINT : PRINT "Blocks (1) or (2):";: GET A1$
- 1022 G$ = "": IF  VAL (A1$) = 2 THEN G$ = "2"
+ 1021  IF A$ = "" THEN 200
+ 1022  PRINT : PRINT "Blocks (1) or (2):";: GET A1$
+ 1023 G$ = "": IF  VAL (A1$) = 2 THEN G$ = "2"
  1025  PRINT 
  1030  IF A$ = "S" THEN 1500
  1040  IF A$ = "L" THEN 1600
@@ -88,7 +91,45 @@
  2000 BA = 9 * 4096 + 6 * 256:A$ = ""
  2010  FOR X = 1 TO  PEEK (BA):A$ = A$ +  CHR$ ( PEEK (BA + X)): NEXT 
  2020  PRINT : PRINT  CHR$ (4);"RUN ";A$;"EDITORS"
- 2030  END 
+ 2030  END
+ 3000  POKE -16303,0: HOME
+ 3010  PRINT "Block Editor Help"
+ 3020  PRINT "-----------------"
+ 3025  PRINT
+ 3027  PRINT "? - Display help"
+ 3028  PRINT "# - Display shape definitions"
+ 3030  PRINT "I,J,K,M - Select shape # block"
+ 3040  PRINT "W,A,S,Z - Select/plot sketchpad pixel"
+ 3050  PRINT "SPC - Plot current sketchpad pixel"
+ 3060  PRINT "T - Toggle auto plotting for W,A,S,Z"
+ 3065  PRINT "0-7 - Change autoplot color"
+ 3070  PRINT "U - Fill sketchpad with selected shape"
+ 3080  PRINT "P - Fill selected shape from sketchpad"
+ 3090  PRINT "D - Disk I/O options (load/save)"
+ 3100  PRINT "Q - Quit the editor"
+ 3110  PRINT : PRINT "Press any key to continue";: GET A$
+ 3120  A$ = "NONE"
+ 3130  POKE -16304,0: GOTO 500
+ 4000  POKE -16303,0: HOME
+ 4010  PRINT "Shape definitions"
+ 4020  PRINT "-----------------"
+ 4030  PRINT
+ 4040  PRINT "0-3      Four facings of the player"
+ 4050  PRINT "4        Reserved blank space"
+ 4060  PRINT "5        The target shape"
+ 4070  PRINT "6        Indestructible terrain shape"
+ 4080  PRINT "7        Gunfire shape"
+ 4090  PRINT "8-13     Explosion shape"
+ 4100  PRINT "14       Up elevator/stairs shape"
+ 4110  PRINT "15       Down elevator/stairs shape"
+ 4120  PRINT "16       Dead body shape"
+ 4130  PRINT "17-63    Enemy/trap shapes"
+ 4140  PRINT "64-105   Impassable-destructible shapes"
+ 4150  PRINT "106-109  Rubble shapes"
+ 4160  PRINT "110-127  Passable terrain shapes"
+ 4165  PRINT : PRINT "Press any key to continue";: GET A$
+ 4170  A$ = "NONE"
+ 4180  POKE -16304,0: GOTO 500
  5000  HOME : PRINT : PRINT "Insert scenario disk and press any key";: GET A$: HOME 
  5001  CALL 9 * 4096 + 7 * 256
  5002  HOME 

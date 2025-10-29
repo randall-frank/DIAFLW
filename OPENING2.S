@@ -445,7 +445,7 @@ JOYIT    JSR   $7A00
          LDA   #$A8
          JSR   $FCA8
          JMP   DOP3+3
-SAVEGAME JSR   $9003
+SAVEGAME JSR   $9003  ; I/O close
          LDA   #'A'
          JSR   PROMPT
          LDA   #>BLOCKS

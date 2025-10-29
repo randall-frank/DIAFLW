@@ -8,7 +8,7 @@ ciderpresscli = ".\\ciderpress\\cp2.exe"
 fhpack = ".\\fhpack.exe"
 
 
-version = "1.4.0"  
+version = "1.4.1"  
 
 # HELP_SRC.S -> HELP.S
 with open("HELP_SRC.S", "r") as fp:

@@ -9,6 +9,13 @@ PAC.S -> $0800 -> core graphics routines
 PRE.S -> $9700 -> Used by editors for selecting prefix in ASCII
 WEAPONS.S -> $7200 -> table of guns 
 
+Check.S -> 128 bytes
+
+Notes on saved games (ref SAVEGAME in OPENING2.S)
+    1 - File is named 'SAVED'
+    2 - Grab the state from $7300 (256 bytes), place at $8E00
+    3 - Write 512 bytes ($8E00 + $8F00 visited table) to file
+
 
 Block images can be at: $1000 or $A000 (editor or game)?  WHICHTBL selects
 
@@ -64,9 +71,6 @@ TEMP6    =     $1F
 7
 8 - $00l
 
-AA D5 AA D5 - RED
-D5 AA D5 AA - BLUE
-
 
 --------- DIAFLW.SYSTEM -----
 2000 - Custom code
@@ -94,8 +98,8 @@ D5 AA D5 AA - BLUE
 5000 - Game screen data???
 5C00 - BIGFONT
 6000 - Also the I/O buffer for directory listings...
-6000 - The square data for X,Y  (IO2.S) I/O is $1100 bytes in size for square+enemy 
-7000 - ENEMY table $100 in size (note: starts with the HELP contents)
+6000 - The SQUARE data for X,Y  (IO2.S) I/O is $1100 bytes in size for square+enemy 
+7000 - ENEMY table $100 in size (note: starts with the HELP.S screen contents)
 7200 - WEAPONS.S definition tables from WEAPONS file
 7300 - Xlocation?   from STARTER file
 7301 - Ylocation?
@@ -125,6 +129,9 @@ D5 AA D5 AA - BLUE
        A = 2 - "long fire"
        A = 3 - "chirp" (bad key)
        A = 4 - "short shot"
+
+8F00 - table of x,y values of files that have been read/saved 
+8FFF - is the count*2
 
 9000 - IO2.S Core I/O routines - file open/close/setprefix/etc 
         OPEN - look for and read the SQUARExy file - prompt the user as needed

@@ -17,6 +17,8 @@
  200  VTAB 21: HTAB 1: PRINT "SHAPE=";Z;"       POS =";X;",";Y;"  ";: GET A$
  201 J = 0
  202  IF A$ = "Q" THEN  TEXT : HOME : GOTO 2000
+ 203  IF A$ = "?" THEN 3000
+ 204  IF A$ = "#" THEN 4000
  205  IF  VAL (A$) <  > 0 THEN  GOSUB 6000: GOTO 112
  209 Q = 1: IF  PEEK (49249) > 127 THEN Q = 7
  210  IF A$ = "W" THEN Y = Y - Q:J = 1
@@ -95,7 +97,48 @@
  2000 BA = 9 * 4096 + 6 * 256:A$ = ""
  2010  FOR X = 1 TO  PEEK (BA):A$ = A$ +  CHR$ ( PEEK (BA + X)): NEXT 
  2020  PRINT : PRINT  CHR$ (4);"RUN ";A$;"EDITORS"
- 2030  END 
+ 2030  END
+ 3000  POKE -16303,0: HOME
+ 3010  PRINT "Men Editor Help"
+ 3020  PRINT "---------------"
+ 3025  PRINT
+ 3027  PRINT "? - Display help"
+ 3028  PRINT "# - Display shape definitions"
+ 3030  PRINT "I,J,K,M - Select shape # block"
+ 3040  PRINT "W,A,S,Z - Select square block for man"
+ 3050  PRINT "O,P - Select the man to edit (0-31)"
+ 3055  PRINT "SPC - Redefine the selected man" 
+ 3060  PRINT "F - Find the location of selected man"
+ 3061  PRINT "    Scrolls to the location"
+ 3062  PRINT "    Selects the man shape # block"
+ 3065  PRINT "oa-(0-9) - Define a macro for a man"
+ 3066  PRINT "(0-9) - Redefine selected man via macro"
+ 3070  PRINT "V - View entire square with men points"
+ 3090  PRINT "D - Disk I/O options (load/save/cat)"
+ 3100  PRINT "Q - Quit the editor"
+ 3110  PRINT : PRINT "Press any key to continue";: GET A$
+ 3120  A$ = "NONE"
+ 3130  POKE -16304,0: GOTO 500
+ 4000  POKE -16303,0: HOME
+ 4010  PRINT "Shape definitions"
+ 4020  PRINT "-----------------"
+ 4030  PRINT
+ 4040  PRINT "0-3      Four facings of the player"
+ 4050  PRINT "4        Reserved blank space"
+ 4060  PRINT "5        The target shape"
+ 4070  PRINT "6        Indestructible terrain shape"
+ 4080  PRINT "7        Gunfire shape"
+ 4090  PRINT "8-13     Explosion shape"
+ 4100  PRINT "14       Up elevator/stairs shape"
+ 4110  PRINT "15       Down elevator/stairs shape"
+ 4120  PRINT "16       Dead body shape"
+ 4130  PRINT "17-63    Enemy/trap shapes"
+ 4140  PRINT "64-105   Impassable-destructible shapes"
+ 4150  PRINT "106-109  Rubble shapes"
+ 4160  PRINT "110-127  Passable terrain shapes"
+ 4165  PRINT : PRINT "Press any key to continue";: GET A$
+ 4170  A$ = "NONE"
+ 4180  POKE -16304,0: GOTO 500
  5000  HOME : PRINT : PRINT "Insert scenario disk and press any key";: GET A$: HOME 
  5001  CALL 9 * 4096 + 7 * 256
  5002  HOME 
@@ -147,12 +190,12 @@
  7180  PRINT "  9      TRAP / FIRE MULTIPLE ON"
  7190  PRINT "  0      TRAP / FIRE MULTIPLE NEAR"
  7191  PRINT " RET     SELF-SETUP (PLACER)"
- 7192  PRINT " DEL     DEAD"
+ 7192  PRINT "  D      DEAD"
  7193  PRINT : PRINT "  Enter status code: ";: GET A$
  7200  REM 
  7201  IF  VAL (A$) <  > 0 AND  VAL (A$) < 7 THEN M(M,0) =  VAL (A$): GOTO 7220
  7202  IF  ASC (A$) = 13 THEN M(M,0) = 255: GOTO 7220
- 7203  IF A$ = "" THEN M(M,0) = 0: GOTO 7220
+ 7203  IF A$ = "D" THEN M(M,0) = 0: GOTO 7220
  7205  IF A$ = "0" THEN M(M,0) = 131: GOTO 7220
  7206 M(M,0) =  VAL (A$) + 121
  7207  IF M(M,0) = 121 THEN 7075

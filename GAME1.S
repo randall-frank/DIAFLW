@@ -482,7 +482,7 @@ X1POS    DFB   0
 Y1POS    DFB   0
 
 * keypress handling continued...
-L15      CMP   #$93  ; '^S'
+L15      CMP   #$93  ; '^S'   Save game
          BNE   L16
          LDA   #3
          STA   $7302
