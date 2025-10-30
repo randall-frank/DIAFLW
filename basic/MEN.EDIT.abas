@@ -179,18 +179,18 @@
  7075  TEXT : HOME 
  7080  PRINT "Enter   Meaning"
  7085  PRINT "-----   ----------------------------"
- 7100  PRINT "  1      NON MOVING"
- 7110  PRINT "  2      XFINDER"
- 7120  PRINT "  3      YFINDER"
- 7130  PRINT "  4      XYBEST  (KILLER)"
- 7140  PRINT "  5      RANDOM"
- 7150  PRINT "  6      50% RANDOM / 50% KILLER"
- 7160  PRINT "  7      TRAP / FIRE ONCE ON"
- 7170  PRINT "  8      TRAP / FIRE ONCE NEAR"
- 7180  PRINT "  9      TRAP / FIRE MULTIPLE ON"
- 7190  PRINT "  0      TRAP / FIRE MULTIPLE NEAR"
- 7191  PRINT " RET     SELF-SETUP (PLACER)"
- 7192  PRINT "  D      DEAD"
+ 7100  PRINT "  1      Non-moving"
+ 7110  PRINT "  2      X-finder"
+ 7120  PRINT "  3      Y-finder"
+ 7130  PRINT "  4      XY-best  (killer)"
+ 7140  PRINT "  5      Random"
+ 7150  PRINT "  6      50% random / 50% killer"
+ 7160  PRINT "  7      Trap / fire once on"
+ 7170  PRINT "  8      Trap / fire once near"
+ 7180  PRINT "  9      Trap / fire multiple on"
+ 7190  PRINT "  0      Trap / fire multiple near"
+ 7191  PRINT " RET     Self-setup (placer)"
+ 7192  PRINT "  D      Dead"
  7193  PRINT : PRINT "  Enter status code: ";: GET A$
  7200  REM 
  7201  IF  VAL (A$) <  > 0 AND  VAL (A$) < 7 THEN M(M,0) =  VAL (A$): GOTO 7220
@@ -204,13 +204,13 @@
  7230  IF M(M,6) < 1 OR M(M,6) > 255 THEN 7220
  7240  HOME : FOR QQ = 0 TO 7: PRINT QQ + 1;") ";W$(QQ); TAB( 20);QQ + 1;") ";A$(QQ): NEXT 
  7241  PRINT  TAB( 20);"9) No ammo left"
- 7250  PRINT : PRINT "Enter weapon #:";: GET M(M,1):M(M,1) = M(M,1) - 1
+ 7250  PRINT : INPUT "Enter weapon #:";A$ : M(M,1) = VAL(A$) : M(M,1) = M(M,1) - 1
  7260  IF M(M,1) > 7 OR M(M,1) < 0 THEN 7240
  7270  REM 
- 7280  PRINT : PRINT "Enter ammo #  :";: GET M(M,2):M(M,2) = M(M,2) - 1
+ 7280  PRINT : INPUT "Enter ammo #  :";A$ : M(M,2) = VAL(A$) : M(M,2) = M(M,2) - 1
  7290  IF M(M,2) < 0 OR M(M,2) > 8 THEN 7270
  7295  IF M(M,2) = 8 THEN M(M,2) = 255: GOTO 7400
- 7300  PRINT : PRINT "Enter amount of ammo to be left (1-9):";: GET M(M,3)
+ 7300  PRINT : INPUT "Enter amount of ammo to be left (1-9):";A$: M(M,3) = VAL(A$)
  7310  IF M(M,3) < 1 OR M(M,3) > 9 THEN 7300
  7400  POKE  - 16297,0: POKE  - 16304,0: POKE  - 16301,0: RETURN 
  10000  POKE 0,X: POKE 1,Y: CALL 9 * 4096 + 259: POKE 0,6: POKE 1,48: CALL 9 * 4096 + 268: RETURN 

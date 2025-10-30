@@ -2,7 +2,7 @@
  16  DIM PP(7)
  17  GOSUB 5000
  20  HOME 
- 25  PRINT "DEATH IS A FOUR LETTER WORD WEAPONS EDIT"
+ 25  PRINT "Death Is A Four Letter Word Weapons Edit"
  26  VTAB 2: HTAB 1: PRINT "----------------------------------------"
  40  PRINT : PRINT CHR$(4);"BLOAD WEAPONS,A$6F00"
  50  VTAB 20: HTAB 1: PRINT "                                                                            ";
@@ -46,7 +46,7 @@
  920  GOSUB 1005: RETURN 
  1000  GOSUB 10000
  1005  HOME 
- 1006  PRINT "DEATH IS A FOUR LETTER WORD WEAPONS EDIT----------------------------------------";
+ 1006  PRINT "Death Is A Four Letter Word Weapons Edit----------------------------------------";
  1010  VTAB 3: HTAB 1: PRINT "# Weapon     Ammo      Pow T Dam"
  1020  PRINT "----------------------------------------";
  1100  FOR X = 0 TO 7

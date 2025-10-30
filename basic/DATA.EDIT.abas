@@ -2,8 +2,8 @@
  10  DIM DA$(1000)
  13  PRINT D$;"NOMON CIO"
  20  HOME 
- 25  PRINT "DEATH IS A FOUR LETTER WORD DATA EDITOR "
- 26  VTAB 2: HTAB 1: PRINT "----------------------------------------"
+ 25  PRINT "Death Is A Four Letter Word Data Editor"
+ 26  VTAB 2: HTAB 1: PRINT "---------------------------------------"
  30  PRINT : PRINT : PRINT " This program is a simple text editor,"
  31  PRINT "similar to a word processor. This editor";: PRINT "however, customizes the data that is": PRINT "entered to fit the needs of the": PRINT "DIAFLW system. (No CR'S, 40 Cols,"
  40  PRINT "and ending with a '~')

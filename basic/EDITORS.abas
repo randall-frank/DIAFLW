@@ -5,8 +5,8 @@
  6  REM  EDITORS PREFIX IS @$9600 IN PRODOS FORM
  7  PRINT  CHR$ (4);"PREFIX": INPUT P$
  8  GOSUB 2000
- 10  HOME : PRINT "EDITORS FOR DEATH IS A FOUR LETTER WORD"
- 20  PRINT "----------------------------------------"
+ 10  HOME : PRINT "Death Is A Four Letter Word Editors"
+ 20  PRINT "-----------------------------------"
  25  PRINT 
  30  PRINT CHR$(4);"BLOAD SCENARIO.STCODE"
  40  VTAB 5: HTAB 1: PRINT "Option        Editor"

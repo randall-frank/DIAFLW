@@ -107,11 +107,6 @@ with open("diaflw_docs.txt", "r") as fp:
         text = text.replace("V_NUM", version)
         out.write(text)
 
-# use CiderPress II CLI to place the file into the testing IMG
-cmd = [ciderpresscli, "add", "--strip-paths", "--overwrite", "disks/Testing.2mg", outname]
-result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-print(f"Updated testing 2mg file: {result.stdout} {result.stderr}")
-
 # Create a release .2mg image
 rel_filename = "DIAFLW_Release.2mg"
 try:
