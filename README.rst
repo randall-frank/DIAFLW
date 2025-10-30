@@ -42,14 +42,14 @@ mini-assembler.  Thus source code for 95% of the game exists in Merlin format.
 There is a build script in this repo that is capable of generating a .2mg file 
 from the sources.  It requires several tools to be installed:
 
-- `Windows Merlin Assembler <https://brutaldeluxe.fr/products/crossdevtools/merlin/>`_
+- Python
+- `Merlin32 Assembler <https://brutaldeluxe.fr/products/crossdevtools/merlin/>`_
 - `CiderPress II <https://ciderpress2.com/>`_
 - `fhpack.exe <https://github.com/fadden/fhpack>`_
-- Python
 
 If one places the CiderPress CLI in a subdirectory named 'ciderpress' (ciderpress/cp2.exe)
-and places the Merlin package in a subdirectory named 'Merlin32_v1.2_b2' 
-(Merlin32_v1.2_b2\\Windows\\Merlin32.exe), then the following commands will build
+and places the Merlin package in a subdirectory named 'merlin32' 
+(merlin32\\Windows\\Merlin32.exe), then the following commands will build
 the `DIAFLW_Release.2mg` file:
 
 .. code::

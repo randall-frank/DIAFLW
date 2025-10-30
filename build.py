@@ -12,17 +12,20 @@ log = logging.getLogger("build")
 assembler = ".\\merlin32\\windows\\merlin32.exe"
 assembler_libdir = ".\\merlin32\\library\\"
 ciderpresscli = ".\\ciderpress\\cp2.exe"
-fhpack = ".\\fhpack\\fhpack.exe"
+fhpack = ".\\fhpack\\fhpackd.exe"
 
 # Check for all the tools to be present
 prerequisites = True
-for name in (assembler, assembler_libdir, ciderpresscli, fhpack):
+for name in (assembler, assembler_libdir, ciderpresscli, ):
     if not os.path.exists(name):
         log.warning(f"required build tool: {name} could not be found.")
         prerequisites = False
 if not prerequisites:
     log.error("Please install necessary build tools and rerun the build process.")
     sys.exit(1)
+for name in (fhpack, ):
+    if not os.path.exists(name):
+        log.warning(f"optional build tool: {name} could not be found and will not be used.")
 
 # Set the version number and start the build process
 version = "1.4.1"  
@@ -61,8 +64,6 @@ for name, address in files.items():
         sys.exit(1)
         
 log.info("Compressing splash screen images...")
-# cmd = [".\\tohgr.exe", "hgr", "-atkin", "diaflw_splash.png"]
-# result = subprocess.run(cmd, capture_output=True, text=True, check=True)
 if not os.path.exists(os.path.join("bin","diaflw_splash.fgr")):
     cmd = [fhpack, "-c", "diaflw_splash.hgr", "bin/diaflw_splash.fgr"]
     result = subprocess.run(cmd, capture_output=True, text=True)
