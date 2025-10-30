@@ -1,16 +1,34 @@
+import logging
 import shutil
 import subprocess
+import sys
 import os
 
-assembler = ".\\Merlin32_v1.2_b2\\Windows\\Merlin32.exe"
-assembler_libdir = ".\\Merlin32_v1.2_b2\\Library\\"
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger("build")
+
+# Note: these paths are for local Windows installs.  All of these tools
+# can be installed under Linux as well, but these paths will need to change.
+assembler = ".\\merlin32\\windows\\merlin32.exe"
+assembler_libdir = ".\\merlin32\\library\\"
 ciderpresscli = ".\\ciderpress\\cp2.exe"
-fhpack = ".\\fhpack.exe"
+fhpack = ".\\fhpack\\fhpack.exe"
 
+# Check for all the tools to be present
+prerequisites = True
+for name in (assembler, assembler_libdir, ciderpresscli, fhpack):
+    if not os.path.exists(name):
+        log.warning(f"required build tool: {name} could not be found.")
+        prerequisites = False
+if not prerequisites:
+    log.error("Please install necessary build tools and rerun the build process.")
+    sys.exit(1)
 
+# Set the version number and start the build process
 version = "1.4.1"  
 
-# HELP_SRC.S -> HELP.S
+# Burn the version number into the help screen: HELP_SRC.S -> HELP.S 
+log.info("Generating 6502 source code...")
 with open("HELP_SRC.S", "r") as fp:
     text = fp.read()
     with open("HELP.S", "w") as out:
@@ -32,25 +50,33 @@ files = {
     "READ_DOCS.S": 0x2000,  # stand alone documentation reader READ.DOCS.SYS (DIAFLW.DOCS,TXT)
 }
 
+log.info("Assembling 6502 source code...")
 # compile sources
 for name, address in files.items():
     cmd = [assembler, assembler_libdir, name]
-    print(f"Assembling: {name} @ ${address:X}")
+    log.info(f"Assembling: {name} @ ${address:X}")
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
-        print(f"Error assembling: {name}: {result.stdout}")
+        log.error(f"assembling: {name}: {result.stdout}")
+        sys.exit(1)
         
-# Build splash screen image
+log.info("Compressing splash screen images...")
 # cmd = [".\\tohgr.exe", "hgr", "-atkin", "diaflw_splash.png"]
 # result = subprocess.run(cmd, capture_output=True, text=True, check=True)
 if not os.path.exists(os.path.join("bin","diaflw_splash.fgr")):
     cmd = [fhpack, "-c", "diaflw_splash.hgr", "bin/diaflw_splash.fgr"]
-    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-    print("Generated: bin/diaflw_splash.fgr")
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        log.error(f"compressing: diaflw_splash.hgr")
+        sys.exit(1)
+    log.info("Generated: bin/diaflw_splash.fgr")
 if not os.path.exists(os.path.join("bin","diaflw_play.fgr")):
     cmd = [fhpack, "-c", "diaflw_play.hgr", "bin/diaflw_play.fgr"]
-    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-    print("Generated: bin/diaflw_play.fgr")
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        log.error(f"compressing: diaflw_play.hgr")
+        sys.exit(1)
+    log.info("Generated: bin/diaflw_play.fgr")
     
 bins = {
     "bin/LOADER.BIN": 0x2000, 
@@ -82,13 +108,14 @@ bins = {
 #     Paint the text page from 7000-7400
 #     JMP 8000
 
+log.info("Building DIAFLW.SYSTEM(SYS#ff) file...")
 
 # Build 'DIAFLW.SYSTEM,TSYS' from bins
 with open('DIAFLW_SYSTEM_orig.bin', 'rb') as fp:
     data = bytearray(fp.read())
 
 for name, addr in bins.items():
-    print(f"Loading {name} at {addr:04X}")
+    log.info(f"Loading {name} at {addr:04X}")
     with open(name, "rb") as f:
         local = bytearray(f.read())
     offset = addr - 0x2000
@@ -98,8 +125,9 @@ for name, addr in bins.items():
 outname = "DIAFLW.SYSTEM#ff2000"
 with open(outname, "wb") as fp:
     fp.write(data)
-print(f"Wrote system file: {outname}")
+log.info(f"Wrote system file: {outname}")
 
+log.info("Building DIAFLW.DOCS(TXT#04) file...")
 # Build docs file
 with open("diaflw_docs.txt", "r") as fp:
     text = fp.read()
@@ -107,6 +135,7 @@ with open("diaflw_docs.txt", "r") as fp:
         text = text.replace("V_NUM", version)
         out.write(text)
 
+log.info("Building .2mg disk image...")
 # Create a release .2mg image
 rel_filename = "DIAFLW_Release.2mg"
 try:
@@ -115,10 +144,10 @@ except Exception:
     pass
 cmd = [ciderpresscli, "create-disk-image", rel_filename, "800K", "prodos"]
 result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-print(f"Created release disk image: {result.stdout} {result.stderr}")
+log.info(f"Created release disk image: {result.stdout} {result.stderr}")
 cmd = [ciderpresscli, "rename", rel_filename, ":", f"DIAFLW_{version}"]
 result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-print(f"Renamed release disk image: {result.stdout} {result.stderr}")
+log.info(f"Renamed release disk image: {result.stdout} {result.stderr}")
 
 # Copy system files - PRODOS, BASIC...  
 try:
@@ -127,22 +156,22 @@ except Exception:
     pass
 cmd = [ciderpresscli, "add", "--strip-paths", "DIAFLW_Release.2mg", "SYSTEM"]
 result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-print(f"System files added to disk image: {result.stdout} {result.stderr}")
+log.info(f"System files added to disk image: {result.stdout} {result.stderr}")
 # and DIAFLW.SYSTEM
 cmd = [ciderpresscli, "add", "--strip-paths", "DIAFLW_Release.2mg", outname]
 result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-print(f"System file added to disk image: {result.stdout} {result.stderr}")
+log.info(f"System file added to disk image: {result.stdout} {result.stderr}")
 
 # Copy scenarios
 cmd = [ciderpresscli, "add", rel_filename, "SCENARIOS"]
 result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-print(f"Scenarios added to disk image: {result.stdout} {result.stderr}")
+log.info(f"Scenarios added to disk image: {result.stdout} {result.stderr}")
 # rename them to include trailing '.'
 for name in os.listdir("SCENARIOS"):
     if os.path.isdir(os.path.join("SCENARIOS", name)):
         cmd = [ciderpresscli, "rename", rel_filename, f"SCENARIOS/{name}", f"SCENARIOS/{name}."]
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-        print(f"Renamed: SCENARIOS/{name}")
+        log.info(f"Renamed: SCENARIOS/{name}")
 
 for name in os.listdir("basic"):
     if name.upper().endswith(".ABAS"):
@@ -156,8 +185,10 @@ for name in os.listdir("basic"):
         cmd = [ciderpresscli, "import", "--strip-paths", rel_filename, "bas",  f"basic/{root}"]
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         os.remove(os.path.join("basic", root))
-        print(f"Imported: basic/{name} as {root}")
+        log.info(f"Imported: basic/{name} as {root}")
 
 
 # Build 'READ.DOCS,TSYS' from 'bin/PRG.BIN'
+
+log.info(f"Build v{version} complete.")
  
