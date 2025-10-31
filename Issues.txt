@@ -7,6 +7,8 @@ Add weapon type (3) for 'key' that can transform block from (64-105) to one from
 Keys have an ammo count (number of successful uses) 
 
 
+SDI - tweak healing, add health pack?, make closed/open doors different
+
 
 SQUAREXY
 

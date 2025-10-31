@@ -362,37 +362,37 @@ L14      CMP   #$C6  ;  'F'
 * Fire weapon
 L141     DEC   MCOUNT
          JSR   IO_HPOC
-         LDY   #0
+         LDY   #0         ;(TEMP2),0 hand weapon type
          LDA   (TEMP2),Y
          STA   COUNT
          CMP   #$FF
          BNE   L142
          LDA   #2         ;NOWEAPON
-GOODBYE  STA   MESSAGE
+MSG_MOVE STA   MESSAGE
          JMP   MOVE
 NOAMMO   LDA   #1
-         BNE   GOODBYE
+         BNE   MSG_MOVE
 BADAMMO  LDA   #3
-         BNE   GOODBYE
+         BNE   MSG_MOVE
 L142     INY
-         LDA   (TEMP2),Y
+         LDA   (TEMP2),Y ;(TEMP2),1 hand ammo type
          CMP   #$FF
-         BEQ   NOAMMO
+         BEQ   NOAMMO    ; Ammo empty
          CMP   COUNT
-         BNE   BADAMMO
+         BNE   BADAMMO   ; Incorrect ammo type
          INY
-         LDA   (TEMP2),Y
+         LDA   (TEMP2),Y ; subtract one "ammo"
          TAX
          DEX
          BNE   L143
-         LDX   #$FF
+         LDX   #$FF      ; if ammo goes to zero, there is no ammo type in the hand
          DEY
 L143     TXA
          STA   (TEMP2),Y
          JSR   APOC
          JSR   IO_HPOC
-         JSR   IO_GETWINFO ; Check for heath type
-         LDA   EXPLOST
+         JSR   IO_GETWINFO ; Check for heath type: POWER, EXPLOST(type), DAMAGE
+         LDA   EXPLOST     ; weapon type
          CMP   #2
          BNE   NOTHEAL
 
@@ -405,10 +405,15 @@ HEALLOOP LDA   DAMAGE
 HEALCOMPLETE         
          JMP   MOVE    ;???
 
-NOTHEAL  LDA   #3      ; Firing track
-         STA   X1POS
-         STA   Y1POS
-         STA   COUNT
+NOTHEAL  
+         TAY           ; Save off weapon type
+         LDA   #3      ; Non-healing weapon (Firing track)
+         STA   X1POS   ; "bullet" starts at 3,3 (center of the 7x7 local grid)
+         STA   Y1POS   ; and can move 3 spaces.        
+         CPY   #3      ; is this a "key" weapon, if so only walk 1 step
+         BNE   NOTKEY
+         LDA   #1      ; "key" weapons can only move one space
+NOTKEY   STA   COUNT
          LDA   $7300
          STA   XPOS
          LDA   $7301
@@ -421,12 +426,17 @@ NOTHEAL  LDA   #3      ; Firing track
          LDA   DX+1,Y
          STA   DELTAY
          JMP   START
-L144     LDX   X1POS
+SHOTSTEP
+         LDX   X1POS
          LDY   Y1POS
+         LDA   EXPLOST
+         CMP   #3     ; "keys" do not 'shoot'
+         BEQ   QUIETKEYSHOT
          LDA   #7
          JSR   PAC_BIGSHAPE
          LDA   #SOUND_SHOT
          JSR   PLAYSOUND
+QUIETKEYSHOT         
          LDY   #40
 LDELAY   LDA   #200
          SEC
@@ -436,17 +446,20 @@ LDELAY   LDA   #200
          BNE   LDELAY
          LDX   XPOS
          LDY   YPOS
-         JSR   PAC_LOOKUP
+         JSR   PAC_LOOKUP  ; did we "hit" anything, man, wall, etc
          BCC   L145
-         JMP   COLLIDE
-L145     CMP   #64
+         JMP   COLLIDE     ; The shot hit an enemy player
+L145     CMP   #64         ; 64-105 are "walls"
          BLT   L146
          CMP   #106
          BGE   L146
-         JMP   COLLIDE
-L146     CMP   #6
-         BEQ   L146-3
-         LDX   X1POS
+         LDY   EXPLOST
+         CPY   #3
+         BEQ   HANDLEKEY   ; "key" shot hit a wall
+SMASH    JMP   COLLIDE     ; The shot hit a wall
+L146     CMP   #6          ; indestructible wall
+         BEQ   SMASH
+         LDX   X1POS       ; Continue the shot
          LDY   Y1POS
          JSR   PAC_BIGSHAPE
 START    LDA   XPOS
@@ -470,8 +483,18 @@ START    LDA   XPOS
          ADC   DELTAY
          STA   Y1POS
          DEC   COUNT
-         BPL   L144
+         BPL   NEXTSTEP
 FDONE    JMP   MOVE
+NEXTSTEP JMP   SHOTSTEP
+
+HANDLEKEY
+         CMP   POWER       ; "key" converts POWER to DAMAGE
+         BNE   BADKEYTARGET 
+         NOP               ; TODO: update the terrain, subtract one ammo?
+                           ; success sound
+BADKEYTARGET               ; fail sound, fail message
+         LDA   #7
+         JMP   MSG_MOVE
 
 DELTAX   DFB   0
 DELTAY   DFB   0

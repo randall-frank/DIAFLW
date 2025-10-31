@@ -12,7 +12,7 @@ log = logging.getLogger("build")
 assembler = ".\\merlin32\\windows\\merlin32.exe"
 assembler_libdir = ".\\merlin32\\library\\"
 ciderpresscli = ".\\ciderpress\\cp2.exe"
-fhpack = ".\\fhpack\\fhpackd.exe"
+fhpack = ".\\fhpack\\fhpack.exe"
 
 # Check for all the tools to be present
 prerequisites = True

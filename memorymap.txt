@@ -136,7 +136,6 @@ TEMP6    =     $1F
 9000 - IO2.S Core I/O routines - file open/close/setprefix/etc 
         OPEN - look for and read the SQUARExy file - prompt the user as needed
             - regen the random table...
-9600 - free
 9700 - free
 
 - free to 9FFF???  

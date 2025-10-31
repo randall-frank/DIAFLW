@@ -153,7 +153,8 @@ NEXT     LDY   TEMP3
          RTS
 
 TBL      DFB   8,24,40,56,72,88,104
-LOOKUP   STX   TEMP1
+
+LOOKUP   STX   TEMP1   ; lookup up what shape is located at X,Y
          STY   TEMP2
          ; Scan the enemy table
          LDX   #0
@@ -174,7 +175,7 @@ PL2      INY
          LDA   ENEMY,Y
          SEC
          RTS
-*       IF CARRY IS SET YOU FOUND AN ENEMY AND ITS # IS X
+;       IF CARRY IS SET YOU FOUND AN ENEMY AND ITS # IS X
 PL3      INX
          CPX   #32
          BEQ   PL4
@@ -184,7 +185,7 @@ PL3      INX
          ASL
          TAY
          JMP   PL2
-PL4      LDA   TEMP2
+PL4      LDA   TEMP2    ; Return the shape at the location
          LDX   #0
          STX   TEMP3
          LSR
@@ -195,8 +196,9 @@ PL4      LDA   TEMP2
          STA   TEMP4
          LDY   TEMP1
          LDA   (TEMP3),Y
-         CLC
+         CLC            ; Carry is clear and A is the shape
          RTS
+
 SET      STX   TEMP1
          PHA
          TYA

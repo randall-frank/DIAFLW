@@ -12,6 +12,7 @@
          JMP   LOCAL_HITINC
          JMP   LOCAL_HPOC
          JMP   LOCAL_GETWINFO
+         JMP   LOCAL_PLAYSOUND
 
          LST   OFF
 FILENAME HEX   08
@@ -751,3 +752,75 @@ LOCAL_DRAWHEALTH
          LDA   $730D
          ORA   #$B0
          JMP   PAC_TEXT
+
+LOCAL_PLAYSOUND    ; Core sound routine.  Sound number in A, scrambles all registers
+         CMP   #SOUND_SHOT+1
+         BGE   GENERATED_SOUND
+
+         JMP   T1_SOUND_ROUT  ; sounds [0,4] are handled by the binary T1 sound routine
+
+GENERATED_SOUND       ; sound [0,15] in X register
+         SEC
+         SBC   #SOUND_SHOT+1
+         TAX
+         ; Routine from Assembly Cookbook for the Apple II/IIe (Don Lancaster)
+         ; Chapter 4: Obnoxious Sounds
+         PHP 
+         PHA 
+         TYA 
+         PHA 
+         TXA 
+         CMP FLNGTH4 
+         BCC LOK4 
+         LDA #$00 
+LOK4
+         ASL 
+         TAX 
+         LDA SEFO,X 
+         STA TRPCNT4 
+         INX 
+         LDA SEFO,X 
+         STA SWEEP4+1 
+SWEEP4 
+         LDY #$00 
+NXTSWP4 
+         TYA 
+         TAX 
+NXTCYC4
+         TYA 
+         JSR WAIT 
+         BIT SPKR 
+         CPX #$80 
+         BEQ EXIT4 
+         DEX 
+         BNE NXTCYC4 
+         DEY 
+         BNE NXTSWP4 
+         DEC TRPCNT4 
+         BNE SWEEP4
+EXIT4 
+         PLA 
+         TAY 
+         PLA 
+         PLP 
+         RTS
+
+TRPCNT4  DFB $01
+FLNGTH4  DFB $10
+         ; Table for sounds that start at '5'
+SEFO     DFB $01,$08 ; Tick
+SEF1     DFB $01,$18 ; Whopidoop
+SEF2     DFB $ff,$01 ; Pip
+SEF3     DFB $06,$10 ; Phasor
+SEF4     DFB $01,$30 ; Music scale (long)
+SEF5     DFB $20,$06 ; Short beep
+SEF6     DFB $70,$06 ; Medium beep
+SEF7     DFB $ff,$06 ; Long beep
+SEF8     DFB $01,$a0 ; Geiger (longish)
+SEF9     DFB $ff,$02 ; Gleep (quick)
+SEF10    DFB $04,$1c ; Glissade (woop,woop,woop,woop)
+SEFll    DFB $01,$10 ; Qwip
+SEF12    DFB $30,$0b ; Oboe (warble?  laser)
+SEF13    DFB $30,$07 ; French horn (fail buzzer?)
+SEF14    DFB $01,$15 ; Pass beep
+SEF15    DFB $01,$64 ; Time bomb

@@ -37,6 +37,7 @@ IO_GETPREFIX    = $900C
 IO_HITINC       = $900F
 IO_HPOC         = $9012
 IO_GETWINFO     = $9015
+PLAYSOUND       = $9018
 
 * DRAWTAB.S
 TABX            = $4E00
@@ -61,14 +62,33 @@ VISITED_TABLE   = $8F00  ; X,Y X,Y X,Y
 VISITED_LENGTH  = $8FFF  ; number used bytes in VISITED_TABLE (2*# of x,y entries)
 
 * Sound
-PLAYSOUND       = $8980
+T1_SOUND_ROUT   = $8980
 SOUND_TICK      = 0
 SOUND_FIRE      = 1
 SOUND_LONGFIRE  = 2
 SOUND_CHIRP     = 3
 SOUND_SHOT      = 4
+SOUND_Drip      = 5
+SOUND_Whoop     = 6
+SOUND_Pip       = 7
+SOUND_Phasor    = 8
+SOUND_Scale     = 9
+SOUND_S_beep    = 10
+SOUND_M_beep    = 11
+SOUND_L_beep    = 12
+SOUND_Geiger    = 13
+SOUND_Gleep     = 14
+SOUND_Whooping  = 15
+SOUND_Qwip      = 16
+SOUND_Laser     = 17
+SOUND_Fail      = 18
+SOUND_Pass      = 19
+SOUND_Timebomb  = 20
 
 * DECOMP_IMG.S
 SHOWSPLASH      = $4000
 SHOWPLAY        = $4003
 
+* Aople II constants
+SPKR            = $C030 
+WAIT            = $FCA8
