@@ -6,6 +6,8 @@ Add weapon type (3) for 'key' that can transform block from (64-105) to one from
 "firing" a key transforms the block "Power" to "Damage"
 Keys have an ammo count (number of successful uses) 
 
+Need to merge GAME1.S and GAME2.S as the former is about to collide
+with the latter
 
 SDI - tweak healing, add health pack?, make closed/open doors different
 

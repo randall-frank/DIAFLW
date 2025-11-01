@@ -489,12 +489,20 @@ NEXTSTEP JMP   SHOTSTEP
 
 HANDLEKEY
          CMP   POWER       ; "key" converts POWER to DAMAGE
-         BNE   BADKEYTARGET 
-         NOP               ; TODO: update the terrain, subtract one ammo?
-                           ; success sound
+         BNE   BADKEYTARGET
+         LDA   DAMAGE      ; Update the terrain from POWER to DAMAGE
+         LDX   XPOS
+         LDY   YPOS
+         JSR   PAC_SET     
+         LDA   #SOUND_Pass ; success sound
+         BNE   DONEKEYHANDLER
 BADKEYTARGET               ; fail sound, fail message
-         LDA   #7
-         JMP   MSG_MOVE
+         LDA   #SOUND_Fail
+DONEKEYHANDLER
+         JSR   PLAYSOUND
+         JMP   MOVE
+         ; LDA   #7        It would be nice to display a message (invalid target) 
+         ; JMP   MSG_MOVE
 
 DELTAX   DFB   0
 DELTAY   DFB   0
