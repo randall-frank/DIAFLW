@@ -63,7 +63,7 @@
  1000  PRINT : PRINT : PRINT : PRINT "Disk operations:"
  1010  PRINT "S)ave  L)oad  RET)urn"
  1020  GET A$
- 1021  IF A$ = "" THEN 200
+ 1021  IF A$ = CHR$(13) THEN 200
  1022  PRINT : PRINT "Blocks (1) or (2):";: GET A1$
  1023 G$ = "": IF  VAL (A1$) = 2 THEN G$ = "2"
  1025  PRINT 

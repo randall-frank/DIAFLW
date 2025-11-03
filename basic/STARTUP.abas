@@ -2,7 +2,7 @@
  15  HTAB 10: VTAB 8: PRINT "Select an option:"
  20  HTAB 10: VTAB 10: PRINT "  1) Play a game of DIAFLW"
  30  HTAB 10: VTAB 12: PRINT "  2) Run the DIAFLW editors"
- 40  HTAB 10: VTAB 14: PRINT "  3) Exit to basic"
+ 40  HTAB 10: VTAB 14: PRINT "  3) Exit to AppleSoft Basic"
  41  HTAB 10: VTAB 16: PRINT "  4) ProDOS BYE"
  45  HTAB 1: VTAB 20: PRINT "Documentation in DIAFLW.DOCS txt file"
  50  HTAB 10: VTAB 18: GET A$

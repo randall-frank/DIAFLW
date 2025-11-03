@@ -123,7 +123,8 @@ TEMP6    =     $1F
 7A00 - GAME2.S - More enemies, etc one game "step"
 8000 - OPENING2.S start the game???
         LETUSGO -> reads in BLOCKS, WEAPONS, STARTER, SAVED, BLOCKS2?
-8980 - SOUND routine (no source???) -
+8980 - SOUND routine (no source???) - Old routine, called by T1_SOUND_ROUT
+       see common.s for interface details.
        A = 0 - "tick"
        A = 1 - "fire"
        A = 2 - "long fire"
@@ -136,6 +137,8 @@ TEMP6    =     $1F
 9000 - IO2.S Core I/O routines - file open/close/setprefix/etc 
         OPEN - look for and read the SQUARExy file - prompt the user as needed
             - regen the random table...
+        PLAYSOUND entry point.
+        Pocket access routines.
 9700 - free
 
 - free to 9FFF???  
