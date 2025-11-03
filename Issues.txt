@@ -9,7 +9,10 @@ Keys have an ammo count (number of successful uses)
 Need to merge GAME1.S and GAME2.S as the former is about to collide
 with the latter
 
-SDI - tweak healing, add health pack?, make closed/open doors different
+SDI - replace shotgun w/health pack & ACP .45 with key
+
+- add key edits to weapons editor
+- check on traps (one shot and near???)
 
 
 SQUAREXY

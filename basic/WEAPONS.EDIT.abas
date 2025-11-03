@@ -32,18 +32,28 @@
  620  IF  LEN (A$(N)) > 9 THEN A$(N) =  LEFT$ (A$(N),9): GOTO 650
  630  IF  LEN (A$(N)) < 9 THEN A$(N) = A$(N) + " ": GOTO 630
  650  GOSUB 1005: RETURN 
- 700  VTAB 23: HTAB 1: INPUT "New power (% chance to kill enemy):";PP(N)
+ 700  REM If type is 3, this is the "target" shape # (should be 64-105)
+ 701  IF T(N) = 3 THEN 750
+ 705  VTAB 23: HTAB 1: INPUT "New power (% chance to kill enemy):";PP(N)
  710  IF PP(N) < 0 OR PP(N) > 99 THEN 700
  715 P(N) =  INT (PP(N) * 2.579)
- 720  GOSUB 1005: RETURN 
+ 720  GOSUB 1005: RETURN
+ 750  VTAB 23: HTAB 1: INPUT "Target shape # (64-105):";PP(N)
+ 760  IF PP(N) < 64 OR PP(N) > 105 THEN 750
+ 770  GOSUB 1005: RETURN 
  800  VTAB 23: HTAB 1
  803  PRINT "Enter new type value (0=single shot"
- 806  INPUT " 1=explosive 2=health):";T(N)
- 810  IF T(N) < 0 OR T(N) > 2 THEN 800
+ 806  INPUT " 1=explosive 2=health, 3=key):";T(N)
+ 810  IF T(N) < 0 OR T(N) > 3 THEN 800
  820  GOSUB 1005: RETURN 
- 900  VTAB 23: HTAB 1: INPUT "New damage (# damage to player):";D(N)
+ 900  REM If type is 3, this is the "replacement" shape # (should be 110-127)
+ 901  IF T(N) = 3 THEN 950
+ 905  VTAB 23: HTAB 1: INPUT "New damage (# damage to player):";D(N)
  910  IF D(N) < 0 OR D(N) > 255 THEN 900
- 920  GOSUB 1005: RETURN 
+ 920  GOSUB 1005: RETURN
+ 950  VTAB 23: HTAB 1: INPUT "Replacement shape # (110-127):";D(N)
+ 960  IF D(N) < 110 OR D(N) > 127 THEN 950
+ 970  GOSUB 1005: RETURN
  1000  GOSUB 10000
  1005  HOME 
  1006  PRINT "Death Is A Four Letter Word Weapons Edit----------------------------------------";
