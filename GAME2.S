@@ -70,30 +70,30 @@ M2       LDA   $7005,X
          ADC   #1
          ORA   #$80
          STA   DELTAY
-M3       LDA   XPOS
+M3       LDA   XPOS  ; Should we try to move the enemy?
          CMP   $7300
          BNE   PICK
          LDA   YPOS
          CMP   $7301
          BNE   PICK
          RTS
-PICK     LDY   TEMP2
+PICK     LDY   TEMP2 ; pick the enemy motion?
          DEY
          DEY
-         BEQ   XIN
+         BEQ   XIN   ; X finder (2)
          DEY
-         BEQ   YIN
+         BEQ   YIN   ; Y finder (3)
          DEY
-         BEQ   BEST
+         BEQ   BEST  ; XY-best (4)
          DEY
-         BEQ   RAND
+         BEQ   RAND  ; random (5)
          JSR   PAC_RND
          CMP   #$60
          BGE   BEST
 RAND     JSR   PAC_RND
          AND   #3
          JMP   MOVIT
-XIN      LDA   XPOS
+XIN      LDA   XPOS   ; X finder
          CMP   $7300
          BEQ   YIN
          LDX   #1
@@ -102,7 +102,7 @@ XIN      LDA   XPOS
          LDX   #3
 M4       TXA
          JMP   MOVIT
-YIN      LDA   YPOS
+YIN      LDA   YPOS   ; Y finder
          CMP   $7301
          BEQ   XIN
          LDX   #2
@@ -111,7 +111,7 @@ YIN      LDA   YPOS
          LDX   #0
 M5       TXA
          JMP   MOVIT
-BEST     LDA   DELTAX
+BEST     LDA   DELTAX  ; XY best
          AND   #$7F
          STA   TEMP3
          LDA   DELTAY
@@ -119,7 +119,7 @@ BEST     LDA   DELTAX
          CMP   TEMP3
          BLT   XIN
          JMP   YIN
-MOVIT    ASL
+MOVIT    ASL   ; Actually move the man
          TAX
          LDA   DX,X
          CLC

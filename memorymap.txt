@@ -100,7 +100,7 @@ TEMP6    =     $1F
 6000 - Also the I/O buffer for directory listings...
 6000 - The SQUARE data for X,Y  (IO2.S) I/O is $1100 bytes in size for square+enemy 
 7000 - ENEMY table $100 in size (note: starts with the HELP.S screen contents)
-7200 - WEAPONS.S definition tables from WEAPONS file
+7200 - WEAPONS.S definition tables from WEAPONS file 32 bytes * 8 weapons
 7300 - Xlocation?   from STARTER file
 7301 - Ylocation?
 7302 - Z?
@@ -146,6 +146,16 @@ TEMP6    =     $1F
 A000 - Icon data -> WHICHTBL can be $A0 or $10 (editor) read from BLOCKS2??
     BLOCKS is 4096 bytes
     128 Icons (32 bytes/icon), 14x16 pixels????   
+
+
+Weapon definition - 32 bytes
+    10 chars - weapon name
+    9 chars - weapon ammo name
+    1 "Power"
+    1 Type: 0=shot,1=explosion,2=heal,3=key
+    1 "Damage"
+    10 unused bytes
+
 
 STARTER - base
     (Q) State - @base, 13 bytes

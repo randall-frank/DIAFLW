@@ -2,6 +2,7 @@
          DSK   bin/WEAPONS.BIN
          TYP   $06  ; /BIN file
 
+; Each weapon is 10+9+1+1+1+10 = 32 bytes
          ASC   'UZI 9MM   '
          ASC   '9MM CLIP '
          DFB   128    ; Power (% chance to kill enemy)
