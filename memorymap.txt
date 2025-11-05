@@ -148,14 +148,40 @@ A000 - Icon data -> WHICHTBL can be $A0 or $10 (editor) read from BLOCKS2??
     128 Icons (32 bytes/icon), 14x16 pixels????   
 
 
+Weapon table has 8 entries of 32bytes: $7200
 Weapon definition - 32 bytes
-    10 chars - weapon name
-    9 chars - weapon ammo name
-    1 "Power"
-    1 Type: 0=shot,1=explosion,2=heal,3=key
-    1 "Damage"
-    10 unused bytes
+     0) 10 chars - weapon name
+    10) 9 chars - weapon ammo name
+    19) 1 "Power"
+    20) 1 Type: 0=shot,1=explosion,2=heal,3=key
+    21) 1 "Damage"
+    22) 10 unused bytes
 
+
+Enemy table has 32 entries of 8 bytes: $7000
+Enemy definition - 8 bytes
+    0) 1 byte - enemy type ()
+    1) 1 byte - weapon #
+    2) 1 byte - ammo #   255=none
+    3) 1 byte - ammo left on death
+    4) 1 byte - X position
+    5) 1 byte - Y position
+    6) 1 byte - point value for scoring
+    7) 1 byte - shape # to display
+
+    Enemy type numbers:  
+        0      Dead
+        122    Non-moving
+        123    X-finder
+        124    Y-finder
+        125    XY-best  (killer)
+        126    Random
+        127    50% random / 50% killer
+        128    Trap / fire once on
+        129    Trap / fire once near
+        120    Trap / fire multiple on
+        131    Trap / fire multiple near
+        255    Self setup (placer)
 
 STARTER - base
     (Q) State - @base, 13 bytes

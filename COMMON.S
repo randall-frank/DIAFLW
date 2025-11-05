@@ -43,6 +43,11 @@ PLAYSOUND       = $9018
 TABX            = $4E00
 TABY            = $4F00
 
+* Game state
+SQUARE_DATA     = $6000
+ENEMY_TABLE     = $7000
+WEAPON_DEFS     = $7200
+
 * Player state
 PLAYER_X        = $7300
 PLAYER_Y        = $7301

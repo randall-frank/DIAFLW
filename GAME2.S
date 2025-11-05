@@ -17,19 +17,23 @@ TEMP6    =     $1F
 
 LOCAL_GAMESTEP
          LDA   #31
-         STA   TEMP0
-TOP1     JSR   MOVE
+         STA   TEMP0   ; There are 32 enemy slots we walk them from 31->0.
+TOP1     JSR   MOVE    ; First we attempt to move them all
          DEC   TEMP0
          BPL   TOP1
          LDA   $7307
-         JSR   PAC_DRAW
+         JSR   PAC_DRAW  ; Make sure the player is on top (could have been obscured)
+
          LDA   #31
-         STA   TEMP0
-TOP2     JSR   FIRE
+         STA   TEMP0   ; Resolve all combat for the 32 enemy slots
+TOP2     JSR   FIRE    ; Attempt to fire them all
          DEC   TEMP0
          BPL   TOP2
          RTS
-MOVE     JSR   PAC_RND
+
+* Attempt to move the enemy: TEMP0
+
+MOVE     JSR   PAC_RND ; Attempt to move an enemy, but not all the time, say 70%
          CMP   #$B0
          BLT   M1
          RTS
@@ -37,17 +41,20 @@ M1       LDA   TEMP0
          ASL
          ASL
          ASL
-         TAX
+         TAX         ; X is the first byte of the enemy definition
          STX   TEMP1
          LDA   $7000,X
-         BEQ   M1-1
-         CMP   #$80
-         BGE   M1-1
+         BEQ   M1-1  ; 0=Dead enemy
+         CMP   #$80  ; All traps are from 128-131
+         BGE   M1-1  
+         ; Not sure what these are... might be legacy
          CMP   #1
          BEQ   M1-1
          CMP   #7
          BGE   M1-1
-         STA   TEMP2
+         STA   TEMP2 ; TEMP2 is the enemy type
+         ; Grab the positions
+         ; X
          LDA   $7004,X
          STA   XPOS
          SEC
@@ -59,6 +66,7 @@ M1       LDA   TEMP0
          ADC   #1
          ORA   #$80
          STA   DELTAX
+         ; Y
 M2       LDA   $7005,X
          STA   YPOS
          SEC
@@ -70,11 +78,11 @@ M2       LDA   $7005,X
          ADC   #1
          ORA   #$80
          STA   DELTAY
-M3       LDA   XPOS  ; Should we try to move the enemy?
-         CMP   $7300
+M3       LDA   XPOS  ; Should we try to move the enemy?  not if the are already on the player
+         CMP   PLAYER_X 
          BNE   PICK
          LDA   YPOS
-         CMP   $7301
+         CMP   PLAYER_Y
          BNE   PICK
          RTS
 PICK     LDY   TEMP2 ; pick the enemy motion?
@@ -158,6 +166,7 @@ YESWAY   LDA   XN
          STA   $7005,X
          CLC
          RTS
+
 DX       DFB   0,255,1,0,0,1,255,0
 XPOS     DFB   0
 YPOS     DFB   0
@@ -165,54 +174,66 @@ XN       DFB   0
 YN       DFB   0
 DELTAX   DFB   0
 DELTAY   DFB   0
+
+* Attempt to fire the enemy: TEMP0
+
 FIRE     LDA   #$80
-         STA   INNER
+         STA   INNER       ; shoot probability
+         LDA   #0
+         STA   ONESHOT     ; if non-zero, this is a oneshot trap
 F0       LDA   TEMP0
          ASL
          ASL
          ASL
          TAX
-         STX   TEMP1
+         STX   TEMP1       ; index into enemy table
          LDA   $7000,X
-         BNE   F1
+         BNE   LIVE_ENEMY  ; Non-dead enemy
 FOUT     RTS
-F1       PHA
-         JSR   DELT
+
+LIVE_ENEMY 
+         PHA               ; Enemy type is in A
+         JSR   DELT        ; Compute delta from enemy to player
          PLA
-         JSR   SPEC
+         JSR   CHECK_TRAPS ; can set ONESHOT if the enemy is to be removed on a shot
+                           ; can also not return at all (return from FIRE) if not ON
          JSR   PAC_RND
          LDX   TEMP1
-         CMP   INNER
-         BGE   F1111
+         CMP   INNER       ; Don't always shoot... (traps set INNER to 0)
+         BGE   TRY_SHOT
          RTS
-F1111    LDA   $7004,X
-         CMP   $7300
+
+TRY_SHOT LDA   $7004,X
+         CMP   PLAYER_X
          BEQ   XYES
          LDA   $7005,X
-         CMP   $7301
+         CMP   PLAYER_Y
          BEQ   YYES
-         RTS
-XYES     LDA   DELTAY
+         RTS           ; Note: local RTS target for branches, must be before XYES
+
+XYES     LDA   DELTAY  ; Lined up in X
          AND   #$7F
          CMP   #4
-         BGE   XYES-1
+         BGE   XYES-1  ; too far away
          LDX   #2
          LDA   DELTAY
          BPL   F2
          LDX   #0
 F2       TXA
          JMP   DFIRE
-YYES     LDA   DELTAX
+
+YYES     LDA   DELTAX  ; Lined up in Y
          AND   #$7F
          CMP   #4
-         BGE   XYES-1
+         BGE   XYES-1  ; too far away
          LDX   #1
          LDA   DELTAX
          BPL   F3
          LDX   #3
 F3       TXA
          JMP   DFIRE
-DELT     LDA   $7005,X
+
+DELT     LDA   $7005,X   ; Compute position delta from the player
          SEC
          SBC   $7301
          BEQ   F4
@@ -233,9 +254,12 @@ F4       STA   DELTAY
          ORA   #$80
 F5       STA   DELTAX
          RTS
-DIRS     DFB   0,1,255,0,0,255,1,0
-DIR      DFB   0
-DFIRE    STA   DIR
+
+; deltas for X and Y for directions
+DIRS     DFB   0,1, 255,0, 0,255, 1,0
+DIR      DFB   0  ; direction of shot (from enemy/player deltas)
+
+DFIRE    STA   DIR       ; Actually fire from an enemy to the player
          LDX   TEMP1
          LDA   $7004,X
          STA   XPOS
@@ -347,44 +371,62 @@ O1       JSR   IO_HIT
          BPL   O1
 ONE1     LDY   #60
 DELAY2   LDA   #200
-         SEC
+DELAY3   SEC
          SBC   #1
-         BNE   DELAY2+2
+         BNE   DELAY3
          DEY
          BNE   DELAY2
-         LDA   $7307
-         LDX   #3
-         LDY   #3
-         JMP   PAC_BIGSHAPE
-SPEC     PHA
-         LDA   DELTAX
-         BEQ   S2
-         LDA   DELTAY
-         BEQ   S2
-         PLA
-         RTS
-S2       PLA
-         CMP   #$80
-         BLT   NOSPEC
-         TAX
-         AND   #1
-         BNE   SPEC2
-         LDA   DELTAX
-         BNE   NO
-         LDA   DELTAY
-         BNE   NO
-SPEC2    TXA
-         AND   #2
-         BNE   NSPEC
-         LDX   TEMP1
+         LDA   ONESHOT    ; Handle oneshot trap flag
+         BEQ   NOTONCE
+
+         LDX   TEMP1      ; Disable the "once" trap by moving it off the map
          LDA   #$80
          STA   $7004,X
          STA   $7005,X
-NSPEC    LDA   #0
+
+NOTONCE  LDA   $7307
+         LDX   #3
+         LDY   #3
+         JMP   PAC_BIGSHAPE
+
+
+* Check/handle traps - handle "ONCE" and reset probability to 100%
+* The enemy type is in A
+
+CHECK_TRAPS   ; Note: TRY_SHOT does the DX/DY check
+         CMP   #$80
+         BLT   NOSPEC  ; regular enemy
+         ; Trap case, check for NEAR or ON low order bit 0 (1)
+         TAX
+         AND   #1
+         BNE   CHECK_ONCE
+
+         ; Trap "ON" cases?  if either is non-zero, we cannot be ON
+         LDA   DELTAX
+         BNE   SKIP_ON
+         LDA   DELTAY
+         BNE   SKIP_ON
+
+         ; Trap check for ONCE or MULTIPLE bit 1 (2)
+CHECK_ONCE
+         TXA
+         AND   #2
+         BNE   RESET_PROB
+
+         ; This is the ONCE case and we move the trap off the map
+         LDX   TEMP1
+         LDA   #1
+         STA   ONESHOT
+
+RESET_PROB    
+         LDA   #0     ; reset the probability to 100% for traps
          STA   INNER
 NOSPEC   LDX   TEMP1
          RTS
-NO       PLA
-         PLA
+
+SKIP_ON  PLA   ; pop the RTS from the JSR FIRE
+         PLA   ; thus, this results in a return from the FIRE function
          RTS
+
 INNER    DFB   0
+ONESHOT  DFB   0
