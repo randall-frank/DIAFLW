@@ -15,12 +15,12 @@ TGTHI    =     3
          STA   SRCLO
          STA   TGTLO
 
-* Read from 2100-2800 and store to 9000-9700         
-         LDA   #$21
+* Read from 5000-5800 and store to 9000-9800         
+         LDA   #$50
          STA   SRCHI
          LDA   #$90
          STA   TGTHI
-         LDX   #$07
+         LDX   #$08
          JSR   MOVEMEM
 
 * Read from 2800-3000  and store to 0800-1000         
@@ -60,6 +60,7 @@ MOVELOOP LDA   (SRCLO),Y
          DEX
          BNE   MOVEMEM
          RTS
+
 * Paint the help screen to the text page $400-$800
 * The page source (HELP.S) is available at $7000 before it is overwritten by the loader
 TEXTPAGE LDX   #$00

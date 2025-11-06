@@ -353,21 +353,11 @@ ONTARGET JSR   PAC_RND
          JSR   PAC_RND
          CMP   #$B0
          BGE   ONE1
-         LDX   TEMP1
-         LDA   $7001,X
-         ASL
-         ASL
-         ASL
-         ASL
-         ASL
-         STA   TEMP5
-         LDA   #$72
-         STA   TEMP6
-         LDY   #21
-         LDA   (TEMP5),Y
-         STA   TEMP3
-O1       JSR   IO_HIT
-         DEC   TEMP3
+         LDX   TEMP1     ; look up the weapon type from the weapons table $7200
+         LDA   $7001,X   ; get the weapon type
+         JSR   IO_GETWINFO_ACC ; Fill out DAMAGE
+O1       JSR   IO_HIT    ; loop over all the damage, decreasing player health
+         DEC   DAMAGE
          BPL   O1
 ONE1     LDY   #60
 DELAY2   LDA   #200
@@ -389,18 +379,28 @@ NOTONCE  LDA   $7307
          LDY   #3
          JMP   PAC_BIGSHAPE
 
-
 * Check/handle traps - handle "ONCE" and reset probability to 100%
+* Also, if the enemy weapon type is 2=heal or 3=key then this enemy cannot fire
 * The enemy type is in A
 
-CHECK_TRAPS   ; Note: TRY_SHOT does the DX/DY check
+CHECK_TRAPS   
+         PHA
+         JSR   IO_GETWINFO_ACC
+         PLA
+         LDY   EXPLOST  ; If the weapon type is 2 or 3, this enemy cannot fire
+         CPY   #2
+         BGE   SKIP_ON
+         
+         ; Traps start at 128
          CMP   #$80
          BLT   NOSPEC  ; regular enemy
+
          ; Trap case, check for NEAR or ON low order bit 0 (1)
          TAX
          AND   #1
          BNE   CHECK_ONCE
 
+         ; Note: TRY_SHOT does the DX/DY check
          ; Trap "ON" cases?  if either is non-zero, we cannot be ON
          LDA   DELTAX
          BNE   SKIP_ON

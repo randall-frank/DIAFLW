@@ -73,12 +73,12 @@ TEMP6    =     $1F
 
 
 --------- DIAFLW.SYSTEM -----
-2000 - Custom code
+2000 - Unpack the game bits into their runtime locations & start it
+    Paint the text page from 7000-7400
+    Reads from 5000-5800 and stores to 9000-9800
     Reads from 2800-3000 and stores to 0800-1000
-    Reads from 2100-2800 and stores to 9000-9700
     Reads from 3000-4000 and stores to 8000-9000
     Reads from 6000-7000 and stores to 7000-8000
-    Paint the text page from 7000-7400
     JMP 8000
 
 --------- Runtime -----------
@@ -139,7 +139,7 @@ TEMP6    =     $1F
             - regen the random table...
         PLAYSOUND entry point.
         Pocket access routines.
-9700 - free
+9900 - free ?
 
 - free to 9FFF???  
 

@@ -12,7 +12,7 @@ PAC_DRAW        = $0815
 PAC_HIGHLITE    = $0818
 PAC_POCKETS     = $081B
 PAC_CLEAR       = $081E
-PAC_MSG         = $0821
+PAC_MSG         = $0821   ; calls IO_MSGS
 PAC_CLEAR2      = $0824
 PAC_BOTTOMLINE  = $0827
 PAC_SETMASK     = $082A
@@ -38,6 +38,8 @@ IO_HITINC       = $900F
 IO_HPOC         = $9012
 IO_GETWINFO     = $9015
 PLAYSOUND       = $9018
+IO_GETWINFO_ACC = $901B
+IO_MSGS         = $901E  ; cannot move this (see PAC.S)
 
 * DRAWTAB.S
 TABX            = $4E00

@@ -46,7 +46,7 @@ MASKON    =     $72
          JMP   HIGHLITE
          JMP   POCKETS
          JMP   CLEAR
-         JMP   MSGS
+         JMP   $901E      ; IO_MSGS from IO2.S
          JMP   CLEAR2
          JMP   BOTTOMLINE
          JMP   SETMASK
@@ -521,57 +521,7 @@ POC5     LDA   (TEMP4),Y
          RTS
 * RJF 18s were 17s
 XYLOC    DFB   18,104,29,104,18,144,29,144,18,56,29,56
-MSGS     PHA
-         LDA   #14
-         LDY   #144
-         LDX   #1
-         JSR   TEXTSET
-         PLA
-         ASL
-         TAY
-         CPY   #0
-         BNE   MSGS2
-         JMP   CLEAR
-MSGS2    LDA   PTRTBL,Y
-         STA   KLKL+1
-         LDA   PTRTBL+1,Y
-         STA   KLKL+2
-         LDA   #0
-         STA   MYCOUNT
-         JSR   CLEAR
-MSGS3    LDY   MYCOUNT
-KLKL     LDA   $FFFF,Y
-         CMP   #255
-         Beq   MSGS4
-         AND   #$7F
-         JSR   TEXT
-         INC   MYCOUNT
-         JMP   MSGS3
-MSGS4    RTS
-PTRTBL   DFB   0,0
-         DA    MSG1
-         DA    MSG2
-         DA    MSG3
-         DA    MSG4
-         DA    MSG5
-         DA    MSG6
-MSG1     ASC   'No ammo.'
-         dfb   255
-MSG2     ASC   'No weapon.'
-         dfb   255
-MSG3     ASC   'Improper ammo.'
-         dfb   255
-MSG4     ASC   'Hand must be  '
-         ASC   'empty to      '
-         asc   'search.'
-         dfb   255
-MSG5     ASC   'Game paused.  '
-         ASC   'Press RETURN.'
-         dfb   255
-MSG6     ASC   'No room in    '
-         ASC   'pocket.'
-         dfb   255
-MYCOUNT  dfb   0
+
 CLEAR2   LDA   #$20
          STA   CLMOD+2
          LDX   #$20

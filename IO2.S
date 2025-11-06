@@ -13,6 +13,8 @@
          JMP   LOCAL_HPOC
          JMP   LOCAL_GETWINFO
          JMP   LOCAL_PLAYSOUND
+         JMP   LOCAL_GETWINFO_ACC
+         JMP   LOCAL_MSGS
 
          LST   OFF
 FILENAME HEX   08
@@ -722,6 +724,10 @@ LOCAL_HPOC
 LOCAL_GETWINFO
          LDY   #0
          LDA   (TEMP2),Y
+         JMP   LOCAL_GETWINFO_ACC
+
+* get the weapon info (weapon index in A): power, type, damage 
+LOCAL_GETWINFO_ACC
          ASL
          ASL
          ASL
@@ -824,3 +830,67 @@ SEF12    DFB $30,$0b ; Oboe (warble?  laser)
 SEF13    DFB $30,$07 ; French horn (fail buzzer?)
 SEF14    DFB $01,$15 ; Pass beep
 SEF15    DFB $01,$64 ; Time bomb
+
+LOCAL_MSGS
+         PHA
+         LDA   #14
+         LDY   #144
+         LDX   #1
+         JSR   PAC_TEXTSET
+         PLA
+         ASL
+         TAY
+         CPY   #0
+         BNE   MSGS2
+         JMP   PAC_CLEAR
+MSGS2    LDA   PTRTBL,Y
+         STA   KLKL+1
+         LDA   PTRTBL+1,Y
+         STA   KLKL+2
+         LDA   #0
+         STA   PTRTBL
+         JSR   PAC_CLEAR
+MSGS3    LDY   PTRTBL
+KLKL     LDA   $FFFF,Y
+         CMP   #255
+         Beq   MSGS4
+         AND   #$7F
+         JSR   PAC_TEXT
+         INC   PTRTBL
+         JMP   MSGS3
+MSGS4    RTS
+
+PTRTBL   DFB   0,0
+         DA    MSG1
+         DA    MSG2
+         DA    MSG3
+         DA    MSG4
+         DA    MSG5
+         DA    MSG6
+         DA    MSG7
+         DA    MSG8
+
+MSG1     ASC   'No ammo.'
+         dfb   255
+MSG2     ASC   'No weapon.'
+         dfb   255
+MSG3     ASC   'Improper ammo.'
+         dfb   255
+MSG4     ASC   'Hand must be  '
+         ASC   'empty to      '
+         asc   'search.'
+         dfb   255
+MSG5     ASC   'Game paused.  '
+         ASC   'Press RETURN.'
+         dfb   255
+MSG6     ASC   'No room in    '
+         ASC   'pocket.'
+         dfb   255
+MSG7     ASC   'Invalid key   '
+         ASC   'target.'
+         dfb   255
+MSG8     ASC   'Unlocked.     '
+         dfb   255
+
+
+; Note: if this goes into $9800, loader.s must be adjusted
