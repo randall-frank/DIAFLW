@@ -1,4 +1,4 @@
-         ORG   $7A00
+         ORG   $7C00
          DSK   bin/GAME2.BIN
          TYP   $06  ; /BIN file
 
@@ -13,7 +13,7 @@ TEMP5    =     $1E
 TEMP6    =     $1F
 
 
-* Main game step - 7A00
+* Main game step - 7C00
 
 LOCAL_GAMESTEP
          LDA   #31

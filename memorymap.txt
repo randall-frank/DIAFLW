@@ -120,7 +120,7 @@ TEMP6    =     $1F
 7310 - pocket content array?  (weapon?, ammo?)
 7311 - more pocket info?
 7400 - GAME1.S - Player side of a game "step"
-7A00 - GAME2.S - More enemies, etc one game "step"
+7C00 - GAME2.S - More enemies, etc one game "step"
 8000 - OPENING2.S start the game???
         LETUSGO -> reads in BLOCKS, WEAPONS, STARTER, SAVED, BLOCKS2?
 8980 - SOUND routine (no source???) - Old routine, called by T1_SOUND_ROUT
@@ -154,8 +154,11 @@ Weapon definition - 32 bytes
     10) 9 chars - weapon ammo name
     19) 1 "Power"
     20) 1 Type: 0=shot,1=explosion,2=heal,3=key
-    21) 1 "Damage"
-    22) 10 unused bytes
+    21) 1 "Damage" (healing for type=2)
+    22) 1 Lock shape # source start (type=3)
+    23) 1 Lock shape # target start (type=3)
+    24) 1 Lock shape # count (type=3)
+    25) 7 unused bytes
 
 
 Enemy table has 32 entries of 8 bytes: $7000

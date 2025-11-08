@@ -721,6 +721,7 @@ LOCAL_HPOC
          RTS
 
 * get the current hand weapon info: power, type, damage 
+* Note: assumes HPOC has been called first and will wipe out HPOC pointers during execution
 LOCAL_GETWINFO
          LDY   #0
          LDA   (TEMP2),Y
@@ -745,6 +746,15 @@ LOCAL_GETWINFO_ACC
          INY
          LDA   (TEMP2),Y  ; Weapon damage
          STA   DAMAGE
+         INY
+         LDA   (TEMP2),Y  ; lock source start
+         STA   LOCK_SOURCE
+         INY
+         LDA   (TEMP2),Y  ; lock target start
+         STA   LOCK_TARGET
+         INY
+         LDA   (TEMP2),Y  ; lock count
+         STA   LOCK_COUNT
          RTS
 
 LOCAL_DRAWHEALTH

@@ -19,14 +19,17 @@ PAC_SETMASK     = $082A
 PAC_WHICHTBL    = $0FFF
 
 * GAME1.S2
-USERSTEP        = $7400
+USERSTEP        = $7400     ; handle user actions: moving, firing, etc
 * Return values from various functions
 POWER           = $7403
 EXPLOST         = $7404
 DAMAGE          = $7405
+LOCK_SOURCE     = $7406
+LOCK_TARGET     = $7407
+LOCK_COUNT      = $7408
 
 * GAME2.S2
-GAMESTEP        = $7A00
+GAMESTEP        = $7C00     ; handle 'enemy' actions: moving, firing, etc
 
 * IO2.S
 IO_OPEN         = $9000

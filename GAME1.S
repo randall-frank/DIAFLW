@@ -20,8 +20,11 @@ TEMP8    =     8
 
 * shared vars
          DFB   0  ; POWER
-         DFB   0  ; EXPLOST
+         DFB   0  ; EXPLOST (type)
          DFB   0  ; DAMAGE
+         DFB   0  ; lock source start LOCK_SOURCE
+         DFB   0  ; lock target start LOCK_TARGET
+         DFB   0  ; lock count LOCK_COUNT
 
 LOCAL_USERSTEP
          LDA   $C000
@@ -487,22 +490,29 @@ START    LDA   XPOS
 FDONE    JMP   MOVE
 NEXTSTEP JMP   SHOTSTEP
 
-HANDLEKEY
-         CMP   POWER       ; "key" converts POWER to DAMAGE
-         BNE   BADKEYTARGET
-         LDA   DAMAGE      ; Update the terrain from POWER to DAMAGE
+HANDLEKEY   ; Walk all of the source shapes and handle match/failure
+            ; A is the current shape # being considered
+         CMP   LOCK_SOURCE ; "key" converts LOCK_SOURCE to LOCK_TARGET
+         BEQ   KEYWORKS
+         INC   LOCK_SOURCE ; next source/target (if any)
+         INC   LOCK_TARGET
+         DEC   LOCK_COUNT
+         BNE   HANDLEKEY
+         ; key failure fail sound, fail message
+         LDA   #7          ; change the message to fail
+         STA   MESSAGE
+         LDA   #SOUND_Fail
+         BNE   KEY_DONE
+
+KEYWORKS LDA   LOCK_TARGET ; Update terrain from LOCK_SOURCE to LOCK_TARGET
          LDX   XPOS
          LDY   YPOS
-         JSR   PAC_SET     
+         JSR   PAC_SET
+         LDA   #8          ; Message "unlocked"
+         STA   MESSAGE               
          LDA   #SOUND_Pass ; success sound
-         BNE   DONEKEYHANDLER
-BADKEYTARGET               ; fail sound, fail message
-         LDA   #SOUND_Fail
-DONEKEYHANDLER
-         JSR   PLAYSOUND
+KEY_DONE JSR   PLAYSOUND
          JMP   MOVE
-         ; LDA   #7        It would be nice to display a message (invalid target) 
-         ; JMP   MSG_MOVE
 
 DELTAX   DFB   0
 DELTAY   DFB   0

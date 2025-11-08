@@ -41,7 +41,7 @@ with open("HELP_SRC.S", "r") as fp:
 files = {
     "DRAWTAB.S": 0x4E00,
     "GAME1.S": 0x7400,
-    "GAME2.S": 0x7A00,
+    "GAME2.S": 0x7C00,
     "IO2.S": 0x9000,
     "OPENING2.S": 0x8000,
     "PAC.S": 0x0800,
@@ -89,7 +89,7 @@ bins = {
     "bin/diaflw_play.fgr": 0x4A00,   
     "bin/HELP.BIN": 0x7000,          # this is overwritten after moved to text
     "bin/GAME1.BIN": 0x6400,         # reloc=0x7400,
-    "bin/GAME2.BIN": 0x6A00,         # reloc=0x7A00,
+    "bin/GAME2.BIN": 0x6C00,         # reloc=0x7C00,
     "bin/IO2.BIN": 0x5000,           # reloc=0x9000,
     "bin/OPENING2.BIN": 0x3000,      # reloc=0x8000,
     "bin/PAC.BIN": 0x2800,           # reloc=0x0800,

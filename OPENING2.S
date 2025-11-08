@@ -391,8 +391,8 @@ UJU2     DEC   T3
 DO       LDA   PAC_WHICHTBL
          EOR   #$B0
          STA   PAC_WHICHTBL
-         JSR   $7400
-DOP3     JSR   $7A00
+         JSR   USERSTEP
+DOP3     JSR   GAMESTEP
          LDA   $7302
          BNE   BIG
          JMP   BIGLOOP
@@ -441,7 +441,7 @@ DED      ASC   'I am sorry to inform you '
          ASC   'butyou are now   dead...       '
          ASC   'Press RETURN.'
          DFB   255
-JOYIT    JSR   $7A00
+JOYIT    JSR   GAMESTEP
          LDA   #$A8
          JSR   $FCA8
          JMP   DOP3+3
