@@ -724,10 +724,10 @@ LOCAL_HPOC
 * Note: assumes HPOC has been called first and will wipe out HPOC pointers during execution
 LOCAL_GETWINFO
          LDY   #0
-         LDA   (TEMP2),Y
+         LDA   (TEMP2),Y   ; At this point TEMP2 points to the current hand, and we get the weapon
          JMP   LOCAL_GETWINFO_ACC
 
-* get the weapon info (weapon index in A): power, type, damage 
+* get the weapon info (weapon index in A): power, type, damage, key/lock info
 LOCAL_GETWINFO_ACC
          ASL
          ASL

@@ -1,75 +1,108 @@
  15  DIM W$(7),A$(7),P(7),T(7),D(7)
- 16  DIM PP(7)
+ 16  DIM PP(7),LS(7),LT(7),LC(7)
  17  GOSUB 5000
  20  HOME 
  25  PRINT "Death Is A Four Letter Word Weapons Edit"
  26  VTAB 2: HTAB 1: PRINT "----------------------------------------"
  40  PRINT : PRINT CHR$(4);"BLOAD WEAPONS,A$6F00"
+ 45  GOSUB 10000
  50  VTAB 20: HTAB 1: PRINT "                                                                            ";
  90  GOSUB 1000
- 100  VTAB 21: HTAB 1: PRINT "Weapon # to edit is:";N
- 110  PRINT : PRINT "Modify (N)ame,(A)mmo,(P)ower,(T)ype": PRINT " (0-7),(D)amage,(S)ave,(Q)uit: ";
+ 100  VTAB 21: HTAB 1: PRINT "Weapon # to edit is:";N;" (0-7) to change."
+ 110  PRINT "(S)ave,(Q)uit Mod:(N)ame,(A)mmo,(T)ype"
+ 115  IF T(N) < 2 THEN PRINT "(P)ower,(D)amage: ";
+ 116  IF T(N) = 2 THEN PRINT "(H)ealth: ";
+ 117  IF T(N) = 3 THEN PRINT "(M)ap shapes: ";
  120  GET A$
  125  VTAB 23: HTAB 1: PRINT "                                                                            ";
- 130  IF A$ >  = "0" AND A$ <  = "7" THEN N =  VAL (A$): GOTO 100
+ 130  IF A$ >  = "0" AND A$ <  = "7" THEN N =  VAL (A$): GOTO 50
  140  IF A$ = "Q" THEN  HOME : GOTO 3000
- 150  IF A$ = "N" THEN  GOSUB 500: GOTO 100
- 160  IF A$ = "A" THEN  GOSUB 600: GOTO 100
- 170  IF A$ = "P" THEN  GOSUB 700: GOTO 100
- 180  IF A$ = "T" THEN  GOSUB 800: GOTO 100
- 190  IF A$ = "D" THEN  GOSUB 900: GOTO 100
- 200  IF A$ = "S" THEN  GOSUB 2000: GOTO 100
+ 150  IF A$ = "N" THEN  GOSUB 500: GOTO 50
+ 160  IF A$ = "A" THEN  GOSUB 600: GOTO 50
+ 170  IF A$ = "T" THEN  GOSUB 800: GOTO 50
+ 175  IF T(N) <> 2 THEN 180
+ 177  IF A$ = "H" THEN  GOSUB 300: GOTO 50
+ 180  IF T(N) <> 3 THEN 185
+ 182  IF A$ = "M" THEN  GOSUB 400: GOTO 50
+ 185  IF T(N) > 1 THEN 200
+ 190  IF A$ = "D" THEN  GOSUB 900: GOTO 50
+ 195  IF A$ = "P" THEN  GOSUB 700: GOTO 50
+ 200  IF A$ = "S" THEN  GOSUB 2000: GOTO 50
  210  GOTO 100
+ 300  REM changing health
+ 305  GOSUB 1500 : INPUT "New health (# to heal player):";D(N)
+ 310  IF D(N) < 0 OR D(N) > 255 THEN 300
+ 320  RETURN
+ 400  REM changing 'key' mapping options
+ 410  GOSUB 1500 : INPUT "First target shape # (64-105):";LS(N)
+ 420  IF LS(N) < 64 OR LS(N) > 105 THEN 410
+ 430  GOSUB 1500 : INPUT "First replacement shape # (110-127):";LT(N)
+ 440  IF LT(N) < 110 OR LT(N) > 127 THEN 430
+ 450  GOSUB 1500 : INPUT "Number of shapes to map:";LC(N)
+ 460  IF LC(N) < 1 OR LC(N) > 16 THEN 450
+ 470  RETURN
  500  HOME : VTAB 12: HTAB 2: PRINT "[";W$(N);"]"
  505  VTAB 5: HTAB 1: PRINT "Edit the weapon listed"
  510  VTAB 12: HTAB 3: INPUT "";W$(N)
  520  IF  LEN (W$(N)) > 10 THEN W$(N) =  LEFT$ (W$(N),10): GOTO 550
  530  IF  LEN (W$(N)) < 10 THEN W$(N) = W$(N) + " ": GOTO 530
- 550  GOSUB 1005: RETURN 
+ 550  RETURN 
  600  HOME : VTAB 12: HTAB 2: PRINT "[";A$(N);"]"
  605  VTAB 5: HTAB 1: PRINT "Edit the ammo listed"
  610  VTAB 12: HTAB 3: INPUT "";A$(N)
  620  IF  LEN (A$(N)) > 9 THEN A$(N) =  LEFT$ (A$(N),9): GOTO 650
  630  IF  LEN (A$(N)) < 9 THEN A$(N) = A$(N) + " ": GOTO 630
- 650  GOSUB 1005: RETURN 
- 700  REM If type is 3, this is the "target" shape # (should be 64-105)
- 701  IF T(N) = 3 THEN 750
- 705  VTAB 23: HTAB 1: INPUT "New power (% chance to kill enemy):";PP(N)
+ 650  RETURN 
+ 700  REM "Power"
+ 705  GOSUB 1500 : INPUT "New power (% chance to kill enemy):";PP(N)
  710  IF PP(N) < 0 OR PP(N) > 99 THEN 700
  715 P(N) =  INT (PP(N) * 2.579)
- 720  GOSUB 1005: RETURN
- 750  VTAB 23: HTAB 1: INPUT "Target shape # (64-105):";PP(N)
- 760  IF PP(N) < 64 OR PP(N) > 105 THEN 750
- 770  GOSUB 1005: RETURN 
- 800  VTAB 23: HTAB 1
+ 720  RETURN
+ 800  GOSUB 1500
  803  PRINT "Enter new type value (0=single shot"
  806  INPUT " 1=explosive 2=health, 3=key):";T(N)
  810  IF T(N) < 0 OR T(N) > 3 THEN 800
- 820  GOSUB 1005: RETURN 
- 900  REM If type is 3, this is the "replacement" shape # (should be 110-127)
- 901  IF T(N) = 3 THEN 950
- 905  VTAB 23: HTAB 1: INPUT "New damage (# damage to player):";D(N)
+ 820  RETURN 
+ 900  REM "Damage"
+ 905  GOSUB 1500 : INPUT "New damage (# damage to player):";D(N)
  910  IF D(N) < 0 OR D(N) > 255 THEN 900
- 920  GOSUB 1005: RETURN
- 950  VTAB 23: HTAB 1: INPUT "Replacement shape # (110-127):";D(N)
- 960  IF D(N) < 110 OR D(N) > 127 THEN 950
- 970  GOSUB 1005: RETURN
- 1000  GOSUB 10000
- 1005  HOME 
- 1006  PRINT "Death Is A Four Letter Word Weapons Edit----------------------------------------";
- 1010  VTAB 3: HTAB 1: PRINT "# Weapon     Ammo      Pow T Dam"
- 1020  PRINT "----------------------------------------";
+ 920  RETURN
+ 1000  REM display state
+ 1010  HOME 
+ 1020  PRINT "Death Is A Four Letter Word Weapons Edit----------------------------------------";
+ 1050  VTAB 3: HTAB 1
+ 1080  PRINT "# Weapon     Ammo      Details"
+ 1090  PRINT "----------------------------------------";
  1100  FOR X = 0 TO 7
- 1110  VTAB X * 2 + 5: HTAB 1: PRINT X;" ";W$(X);" ";A$(X);" ";PP(X); TAB( 28);T(X); TAB( 30);D(X)
- 1120  NEXT X
- 1150  RETURN 
+ 1105  IF X = N THEN INVERSE
+ 1110  VTAB X * 2 + 5: HTAB 1: PRINT X;" ";W$(X);" ";A$(X);" ";
+ 1120  GOSUB 1300 : PRINT S$
+ 1135  NORMAL
+ 1140  NEXT X
+ 1150  RETURN
+ 1300  S$ = ""
+ 1310  IF T(X) = 0 THEN S$ = "sh"
+ 1315  IF T(X) = 1 THEN S$ = "ex"
+ 1320  IF T(X) = 2 THEN 1400
+ 1325  IF T(X) = 3 THEN 1450
+ 1330  S$ = S$ + " Pow:" + STR$(PP(X)) + " Dam:" + STR$(D(X))
+ 1340  RETURN
+ 1400  S$ = "heal Amount:" + STR$(D(X))
+ 1449  RETURN 
+ 1450  S$ = "Map:" + STR$(LS(X)) + "->" + STR$(LT(X)) + " #" + STR$(LC(X))
+ 1499  RETURN 
+ 1500  VTAB 21: HTAB 1
+ 1510  PRINT "                                        ";
+ 1520  PRINT "                                        ";
+ 1530  VTAB 22: HTAB 1
+ 1540  RETURN
  2000  HOME : PRINT "Ready to save (Y/N):";: GET A$
  2001  IF A$ <  > "Y" AND A$ <  > "N" THEN 2000
- 2010  IF A$ = "N" THEN  GOSUB 1005: RETURN 
+ 2010  IF A$ = "N" THEN RETURN 
  2020  PRINT : PRINT : PRINT "Saving weapons..."
  2030  GOSUB 11000
  2040  PRINT CHR$(4);"BSAVE WEAPONS,A$6F00,L$100"
- 2050  GOSUB 1005: RETURN 
+ 2050  RETURN 
  3000 BA = 9 * 4096 + 6 * 256:A$ = ""
  3010  FOR X = 1 TO  PEEK (BA):A$ = A$ +  CHR$ ( PEEK (BA + X)): NEXT 
  3020  PRINT : PRINT  CHR$ (4);"RUN ";A$;"EDITORS"
@@ -92,7 +125,10 @@
  10091 PP(X) =  INT (P(X) * .391)
  10100 T(X) =  PEEK (BA):BA = BA + 1
  10110 D(X) =  PEEK (BA):BA = BA + 1
- 10120 BA = BA + 10
+ 10112 LS(X) =  PEEK (BA):BA = BA + 1
+ 10116 LT(X) =  PEEK (BA):BA = BA + 1
+ 10118 LC(X) =  PEEK (BA):BA = BA + 1
+ 10120 BA = BA + 7
  10130  NEXT X
  10140  RETURN 
  11000 BA = 7 * 4096 - 256
@@ -108,6 +144,9 @@
  11100  POKE BA,P(X):BA = BA + 1
  11110  POKE BA,T(X):BA = BA + 1
  11120  POKE BA,D(X):BA = BA + 1
- 11140 BA = BA + 10
+ 11125  POKE BA,LS(X):BA = BA + 1
+ 11130  POKE BA,LT(X):BA = BA + 1
+ 11135  POKE BA,LC(X):BA = BA + 1
+ 11140 BA = BA + 7
  11150  NEXT X
  11160  RETURN 

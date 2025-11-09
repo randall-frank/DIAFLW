@@ -5,6 +5,7 @@
  6  REM  EDITORS PREFIX IS @$9600 IN PRODOS FORM
  7  PRINT  CHR$ (4);"PREFIX": INPUT P$
  8  GOSUB 2000
+ 9   PRINT CHR$(4);"PR#3" : PRINT CHR$(17)
  10  HOME : PRINT "Death Is A Four Letter Word Editors"
  20  PRINT "-----------------------------------"
  25  PRINT 

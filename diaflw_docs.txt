@@ -144,6 +144,13 @@ is difficult to accomplish with enemies around, and an adept player
 will notice that being stopped by impassable terrain counts as a step,
 and will use the repeat feature to continually 'bump' his player
 against a piece of terrain during moments of safety..
+     Note in version 1.4, the ratio of points per number of steps
+is now a scenario specific parameter.  In general, healing happens
+automatically with motion, but the rate can vary from scenario to
+scenario.  Additionally, 1.4 introduced the notion of healing 
+'weapons'.  A scenario must enable this, but it makes it possible
+to include a 'weapon' that when 'fired' heals the player by a fixed
+amount.
 
    Game Specifics..
 
@@ -315,7 +322,10 @@ create and edit your scenario.
 this, you will be able to enter the name of the subdirectory where the
 desired scenario rests, or get a catalog if you wish.
      The editors are listed here, by the EDITORS option to select,
-with the Applesoft program name in parentheses:
+with the Applesoft program name in parentheses.  Most of the editors
+support the '?' key to display all of the valid key options and in
+some editors (e.g. SQUARE,MEN,BLOCK) the '#' key will display the
+table of shape # definitions.
 
   1) Create a master diskette. (MASTER.CREATE)
 
