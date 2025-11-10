@@ -383,16 +383,24 @@ L142     INY
          BEQ   NOAMMO    ; Ammo empty
          CMP   COUNT
          BNE   BADAMMO   ; Incorrect ammo type
-         INY
-         LDA   (TEMP2),Y ; subtract one "ammo"
+         
+         ; If firing a "key", defer the ammo subtraction till later
+         JSR   IO_GETWINFO
+         LDA   EXPLOST
+         CMP   #3        ; Key ammo handling is later
+         BEQ   SKIPAMMO
+
+         LDY   #2
+         LDA   (TEMP2),Y ;(TEMP2),2 hand ammo count 
          TAX
-         DEX
+         DEX   ; subtract one "ammo"
          BNE   L143
          LDX   #$FF      ; if ammo goes to zero, there is no ammo type in the hand
          DEY
 L143     TXA
          STA   (TEMP2),Y
-         JSR   APOC
+
+SKIPAMMO JSR   APOC
          JSR   IO_HPOC
          JSR   IO_GETWINFO ; Check for heath type: POWER, EXPLOST(type), DAMAGE
          LDA   EXPLOST     ; weapon type
@@ -406,7 +414,7 @@ HEALLOOP LDA   DAMAGE
          DEC   DAMAGE
          JMP   HEALLOOP
 HEALCOMPLETE         
-         JMP   MOVE    ;???
+         JMP   MOVE
 
 NOTHEAL  
          TAY           ; Save off weapon type
@@ -451,15 +459,18 @@ LDELAY   LDA   #200
          LDY   YPOS
          JSR   PAC_LOOKUP  ; did we "hit" anything, man, wall, etc
          BCC   L145
+         LDY   EXPLOST
+         CPY   #3          ; key shot ignores enemy
+         BEQ   L145
          JMP   COLLIDE     ; The shot hit an enemy player
 L145     CMP   #64         ; 64-105 are "walls"
          BLT   L146
          CMP   #106
          BGE   L146
-         LDY   EXPLOST
+SMASH    LDY   EXPLOST
          CPY   #3
          BEQ   HANDLEKEY   ; "key" shot hit a wall
-SMASH    JMP   COLLIDE     ; The shot hit a wall
+         JMP   COLLIDE     ; The shot hit a wall
 L146     CMP   #6          ; indestructible wall
          BEQ   SMASH
          LDX   X1POS       ; Continue the shot
@@ -510,6 +521,20 @@ KEYWORKS LDA   LOCK_TARGET ; Update terrain from LOCK_SOURCE to LOCK_TARGET
          JSR   PAC_SET
          LDA   #8          ; Message "unlocked"
          STA   MESSAGE               
+
+         ; Subtract one ammo
+         JSR   IO_HPOC
+         LDY   #2
+         LDA   (TEMP2),Y ;(TEMP2),2 hand ammo count 
+         TAX
+         DEX   ; subtract one "ammo"
+         BNE   AMMOLEFT
+         LDX   #$FF      ; if ammo goes to zero, there is no ammo type in the hand
+         DEY
+AMMOLEFT TXA
+         STA   (TEMP2),Y
+         JSR   APOC
+
          LDA   #SOUND_Pass ; success sound
 KEY_DONE JSR   PLAYSOUND
          JMP   MOVE

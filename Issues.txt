@@ -2,13 +2,6 @@ Use names in COMMONS.S instead of naked addresses
 # Display "behind" blocks with dropped out scanlines
 Reconsider prefix handling for editors...
 
-Add weapon type (3) for 'key' that can transform block from (64-105) to one from (110-127)
-"firing" a key transforms the block "Power" to "Damage"
-Keys have an ammo count (number of successful uses) 
-
-- add key edits to weapons editor
-
-
 SQUAREXY
 
 X = hex of x+(y*4) x=[0,4], y=[0,4]

@@ -28,7 +28,7 @@ for name in (fhpack, ):
         log.warning(f"optional build tool: {name} could not be found and will not be used.")
 
 # Set the version number and start the build process
-version = "1.4.2"  
+version = "1.4.5"  
 
 # Burn the version number into the help screen: HELP_SRC.S -> HELP.S 
 log.info("Generating 6502 source code...")

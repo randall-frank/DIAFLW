@@ -696,6 +696,11 @@ TEMP0    =     0
 TEMP1    =     1
 TEMP2    =     2
 TEMP3    =     3
+TEMP4    =     4
+TEMP5    =     5
+
+WEAP_LO    =     $1E
+WEAP_HI    =     $1F
 
 * Set up TEMP0,TEMP1 for pocket,  TEMP2,TEMP3 for hand
 LOCAL_HPOC
@@ -721,7 +726,7 @@ LOCAL_HPOC
          RTS
 
 * get the current hand weapon info: power, type, damage 
-* Note: assumes HPOC has been called first and will wipe out HPOC pointers during execution
+* Note: assumes HPOC has been called first
 LOCAL_GETWINFO
          LDY   #0
          LDA   (TEMP2),Y   ; At this point TEMP2 points to the current hand, and we get the weapon
@@ -734,26 +739,26 @@ LOCAL_GETWINFO_ACC
          ASL
          ASL
          ASL
-         STA   TEMP2
+         STA   WEAP_LO
          LDA   #$72
-         STA   TEMP3
+         STA   WEAP_HI
          LDY   #19
-         LDA   (TEMP2),Y  ; Weapon power
+         LDA   (WEAP_LO),Y  ; Weapon power
          STA   POWER
          INY
-         LDA   (TEMP2),Y  ; Weapon type
+         LDA   (WEAP_LO),Y  ; Weapon type
          STA   EXPLOST
          INY
-         LDA   (TEMP2),Y  ; Weapon damage
+         LDA   (WEAP_LO),Y  ; Weapon damage
          STA   DAMAGE
          INY
-         LDA   (TEMP2),Y  ; lock source start
+         LDA   (WEAP_LO),Y  ; lock source start
          STA   LOCK_SOURCE
          INY
-         LDA   (TEMP2),Y  ; lock target start
+         LDA   (WEAP_LO),Y  ; lock target start
          STA   LOCK_TARGET
          INY
-         LDA   (TEMP2),Y  ; lock count
+         LDA   (WEAP_LO),Y  ; lock count
          STA   LOCK_COUNT
          RTS
 

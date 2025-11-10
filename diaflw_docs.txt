@@ -512,11 +512,12 @@ corresponding number key instead of the space bar.
 
      The WEAPONS.EDIT program, after inserting the scenario disk,
 displays the eight possible weapons in the scenario.  Pressing 0-7
-selects which weapon to edit.  Once the weapon is selected, N edits
-the name of the weapon, and A edits the name of the ammunition it
-uses.  The weapon name is restricted to 10 characters, and the ammo
-name to 9.  T edits the type of weapon, entering 0 for a shot weapon,
-1 for explosive and 2 for health packs.  D edits the amount of damage 
+selects which weapon to edit.  S saves the current weapons file. 
+Once the weapon is selected, N edits the name of the weapon, and 
+A edits the name of the ammunition it uses.  The weapon name is 
+restricted to 10 characters, and the ammo name to 9.  T edits the 
+type of weapon, entering 0 for a shot weapon, 1 for explosive, 
+2 for health packs and 3 for "keys".  D edits the amount of damage 
 done to the player if hit by the weapon (or healed for health packs).  
 A damage level of 10 is deadly, while a level of 3 is pretty lame.
      P changes the 'power' level of the weapon.  This is the
@@ -529,10 +530,26 @@ percentage chance of the weapon to:
      Note that an explosive weapon creates a plus shape  #  and any
 creatures or terrain (not including the player) in any of the five
 spaces will undergo a power check to see if it is killed or destroyed.
-Gunfire weapons only affect the first thing they hit.  S saves the
-current setup.  A weapon of type 2 does not 'shoot' rather when 
-fired, it heals the player by the weapon damage amount.  Healing
-weapons still need both a weapon and ammo like other weapons.
+Gunfire weapons only affect the first thing they hit.  
+
+   Special Weapons: Type 2 and 3
+
+   A weapon of type 2 does not 'shoot' rather when fired, it heals 
+the player by the weapon damage amount.  Healing weapons still need 
+both a weapon and ammo like other weapons.
+
+   Weapon type 3 is a terrain "transformer".  When fired against
+a specific non-passible square shape, it will transform the shape
+into a passible shape (similar to shooting, but the shape numbers
+are fixed).  The most common use is as a "key" weapon.  It would 
+be set up to convert a closed door shape into an open door shape.
+A weapon specifies a starting target shape number, a starting
+replacement shape number and a count of shapes to map.  For example,
+is the source start is 80, the replacement shape is 120 and the
+count is 2, firing at shape 80 will replace it with 120 and firing
+at shape 81 will replace it with 121.  Note that the range of a key
+weapon is a single square.
+
 
    Other stuff..
 
