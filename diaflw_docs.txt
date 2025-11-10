@@ -6,7 +6,7 @@
 |    Program Development:  Randy Frank                       |
 |    Original Concepts:    Randy Frank                       |
 |    Editor Development:   Randy Frank and Gary Frank        |
-|    Playtesting:          John Laird, Randy Frank           |
+|    Play-testing:         John Laird, Randy Frank           |
 |    Documentation by:     Gary Frank                        |
 |    Many thanks to:       John Laird                        |
 |____________________________________________________________|
@@ -26,7 +26,7 @@ is at your own risk.  The program is a 41 block SYS file entitled
 DIAFLW.SYSTEM.  The remainder of the disk can contain the editors
 (completely in Applesoft with one machine language routine..) or a
 scenario (completely in binary files with one text file).
-     To execute DIAFLW, execute DIAFLW.SYSTEM by either bootup, the
+     To execute DIAFLW, execute DIAFLW.SYSTEM by either startup, the
 dash (-) command, or the ProDOS 'BYE'.  The program will (after a
 nifty title page) scan all active ProDOS devices and display their
 names. You then select the device (by pathname) to use as the scenario
@@ -68,10 +68,12 @@ The game will respond by scanning all active ProDOS devices (note:
 Select the volume by pressing a number key.  DIAFLW will then display
 what subdirectories (if any) are on the disk.  Continue this until you
 are in the subdirectory which contains the desired scenario. 'U' backs
-up one level and rescans the devices if on the top level.  Return
+up one level and scans the devices if on the top level.  Return
 selects the scenario and begins play.  The working volume prefix is
 displayed at the top of the screen.  'Q' will execute a ProDOS BYE at
-this point.
+this point.  A scenario directory name must end in a '.'.  The scenario
+selector uses this to differentiate between a DIAFLW scenario and a
+standard directory.
      If you were resuming an old game on the disk the game will find
 it and jump straight into play.  If not, the game will give you a
 scenario briefing.  (You can abort the briefing at anytime by pressing
@@ -203,15 +205,16 @@ PROVIDED they are in different subdirectories so as not to clash
 filenames.  It is recommended that the volume of a scenario disk with
 multiple scenarios be named appropriately.  /SCENARIOS or /SPACE.GAMES
 for example.  The individual scenario files should be in the
-appropriately named subdirectoy.  A sample of this recommended layout
-is as follows:
+appropriately named subdirectory.  A sample of this recommended layout
+is as follows (note the scenario directories end with '.'):
+
                         /WORLD.WAR.II
     __________________________|____________________________
    |               |               |                       |
-/EAGLES.NEST    /DAMBUSTERS     /NAVARONE                PRODOS
+/EAGLES.NEST.   /DAMBUSTERS.    /NAVARONE.               PRODOS
    |               |               |_____________        BASIC.SYSTEM
 BLOCKS          BLOCKS             |             |       DIAFLW.SYSTEM
-WEAPONS         WEAPONS         /FORCE.10     /GUNS.OF
+WEAPONS         WEAPONS         /FORCE.10.    /GUNS.OF.
 STARTER         STARTER            |             |
 DATA            DATA            BLOCKS        BLOCKS
 SQUARExy        SQUARExy        WEAPONS       WEAPONS
@@ -361,7 +364,7 @@ shape.  It is controlled by the I,J,K, and M keys.  To edit a shape,
 simply highlight it with the IJKM cursor, and press U.  The shape is
 loaded into the sketchpad.  Edit it with the WASZ cursor - Space bar
 plots at the cursor position, 0-7 selects the color, and T toggles the
-autosketch on and off.  Then select the location you want to place the
+auto-sketch on and off.  Then select the location you want to place the
 sketchpad shape into with the IJKM cursor, and press P.  Do this for
 every shape in the BLOCKS file you wish to change.
      Press D to get the disk options, when you wish to save your
@@ -557,7 +560,7 @@ weapon is a single square.
 briefing.  Edit it with any text file editor, but remember that the
 file will be displayed in 40 columns, and use UPPER CASE only.  End
 the file with the tilde (~) character, and do not use carriage returns
-or linefeeds unless they are after the tilde (~).  Carriage Returns
+or line feeds unless they are after the tilde (~).  Carriage Returns
 elsewhere will show up as M's on the screen.
 
   The Q command quits from any editor into the EDITORS menu program.
@@ -753,7 +756,7 @@ certain problems.
 overcome by simple ingenuity.  It is flexible and open, and, as far as
 I'm concerned, can simulate virtually anything.  Some adventure ideas:
 
- Swashbuckling pirates.. BOLO supertanks.. post-holocaust raiders..
+ Swashbuckling pirates.. BOLO super-tanks.. post-holocaust raiders..
  1930's gumshoes.. the Civil War.. anti-terrorist actions.. choppers..
  underwater recovery.. space marines.. Transformers.. BattleDroids..
  the Wild West.. Russian strongholds.. World War II.. World War III..?

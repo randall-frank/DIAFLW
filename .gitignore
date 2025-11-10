@@ -6,6 +6,7 @@ merlin*/
 ciderpres*/
 images/
 bin/*.BIN
+bin/*.BIN#06*
 bin/_*
 DIAFLW.SYSTEM#ff2000
 DIAFLW_Release.2mg

@@ -1,5 +1,5 @@
          ORG   $9700
-         DSK   bin/PRE.BIN
+         DSK   bin/PRE.BIN#069700
          TYP   $06  ; /BIN file
 
 CLEAR2   =     $FC58  ; HOME
@@ -79,6 +79,10 @@ GP2      JSR   GETNAMES
 GP3      LDA   $C000
          CMP   #$8D
          BNE   GP33
+         LDY   PREFIX
+         LDA   PREFIX,Y
+         CMP   #$2E
+         BNE   GP3
          STA   $C010
          JMP   SETPREFIX
 GP33
@@ -123,8 +127,12 @@ GP6      LDA   $6C00,X
          DEY
          STY   PREFIX
          JMP   GPTOP
-STOR1    DFB   0
-NAMES    DFB   0
+
+; STOR1    DFB   0
+; NAMES    DFB   0
+STOR1 =  0
+NAMES =  1
+
 GETNAMES
          LDA   PREFIX
          BNE   DOCATALOG
@@ -271,21 +279,19 @@ PPPP     DFB   0
 COUNT    DFB   0
 BOTTOMLINE LDY #152
          LDX   #0
+         STX   STOR1
          LDA   #40
          JSR   TEXTSET
-         LDA   #0
-         STA   STOR1
 BL1      LDY   STOR1
          LDA   BLTEXT,Y
          BEQ   BL2
-         ORA   #$80
          JSR   TEXT
          INC   STOR1
          JMP   BL1
 BL2      RTS
-BLTEXT   ASC   'SELECT PATHNAME FOR SCENARIO PREFIX     '
-         ASC   '# TO GO DOWN. ESC TO GO UP. RET TO EDIT.'
-         ASC   '^B TO QUIT.'
+BLTEXT   ASC   '--Select pathname for scenario prefix-- '
+         ASC   '# to go down. ESC to go up. RET to edit.'
+         ASC   '^B to quit.'
          HEX   00
 TEXTSET  TYA
          LSR

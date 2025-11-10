@@ -13,7 +13,7 @@
  40  VTAB 5: HTAB 1: PRINT "Option        Editor"
  45  PRINT 
  50  PRINT "  (1)    Create a scenario directory"
- 60  PRINT "  (2)    Edit the blocks"
+ 60  PRINT "  (2)    Edit the blocks (icons)"
  70  PRINT "  (3)    Edit the squares"
  80  PRINT "  (4)    Edit the men in each square"
  90  PRINT "  (5)    Edit the starter file"

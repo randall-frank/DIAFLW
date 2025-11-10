@@ -2,6 +2,7 @@ Use names in COMMONS.S instead of naked addresses
 # Display "behind" blocks with dropped out scanlines
 Reconsider prefix handling for editors...
 
+
 SQUAREXY
 
 X = hex of x+(y*4) x=[0,4], y=[0,4]
