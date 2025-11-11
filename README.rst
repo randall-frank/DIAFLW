@@ -9,7 +9,7 @@ Death is a Four Letter Word: DIAFLW
    :target: https://github.com/AppleWin/AppleWin
 
 .. |Itch| image:: https://img.shields.io/badge/Itch.io-fa5c5c.svg
-   :target: https://myleftgoat.itch.io/diaflw?secret=50yDyW9gEaXGdvbVIRAq7yh3h4M
+   :target: https://myleftgoat.itch.io/diaflw
 
 
 .. image:: banner.png
@@ -76,6 +76,9 @@ available `here <diaflw_docs.txt>`_.
 Please feel free to post issues and other questions at `DIAFLW Issues
 <https://github.com/randall-frank/DIAFLW/issues>`_. This is the best place
 to post questions and code.
+
+The game is also hosted on `itch.io<https://myleftgoat.itch.io/diaflw>`_ which provides
+a simpler download option and forum to discuss more gameplay related issues.
 
 License
 -------
