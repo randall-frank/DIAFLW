@@ -77,7 +77,7 @@ Please feel free to post issues and other questions at `DIAFLW Issues
 <https://github.com/randall-frank/DIAFLW/issues>`_. This is the best place
 to post questions and code.
 
-The game is also hosted on `itch.io<https://myleftgoat.itch.io/diaflw>`_ which provides
+The game is also hosted on `itch.io <https://myleftgoat.itch.io/diaflw>`_ which provides
 a simpler download option and forum to discuss more gameplay related issues.
 
 License
