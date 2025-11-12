@@ -1,5 +1,5 @@
          ORG   $2000
-         DSK   bin/LOADER.BIN
+         DSK   ../bin/LOADER.BIN
          TYP   $06  ; /BIN file
 
 SRCLO    =     0

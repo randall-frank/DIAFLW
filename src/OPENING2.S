@@ -1,5 +1,5 @@
          ORG   $8000
-         DSK   bin/OPENING2.BIN
+         DSK   ../bin/OPENING2.BIN
          TYP   $06  ; /BIN file
 
          LST   Off

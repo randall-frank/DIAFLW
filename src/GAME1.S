@@ -1,5 +1,5 @@
          ORG   $7400
-         DSK   bin/GAME1.BIN
+         DSK   ../bin/GAME1.BIN
          TYP   $06  ; /BIN file
 
          PUT  COMMON.S

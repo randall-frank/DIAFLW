@@ -1,5 +1,5 @@
          ORG   $7200
-         DSK   bin/WEAPONS.BIN
+         DSK   ../bin/WEAPONS.BIN
          TYP   $06  ; /BIN file
 
 ; Each weapon is 10+9+1+1+1+10 = 32 bytes

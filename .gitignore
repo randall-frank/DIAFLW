@@ -11,8 +11,8 @@ bin/_*
 DIAFLW.SYSTEM#ff2000
 DIAFLW_Release.2mg
 .vscode/
-/HELP.S
+/src/HELP.S
 _Fileinformation.txt
 SYSTEM/DIAFLW.DOCS#040000
 SYSTEM/READ.DOCS#ff0000
-/check.S
+/src/check.S

@@ -1,5 +1,5 @@
          ORG   $9000
-         DSK   bin/IO2.BIN
+         DSK   ../bin/IO2.BIN
          TYP   $06  ; /BIN file
 
          PUT  COMMON.S

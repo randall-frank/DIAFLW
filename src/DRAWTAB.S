@@ -1,5 +1,5 @@
          ORG   $4E00
-         DSK   bin/DRAWTAB.BIN
+         DSK   ../bin/DRAWTAB.BIN
          TYP   $06  ; /BIN file
 
 * UP

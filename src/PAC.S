@@ -1,5 +1,5 @@
          ORG   $800
-         DSK   bin/PAC.BIN
+         DSK   ../bin/PAC.BIN
          TYP   $06  ; /BIN file
 
 

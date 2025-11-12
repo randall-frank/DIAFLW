@@ -1,5 +1,5 @@
          ORG   $2000
-         DSK   SYSTEM/READ.DOCS#ff0000
+         DSK   ../SYSTEM/READ.DOCS#ff0000
          TYP   $FF  ; /SYS file
 
 * Relocate ourselves to $1400 - $18FF
