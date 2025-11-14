@@ -7,6 +7,8 @@ SRCHI    =     1
 TGTLO    =     2
 TGTHI    =     3
 
+* // LINK - ../memorymap.txt#loader
+
 * Restore help page
          JSR   TEXTPAGE
 

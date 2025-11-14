@@ -252,7 +252,7 @@ G1       JSR   PAC_POCKETS
          LDY   #8
          JSR   PAC_TEXTSET
          LDY   TEMP1
-G2       LDA   $73A0,Y
+G2       LDA   PLAYER_NAME,Y
          JSR   PAC_TEXT
          INC   TEMP1
          LDY   TEMP1
@@ -265,7 +265,7 @@ G2       LDA   $73A0,Y
          LDA   #0
          STA   TEMP1
          TAY
-G3       LDA   $7380,Y
+G3       LDA   SCENARIO_NAME,Y
          JSR   PAC_TEXT
          INC   TEMP1
          LDY   TEMP1
@@ -275,26 +275,26 @@ G3       LDA   $7380,Y
          LDX   #25
          LDY   #16
          JSR   PAC_TEXTSET
-         LDA   $7308
+         LDA   PLAYER_SCORE_LO+0
          ORA   #$B0
          JSR   PAC_TEXT
-         LDA   $7309
+         LDA   PLAYER_SCORE_LO+1
          ORA   #$B0
          JSR   PAC_TEXT
-         LDA   $730A
+         LDA   PLAYER_SCORE_LO+2
          ORA   #$B0
          JSR   PAC_TEXT
-         LDA   $730B
+         LDA   PLAYER_SCORE_LO+3
          ORA   #$B0
          JSR   PAC_TEXT
          LDA   #20
          LDX   #26
          LDY   #24
          JSR   PAC_TEXTSET
-         LDA   $730C
+         LDA   PLAYER_HIT_LO+0
          ORA   #$B0
          JSR   PAC_TEXT
-         LDA   $730D
+         LDA   PLAYER_HIT_LO+1
          ORA   #$B0
          JSR   PAC_TEXT
          LDA   #0
@@ -674,7 +674,7 @@ LJK      CMP   #$8D
          LDY   TEMP1
          CPY   #15
          BEQ   N7
-         STA   $73A0,Y
+         STA   PLAYER_NAME,Y
          JSR   PAC_TEXT
          INC   TEMP1
          JMP   N7
@@ -703,7 +703,7 @@ N9       LDA   #$A0
          LDY   TEMP1
          CPY   #15
          BEQ   N99
-N8       STA   $73A0,Y
+N8       STA   PLAYER_NAME,Y
          INY
          CPY   #15
          BNE   N8

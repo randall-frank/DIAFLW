@@ -97,14 +97,14 @@ LZQ4     CMP   #$95  ;  '?'
 L3       CMP   #$9B  ; '?'
          BNE   L4
          LDA   #5
-         JSR   PAC_MSG
+         JSR   IO_MSGS
          STA   $C010
 L31      LDA   $C000
          CMP   #$8D
          BNE   L31
          STA   $C010
          LDA   #0
-         JSR   PAC_MSG
+         JSR   IO_MSGS
          JMP   MOVE
 L4       CMP   #$CC  ; 'L'
          BNE   L5
@@ -729,7 +729,7 @@ V1       LDA   MESSAGE
          BNE   VV2
          RTS
 VV2      STA   OLDMSG
-         JMP   PAC_MSG
+         JMP   IO_MSGS
 
 MCOUNT   DFB   255
 MLEFT    DFB   0

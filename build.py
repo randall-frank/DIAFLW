@@ -63,6 +63,8 @@ for name, address in files.items():
     cmd = [os.path.join("..", assembler), os.path.join("..", assembler_libdir), name]
     log.info(f"Assembling: {name} @ ${address:X}")
     result = subprocess.run(cmd, capture_output=True, text=True)
+    if '[Error]' in result.stdout:
+        result.returncode = 1
     if result.returncode != 0:
         log.error(f"assembling: {name}: {result.stdout}")
         sys.exit(1)

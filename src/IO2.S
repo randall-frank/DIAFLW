@@ -168,16 +168,16 @@ SCORE    LDA   $730B
          ADC   #1
          STA   $730B
          LDY   #3
-AGAIN    LDA   $7308,Y
+AGAIN    LDA   PLAYER_SCORE_LO,Y
          CMP   #$0A
          BNE   SCOK
          LDA   #0
-         STA   $7308,Y
+         STA   PLAYER_SCORE_LO,Y
          DEY
-         LDA   $7308,Y
+         LDA   PLAYER_SCORE_LO,Y
          CLC
          ADC   #1
-         STA   $7308,Y
+         STA   PLAYER_SCORE_LO,Y
          CPY   #0
          BNE   AGAIN
 SCOK     LDX   #25
@@ -187,7 +187,7 @@ SCOK     LDX   #25
          LDA   #0
          STA   9
          LDY   9
-SC2      LDA   $7308,Y
+SC2      LDA   PLAYER_SCORE_LO,Y
          ORA   #$B0
          JSR   PAC_TEXT
          INC   9
