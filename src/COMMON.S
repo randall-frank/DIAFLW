@@ -21,7 +21,9 @@ PAC_WHICHTBL    = $0FFF   ; general variable that picks which iconset to draw fr
 
 * GAME1.S2
 USERSTEP        = $7400     ; handle user actions: moving, firing, etc
-* Return values from various functions
+
+* Return values from IO_GETWINFO and IO_GETWINFO_ACC functions
+* //LINK - ./GAME1.S#getwinfo
 POWER           = $7403
 EXPLOST         = $7404
 DAMAGE          = $7405

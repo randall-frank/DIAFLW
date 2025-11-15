@@ -18,7 +18,7 @@ TEMP8    =     8
 
          JMP   LOCAL_USERSTEP
 
-* shared vars
+* //ANCHOR[id=getwinfo] - shared vars declared in COMMON.S   
          DFB   0  ; POWER
          DFB   0  ; EXPLOST (type)
          DFB   0  ; DAMAGE
@@ -219,11 +219,11 @@ L11L     DEC   MCOUNT  ; Move handler
          TAY
          LDA   DX,Y
          CLC
-         ADC   $7300
+         ADC   PLAYER_X
          STA   TEMP71
          LDA   DX+1,Y
          CLC
-         ADC   $7301
+         ADC   PLAYER_Y
          STA   TEMP81
          CMP   #64
          BGE   NPLANE
@@ -249,9 +249,9 @@ L112     CMP   #6
          LDA   #2
          STA   $7302
 L111     LDA   TEMP71
-         STA   $7300
+         STA   PLAYER_X
          LDA   TEMP81
-         STA   $7301
+         STA   PLAYER_Y
          LDA   $7307
          JSR   PAC_DRAW
          LDA   #SOUND_TICK
@@ -268,10 +268,10 @@ NPLANE   LDA   $7305
          CMP   #$FF
          BEQ   NOGO
          PHA
-         JSR   $9003      ;WRITE & CLOSE OLD FILE
+         JSR   IO_CLOSE      ;WRITE & CLOSE OLD FILE
          PLA
          STA   $7305
-         JSR   $9000      ;READ FILE
+         JSR   IO_OPEN      ;READ FILE
          LDA   TEMP71
          LDY   #63
          CMP   #$FF
@@ -280,7 +280,7 @@ NPLANE   LDA   $7305
          CMP   #64
          BEQ   NP1
          TAY
-NP1      STY   $7300
+NP1      STY   PLAYER_X
          LDA   TEMP81
          LDY   #63
          CMP   #$FF
@@ -289,20 +289,20 @@ NP1      STY   $7300
          CMP   #64
          BEQ   NP2
          TAY
-NP2      STY   $7301
+NP2      STY   PLAYER_Y
          LDA   $7307
          JSR   PAC_DRAW
          JMP   MOVE
-UP       JSR   $9003
+UP       JSR   IO_CLOSE
          INC   $7306
          JMP   DOWN1
-DOWN     JSR   $9003
+DOWN     JSR   IO_CLOSE
          DEC   $7306
 DOWN1    LDA   TEMP71
-         STA   $7300
+         STA   PLAYER_X
          LDA   TEMP81
-         STA   $7301
-         JSR   $9000
+         STA   PLAYER_Y
+         JSR   IO_OPEN
          LDA   $7307
          JSR   PAC_DRAW
          LDA   #SOUND_TICK
@@ -320,8 +320,8 @@ NEXTBLOCK HEX  FF0104FFFF020500
          HEX   0A0FFF0D0BFFFF0E
 L12      CMP   #$D3  ;  'S'  
          BNE   L13
-         LDX   $7300
-         LDY   $7301
+         LDX   PLAYER_X
+         LDY   PLAYER_Y
          JSR   PAC_LOOKUP
          BCC   L121
          TXA
@@ -425,9 +425,9 @@ NOTHEAL
          BNE   NOTKEY
          LDA   #1      ; "key" weapons can only move one space
 NOTKEY   STA   COUNT
-         LDA   $7300
+         LDA   PLAYER_X
          STA   XPOS
-         LDA   $7301
+         LDA   PLAYER_Y
          STA   YPOS
          LDA   $7307
          ASL

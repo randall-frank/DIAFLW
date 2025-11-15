@@ -234,7 +234,7 @@ G11      LDY   TEMP1
          LDY   TEMP1
          CPY   #21
          BNE   G11
-         JSR   $9000
+         JSR   IO_OPEN
          JSR   PAC_HIGHLITE
          LDA   #0
          JSR   PAC_DRAW
@@ -402,7 +402,7 @@ BIG      CMP   #1
          BEQ   WIN
          JMP   SAVEGAME
 WIN      JSR   PAC_CLEAR
-         JSR   $9003
+         JSR   IO_CLOSE
          LDA   #0
          STA   TEMP1
          LDA   #14
@@ -418,7 +418,7 @@ W2       LDY   TEMP1
          JMP   W2
 W1       JMP   QAGAIN
 DEAD     JSR   PAC_CLEAR
-         JSR   $9003
+         JSR   IO_CLOSE
          LDA   #0
          STA   TEMP1
          LDA   #14
@@ -445,7 +445,7 @@ JOYIT    JSR   GAMESTEP
          LDA   #$A8
          JSR   $FCA8
          JMP   DOP3+3
-SAVEGAME JSR   $9003  ; I/O close
+SAVEGAME JSR   IO_CLOSE  ; I/O close
          LDA   #'A'
          JSR   PROMPT
          LDA   #>BLOCKS
@@ -460,7 +460,7 @@ SAVEGAME JSR   $9003  ; I/O close
          LDY   #<SAVED
          JSR   OFILE
          LDY   #0
-JKJ      LDA   $7300,Y
+JKJ      LDA   PLAYER_X,Y
          STA   $8E00,Y
          DEY
          BNE   JKJ

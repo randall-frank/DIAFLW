@@ -328,8 +328,8 @@ PL7      RTS
 DRAW     PHA
          LDA   #0
          JSR   SETMASK
-         LDX   $7300
-         LDY   $7301
+         LDX   PLAYER_X
+         LDY   PLAYER_Y
          TXA
          CLC
          ADC   #$FD       ;(-3)
