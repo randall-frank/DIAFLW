@@ -1,5 +1,5 @@
          ORG   $9700
-         DSK   bin/PRE.BIN#069700
+         DSK   ../bin/PRE.BIN#069700
          TYP   $06  ; /BIN file
 
 CLEAR2   =     $FC58  ; HOME

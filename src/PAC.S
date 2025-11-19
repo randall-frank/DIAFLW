@@ -1,19 +1,17 @@
          ORG   $800
-         DSK   bin/PAC.BIN
+         DSK   ../bin/PAC.BIN
          TYP   $06  ; /BIN file
 
+         PUT  COMMON.S
 
 *      START OF THE PAC ROUTINES
 * NOTE THE VALUE AT $FFF DETERMINES THE PLACE
 * FOR THE SHAPES TO COME FROM  $10 OR $A0
-WHICHTBL =     $FFF
-HIGHS    =     $E00
-LOWS     =     $F00
-RND      =     $EFAE
-RNDBUFF  =     $200
-ENEMY    =     $7000
-TBLX     =     $4E00  
-TBLY     =     $4F00   
+HIGHS    =     $E00   ; high order byte for HGR scanline
+LOWS     =     $F00   ; low order byte for HGR scanline
+
+RNDBUFF  =     $200   ; buffer of 256 random bytes
+
 VERT     =     0
 TEMP1    =     1
 TEMP2    =     2
@@ -46,7 +44,6 @@ MASKON    =     $72
          JMP   HIGHLITE
          JMP   POCKETS
          JMP   CLEAR
-         JMP   $901E      ; IO_MSGS from IO2.S
          JMP   CLEAR2
          JMP   BOTTOMLINE
          JMP   SETMASK
@@ -63,25 +60,82 @@ CL1      STA   (HGRTGT_LO),Y
          CPX   #184
          BNE   CLEAR+2
          RTS
+
+* initialize the random number system
 RNDMIZE  LDY   #0
          STY   TEMP1
-R1       JSR   RND
+R1L      JSR   RND
          LDA   $9F
          LDY   TEMP1
          STA   RNDBUFF,Y
          INC   TEMP1
-         BNE   R1
+         BNE   R1L
          RTS
+
+* return a random byte from the table
+* if we run out of space, compute a new random index
+* into the table.
+
 RNDM     INC   INDEX
          LDY   INDEX
          CPY   START
-         BNE   R2
+         BNE   R2L
          JSR   RND
          LDY   $9F
          STY   START
          STY   INDEX
-R2       LDA   RNDBUFF,Y
+R2L      LDA   RNDBUFF,Y
          RTS
+
+UNUSED = 0
+         DO UNUSED
+
+* Potential new random number generator
+* Seed the random number generator with a reasonable initial value
+
+RNDMIZE 
+         LDA $4E          ; Seed the random number generator
+         STA R1           ; based on delay between keypresses
+         STA R3
+         LDA $4F
+         STA R2
+         STA R4
+         LDX #$20         ; Generate a few random numbers
+INITLOOP JSR RNDM         ; to kick things off
+         DEX
+         BNE INITLOOP
+         RTS
+
+R1       DFB 0
+R2       DFB 0
+R3       DFB 0
+R4       DFB 0
+
+* return a random byte 
+
+RNDM   
+         ROR R4           ; Bit 25 to carry
+         LDA R3           ; Shift left 8 bits
+         STA R4
+         LDA R2
+         STA R3
+         LDA R1
+         STA R2
+         LDA R4           ; Get original bits 17-24
+         ROR              ; Now bits 18-25 in ACC
+         ROL R1           ; R1 holds bits 1-7
+         EOR R1           ; Seven bits at once
+         ROR R4           ; Shift right by one bit
+         ROR R3
+         ROR R2
+         ROR
+         STA R1
+         RTS
+
+         FIN
+
+* For a given scanline in A, set up HGRTGT_LO,HGRTGT_HI ($26,$27) to point at
+* the scan line start (X and A are scrambled)
 CALC     TAX
          LDA   LOWS,X
          STA   HGRTGT_LO
@@ -106,7 +160,7 @@ BIGSHAPE PHA
          ROR   HGRSRC_LO
          LSR
          ROR   HGRSRC_LO
-         ORA   WHICHTBL
+         ORA   PAC_WHICHTBL
          STA   HGRSRC_HI
          LDA   TBL,Y
          STA   VERT
@@ -163,16 +217,16 @@ PL2      INY
          INY
          INY
          INY
-         LDA   ENEMY,Y
+         LDA   ENEMY_TABLE,Y
          CMP   TEMP1
          BNE   PL3
          INY
-         LDA   ENEMY,Y
+         LDA   ENEMY_TABLE,Y
          CMP   TEMP2
          BNE   PL3
          INY   ; The location is an enemy, return the proper block
          INY
-         LDA   ENEMY,Y
+         LDA   ENEMY_TABLE,Y
          SEC
          RTS
 ;       IF CARRY IS SET YOU FOUND AN ENEMY AND ITS # IS X
@@ -274,8 +328,8 @@ PL7      RTS
 DRAW     PHA
          LDA   #0
          JSR   SETMASK
-         LDX   $7300
-         LDY   $7301
+         LDX   PLAYER_X
+         LDY   PLAYER_Y
          TXA
          CLC
          ADC   #$FD       ;(-3)
@@ -296,14 +350,14 @@ DRAW     PHA
          ASL
          ASL
          ASL
-         ASL   ; RJF  dir*64 for TBLX and TBLY index
-         STA   TEMP7      ; Index into the TBLX,TBLY arrays
+         ASL   ; RJF  dir*64 for TABX and TABY index
+         STA   TEMP7      ; Index into the TABX,TABY arrays
 ERAS     LDY   TEMP7
-         LDA   TBLX,Y
+         LDA   TABX,Y
          TAX
          CPX   #$FF
          BEQ   SAMEDIR1
-         LDA   TBLY,Y
+         LDA   TABY,Y
          TAY
          LDA   #4         ; BLANK SPACE
          JSR   BIGSHAPE   ; X=Relative to TEMP5, Y=Relative to TEMP6, A=shape
@@ -316,10 +370,10 @@ SAMEDIR  STA   DIR
          ASL
          ASL
          ASL
-         ASL   ; RJF  dir*64 for TBLX and TBLY index
+         ASL   ; RJF  dir*64 for TABX and TABY index
          STA   TEMP7
 DR       LDY   TEMP7
-         LDA   TBLX,Y
+         LDA   TABX,Y
          CMP   #$FE
          BNE   CHECK_DONE
          LDA   #1     ; 254=switch to "hidden" mode
@@ -332,7 +386,7 @@ CHECK_DONE
          CLC
          ADC   TEMP5
          TAX
-         LDA   TBLY,Y
+         LDA   TABY,Y
          CLC
          ADC   TEMP6
          TAY
@@ -345,9 +399,9 @@ CHECK_DONE
 OUTSIDE  LDA   #4      ; Blank for outside of the grid
 OK1      PHA
          LDY   TEMP7
-         LDA   TBLX,Y
+         LDA   TABX,Y
          TAX
-         LDA   TBLY,Y
+         LDA   TABY,Y
          TAY
          PLA
          JSR   BIGSHAPE  ; X=Relative to TEMP5, Y=Relative to TEMP6, A=shape
@@ -522,6 +576,7 @@ POC5     LDA   (TEMP4),Y
 * RJF 18s were 17s
 XYLOC    DFB   18,104,29,104,18,144,29,144,18,56,29,56
 
+* clear the entire HGR screen to black
 CLEAR2   LDA   #$20
          STA   CLMOD+2
          LDX   #$20

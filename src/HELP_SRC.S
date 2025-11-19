@@ -1,5 +1,5 @@
 
-         dsk   bin/HELP.BIN
+         dsk   ../bin/HELP.BIN
          typ   $06  ; /BIN file
 
          org   $7000

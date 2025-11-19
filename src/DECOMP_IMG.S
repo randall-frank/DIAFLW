@@ -12,7 +12,7 @@
 ********************************
          lst   off
          org   $4000
-         DSK   bin/DECOMP_IMG.BIN
+         DSK   ../bin/DECOMP_IMG.BIN
          TYP   $06  ; /BIN file
 *
 * Constants

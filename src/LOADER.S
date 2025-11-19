@@ -1,11 +1,13 @@
          ORG   $2000
-         DSK   bin/LOADER.BIN
+         DSK   ../bin/LOADER.BIN
          TYP   $06  ; /BIN file
 
 SRCLO    =     0
 SRCHI    =     1
 TGTLO    =     2
 TGTHI    =     3
+
+* // LINK - ../memorymap.txt#loader
 
 * Restore help page
          JSR   TEXTPAGE

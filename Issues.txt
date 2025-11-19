@@ -1,8 +1,6 @@
 Use names in COMMONS.S instead of naked addresses
 # Display "behind" blocks with dropped out scanlines
 Reconsider prefix handling for editors...
-Need to move all source code files under 'src' directory to
-clean up the top level directory.
 
 
 SQUAREXY

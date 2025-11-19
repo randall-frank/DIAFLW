@@ -1,6 +1,6 @@
 DRAWTAB.S -> $4E00-$4FFF directional view tables
 GAME1.S -> $7400 - Look at $c000 and handle a keypress???
-GAME2.S -> $7A00 - One pass of the game state (move/fire enemies)
+GAME2.S -> $7C00 - One pass of the game state (move/fire enemies)
 I.O.S -> $9000 - basic prodos functions (open file, read file, save file, ...)
 I.O2.S -> $9000 - second version of the above???
 OPENING.S -> $8000 - start the game
@@ -9,7 +9,6 @@ PAC.S -> $0800 -> core graphics routines
 PRE.S -> $9700 -> Used by editors for selecting prefix in ASCII
 WEAPONS.S -> $7200 -> table of guns 
 
-Check.S -> 128 bytes
 
 Notes on saved games (ref SAVEGAME in OPENING2.S)
     1 - File is named 'SAVED'
@@ -71,7 +70,7 @@ TEMP6    =     $1F
 7
 8 - $00l
 
-
+//ANCHOR[id=loader] - packed DIAFLW.SYSTEM file layout
 --------- DIAFLW.SYSTEM -----
 2000 - Unpack the game bits into their runtime locations & start it
     Paint the text page from 7000-7400
@@ -81,8 +80,10 @@ TEMP6    =     $1F
     Reads from 6000-7000 and stores to 7000-8000
     JMP 8000
 
+//ANCHOR[id=runtime] - runtime memory layout
 --------- Runtime -----------
 0200 - random number buffer
+0400 - Text page filled by LOADER.S with help (see: HELP_SRC.S) 
 0800 - PAC.S - common drawing routines: BIGSHAPE-CLEAR2
 0C80 - BOTTOMLINE.S draw aspects of scenario selection
 0E00 - HIGHS -> ??? pac.s LSB of scanline start  LOOKTBLS?
@@ -91,9 +92,9 @@ TEMP6    =     $1F
 2000 - HGR - Assembled from PRG.S code relocates to 1400
 4000 - Code run by LETUSGO (OPENING2) unpack and display the splash screen
 4003 - Unpack and display the play screen
-4100 - Packed splash screen 0x08A5
-4A00 - Packed play screen 0x023D
-4E00 - TBLX -> DRAWTAB.S table of direction tiles to draw????
+4100 - Packed splash screen 0x08A5 long
+4A00 - Packed play screen 0x023D long
+4E00 - TBLX -> DRAWTAB.S table of direction tiles to draw
 4F00 - TBLY -> DRAWTAB.S
 5000 - Game screen data???
 5C00 - BIGFONT

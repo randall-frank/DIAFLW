@@ -1,5 +1,5 @@
          ORG   $7C00
-         DSK   bin/GAME2.BIN
+         DSK   ../bin/GAME2.BIN
          TYP   $06  ; /BIN file
 
          PUT  COMMON.S
@@ -58,7 +58,7 @@ M1       LDA   TEMP0
          LDA   $7004,X
          STA   XPOS
          SEC
-         SBC   $7300
+         SBC   PLAYER_X
          STA   DELTAX
          BPL   M2
          EOR   #$FF
@@ -70,7 +70,7 @@ M1       LDA   TEMP0
 M2       LDA   $7005,X
          STA   YPOS
          SEC
-         SBC   $7301
+         SBC   PLAYER_Y
          STA   DELTAY
          BPL   M3
          EOR   #$FF
@@ -102,7 +102,7 @@ RAND     JSR   PAC_RND
          AND   #3
          JMP   MOVIT
 XIN      LDA   XPOS   ; X finder
-         CMP   $7300
+         CMP   PLAYER_X
          BEQ   YIN
          LDX   #1
          LDA   DELTAX
@@ -111,7 +111,7 @@ XIN      LDA   XPOS   ; X finder
 M4       TXA
          JMP   MOVIT
 YIN      LDA   YPOS   ; Y finder
-         CMP   $7301
+         CMP   PLAYER_Y
          BEQ   XIN
          LDX   #2
          LDA   DELTAY
@@ -153,10 +153,10 @@ M6       STA   XN
          BLT   NOWAY
 M7       LDX   TEMP1
          LDA   XN
-         CMP   $7300
+         CMP   PLAYER_X
          BNE   YESWAY
          LDA   YN
-         CMP   $7301
+         CMP   PLAYER_Y
          BNE   YESWAY
          SEC
          RTS
@@ -235,7 +235,7 @@ F3       TXA
 
 DELT     LDA   $7005,X   ; Compute position delta from the player
          SEC
-         SBC   $7301
+         SBC   PLAYER_Y
          BEQ   F4
          BPL   F4
          EOR   #$FF
@@ -245,7 +245,7 @@ DELT     LDA   $7005,X   ; Compute position delta from the player
 F4       STA   DELTAY
          LDA   $7004,X
          SEC
-         SBC   $7300
+         SBC   PLAYER_X
          BEQ   F5
          BPL   F5
          EOR   #$FF
@@ -264,14 +264,14 @@ DFIRE    STA   DIR       ; Actually fire from an enemy to the player
          LDA   $7004,X
          STA   XPOS
          SEC
-         SBC   $7300
+         SBC   PLAYER_X
          CLC
          ADC   #3
          STA   TEMP3
          LDA   $7005,X
          STA   YPOS
          SEC
-         SBC   $7301
+         SBC   PLAYER_Y
          CLC
          ADC   #3
          STA   TEMP4
@@ -289,10 +289,10 @@ DELAY    LDA   #200
          DEY
          BNE   DELAY
          LDA   XPOS
-         CMP   $7300
+         CMP   PLAYER_X
          BNE   F9
          LDA   YPOS
-         CMP   $7301
+         CMP   PLAYER_Y
          BNE   F9
          JMP   ONTARGET
 F9       LDX   XPOS

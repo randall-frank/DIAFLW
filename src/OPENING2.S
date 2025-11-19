@@ -1,5 +1,5 @@
          ORG   $8000
-         DSK   bin/OPENING2.BIN
+         DSK   ../bin/OPENING2.BIN
          TYP   $06  ; /BIN file
 
          LST   Off
@@ -234,7 +234,7 @@ G11      LDY   TEMP1
          LDY   TEMP1
          CPY   #21
          BNE   G11
-         JSR   $9000
+         JSR   IO_OPEN
          JSR   PAC_HIGHLITE
          LDA   #0
          JSR   PAC_DRAW
@@ -252,7 +252,7 @@ G1       JSR   PAC_POCKETS
          LDY   #8
          JSR   PAC_TEXTSET
          LDY   TEMP1
-G2       LDA   $73A0,Y
+G2       LDA   PLAYER_NAME,Y
          JSR   PAC_TEXT
          INC   TEMP1
          LDY   TEMP1
@@ -265,7 +265,7 @@ G2       LDA   $73A0,Y
          LDA   #0
          STA   TEMP1
          TAY
-G3       LDA   $7380,Y
+G3       LDA   SCENARIO_NAME,Y
          JSR   PAC_TEXT
          INC   TEMP1
          LDY   TEMP1
@@ -275,26 +275,26 @@ G3       LDA   $7380,Y
          LDX   #25
          LDY   #16
          JSR   PAC_TEXTSET
-         LDA   $7308
+         LDA   PLAYER_SCORE_LO+0
          ORA   #$B0
          JSR   PAC_TEXT
-         LDA   $7309
+         LDA   PLAYER_SCORE_LO+1
          ORA   #$B0
          JSR   PAC_TEXT
-         LDA   $730A
+         LDA   PLAYER_SCORE_LO+2
          ORA   #$B0
          JSR   PAC_TEXT
-         LDA   $730B
+         LDA   PLAYER_SCORE_LO+3
          ORA   #$B0
          JSR   PAC_TEXT
          LDA   #20
          LDX   #26
          LDY   #24
          JSR   PAC_TEXTSET
-         LDA   $730C
+         LDA   PLAYER_HIT_LO+0
          ORA   #$B0
          JSR   PAC_TEXT
-         LDA   $730D
+         LDA   PLAYER_HIT_LO+1
          ORA   #$B0
          JSR   PAC_TEXT
          LDA   #0
@@ -402,7 +402,7 @@ BIG      CMP   #1
          BEQ   WIN
          JMP   SAVEGAME
 WIN      JSR   PAC_CLEAR
-         JSR   $9003
+         JSR   IO_CLOSE
          LDA   #0
          STA   TEMP1
          LDA   #14
@@ -418,7 +418,7 @@ W2       LDY   TEMP1
          JMP   W2
 W1       JMP   QAGAIN
 DEAD     JSR   PAC_CLEAR
-         JSR   $9003
+         JSR   IO_CLOSE
          LDA   #0
          STA   TEMP1
          LDA   #14
@@ -445,7 +445,7 @@ JOYIT    JSR   GAMESTEP
          LDA   #$A8
          JSR   $FCA8
          JMP   DOP3+3
-SAVEGAME JSR   $9003  ; I/O close
+SAVEGAME JSR   IO_CLOSE  ; I/O close
          LDA   #'A'
          JSR   PROMPT
          LDA   #>BLOCKS
@@ -460,7 +460,7 @@ SAVEGAME JSR   $9003  ; I/O close
          LDY   #<SAVED
          JSR   OFILE
          LDY   #0
-JKJ      LDA   $7300,Y
+JKJ      LDA   PLAYER_X,Y
          STA   $8E00,Y
          DEY
          BNE   JKJ
@@ -674,7 +674,7 @@ LJK      CMP   #$8D
          LDY   TEMP1
          CPY   #15
          BEQ   N7
-         STA   $73A0,Y
+         STA   PLAYER_NAME,Y
          JSR   PAC_TEXT
          INC   TEMP1
          JMP   N7
@@ -703,7 +703,7 @@ N9       LDA   #$A0
          LDY   TEMP1
          CPY   #15
          BEQ   N99
-N8       STA   $73A0,Y
+N8       STA   PLAYER_NAME,Y
          INY
          CPY   #15
          BNE   N8

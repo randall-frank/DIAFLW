@@ -1,4 +1,6 @@
 * Collection of common addresses/etc
+* See: memorymap.txt for more details
+* // LINK - ../memorymap.txt#runtime
 
 * From PAC.S
 PAC_BIGSHAPE    = $0800
@@ -12,15 +14,16 @@ PAC_DRAW        = $0815
 PAC_HIGHLITE    = $0818
 PAC_POCKETS     = $081B
 PAC_CLEAR       = $081E
-PAC_MSG         = $0821   ; calls IO_MSGS
-PAC_CLEAR2      = $0824
-PAC_BOTTOMLINE  = $0827
-PAC_SETMASK     = $082A
-PAC_WHICHTBL    = $0FFF
+PAC_CLEAR2      = $0821
+PAC_BOTTOMLINE  = $0824
+PAC_SETMASK     = $0827
+PAC_WHICHTBL    = $0FFF   ; general variable that picks which iconset to draw from
 
 * GAME1.S2
 USERSTEP        = $7400     ; handle user actions: moving, firing, etc
-* Return values from various functions
+
+* Return values from IO_GETWINFO and IO_GETWINFO_ACC functions
+* //LINK - ./GAME1.S#getwinfo
 POWER           = $7403
 EXPLOST         = $7404
 DAMAGE          = $7405
@@ -40,7 +43,7 @@ IO_GETPREFIX    = $900C
 IO_HITINC       = $900F
 IO_HPOC         = $9012
 IO_GETWINFO     = $9015
-PLAYSOUND       = $9018
+PLAYSOUND       = $9018  ; entry for the sync sound routine. Hides the two generators
 IO_GETWINFO_ACC = $901B
 IO_MSGS         = $901E  ; cannot move this (see PAC.S)
 
@@ -66,13 +69,15 @@ PLAYER_SCORE_LO = $7308  ; X000,0X00,00X0,000X
 PLAYER_HIT_LO   = $730C  ; X0,0X
 STEPS_TO_HEAL   = $730E  ; FF=table
 HEAL_SIZE       = $730F  ; default=1
+SCENARIO_NAME   = $7380  ; from starter...
+PLAYER_NAME     = $73A0  ; current player name
 
 * Scenario state (IO2.S)
 VISITED_TABLE   = $8F00  ; X,Y X,Y X,Y
 VISITED_LENGTH  = $8FFF  ; number used bytes in VISITED_TABLE (2*# of x,y entries)
 
-* Sound
-T1_SOUND_ROUT   = $8980
+* Sound(s)
+T1_SOUND_ROUT   = $8980  ; old sound routine.  Called by PLAYSOUND for the first 5 sounds
 SOUND_TICK      = 0
 SOUND_FIRE      = 1
 SOUND_LONGFIRE  = 2
@@ -95,10 +100,11 @@ SOUND_Fail      = 18
 SOUND_Pass      = 19
 SOUND_Timebomb  = 20
 
-* DECOMP_IMG.S
+* DECOMP_IMG.S - unpack and display the two "background" images
 SHOWSPLASH      = $4000
 SHOWPLAY        = $4003
 
-* Aople II constants
+* Apple II constants
 SPKR            = $C030 
 WAIT            = $FCA8
+RND             = $EFAE  ; Basic RND() function

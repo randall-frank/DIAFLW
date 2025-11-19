@@ -1,5 +1,5 @@
          ORG   $2000
-         DSK   bin/PRG.BIN
+         DSK   ../bin/PRG.BIN
          TYP   $06  ; /BIN file
 
          LDY   #0

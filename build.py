@@ -32,9 +32,9 @@ version = "1.5.0"
 
 # Burn the version number into the help screen: HELP_SRC.S -> HELP.S 
 log.info("Generating 6502 source code...")
-with open("HELP_SRC.S", "r") as fp:
+with open(os.path.join("src","HELP_SRC.S"), "r") as fp:
     text = fp.read()
-    with open("HELP.S", "w") as out:
+    with open(os.path.join("src","HELP.S"), "w") as out:
         text = text.replace("V_NUM", version)
         out.write(text)
 
@@ -54,25 +54,32 @@ files = {
 }
 
 log.info("Assembling 6502 source code...")
+
 # compile sources
+# Merlin does not handle subdirs very well...
+orig_dir = os.getcwd()
+os.chdir("src")
 for name, address in files.items():
-    cmd = [assembler, assembler_libdir, name]
+    cmd = [os.path.join("..", assembler), os.path.join("..", assembler_libdir), name]
     log.info(f"Assembling: {name} @ ${address:X}")
     result = subprocess.run(cmd, capture_output=True, text=True)
+    if '[Error]' in result.stdout:
+        result.returncode = 1
     if result.returncode != 0:
         log.error(f"assembling: {name}: {result.stdout}")
         sys.exit(1)
+os.chdir(orig_dir)
         
 log.info("Compressing splash screen images...")
-if not os.path.exists(os.path.join("bin","diaflw_splash.fgr")):
-    cmd = [fhpack, "-c", "diaflw_splash.hgr", "bin/diaflw_splash.fgr"]
+if not os.path.exists(os.path.join("bin", "diaflw_splash.fgr")):
+    cmd = [fhpack, "-c", "src/diaflw_splash.hgr", "bin/diaflw_splash.fgr"]
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         log.error(f"compressing: diaflw_splash.hgr")
         sys.exit(1)
     log.info("Generated: bin/diaflw_splash.fgr")
 if not os.path.exists(os.path.join("bin","diaflw_play.fgr")):
-    cmd = [fhpack, "-c", "diaflw_play.hgr", "bin/diaflw_play.fgr"]
+    cmd = [fhpack, "-c", "src/diaflw_play.hgr", "bin/diaflw_play.fgr"]
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         log.error(f"compressing: diaflw_play.hgr")
@@ -112,7 +119,7 @@ bins = {
 log.info("Building DIAFLW.SYSTEM(SYS#ff) file...")
 
 # Build 'DIAFLW.SYSTEM,TSYS' from bins
-with open('DIAFLW_SYSTEM_orig.bin', 'rb') as fp:
+with open(os.path.join('src', 'DIAFLW_SYSTEM_orig.bin'), 'rb') as fp:
     data = bytearray(fp.read())
 
 for name, addr in bins.items():
