@@ -73,12 +73,19 @@ included in the disk image.  There is a READ.DOCS system file that can be used
 to view the file.   Alternatively, the source to the docs file is 
 available `here <diaflw_docs.txt>`_.
 
-Please feel free to post issues and other questions at `DIAFLW Issues
-<https://github.com/randall-frank/DIAFLW/issues>`_. This is the best place
-to post questions and code.
+Normally, one would download the `.2mg` file and use it with an emulator or 
+burn a 3.5" disk with the image.  Thanks to the great work by Chris Torrence
+and Michael Morrison on the `Apple2TS <https://github.com/ct6502/apple2ts>`_ browser 
+hosted Apple II emulator, one can play the game via a web browser.  
+
+`Play DIAFLW in a browser <https://apple2ts.com/?appmode=game&theme=dark#https://github.com/randall-frank/DIAFLW/releases/download/v1.5.0/DIAFLW_Release.2mg>`_
 
 The game is also hosted on `itch.io <https://myleftgoat.itch.io/diaflw>`_ which provides
 a simpler download option and forum to discuss more gameplay related issues.
+
+Please feel free to post issues and other questions at `DIAFLW Issues
+<https://github.com/randall-frank/DIAFLW/issues>`_. This is the best place
+to post questions and code.
 
 License
 -------
